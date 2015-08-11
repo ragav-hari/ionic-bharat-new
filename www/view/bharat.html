@@ -1,0 +1,77 @@
+<ion-view view-title="Upload Image" ng-controller="userController">
+  <ion-content class="padding"> 
+      
+      <div class="list">
+            <label class="item item-input">
+                <span class="input-label">Email</span>
+                <input type="text"  ng-model="user.user_email">
+            </label>
+          
+            <label class="item item-input">
+                <span class="input-label">Mobile No</span>
+                <input type="text"  ng-model="user.user_mobile">
+            </label>
+          
+            <label class="item item-input">
+                <span class="input-label">Comment</span>
+                <textarea type="text" ng-model="user.user_comment"></textarea>
+            </label>
+          
+            <button class="button button-royal button-full button-small" ng-click="openModal()">
+                    Attachments
+            </button>
+            <div ng-show="image !== undefined">
+            
+                <div class="row"  style="flex-wrap: wrap;">
+                    <div class="col col-33" ng-repeat="imageuri in image">
+                         <img style="width:50px;height:50px" ng-show="image !== undefined" ng-src="{{imageuri}}">
+                         <button class="button button-assertive button-small" ng-click="removeImage($index)">Remove</button>
+                    </div>  
+                </div>    
+          </div>
+          
+          <div ng-show="audio !== undefined">
+                 <div class="row"  style="flex-wrap: wrap;">
+                    <ul class="list">
+                            <li ng-repeat="aud in audio">
+                                <div class="row">
+                                <div class="col col-10"><i class="ion-mic-a customIcon"></i></div>
+                                <div class="col col-80">{{aud.fullPath}}</div>
+                                <div class="col col-10"><i class="ion-ios-close customIcon" ng-click="removeAudio($index)"></i></div>
+                                </div>    
+                            </li>
+                    </ul>
+                </div>    
+          </div>
+          
+          <button class="button button-royal button-full button-large" ng-click="sendEmail()">
+                    Submit
+            </button>
+          
+         
+    
+      
+      <script id="my-modal.html" type="text/ng-template">
+         
+          <div class="modal">
+             
+            <ion-content class="modalclass">
+               <button class="button button-royal button-full button-small" ng-click="selectimage()">
+                        Select Image
+                </button>
+      
+                <button class="button button-royal button-full button-small" ng-click="captureImage()">
+                        Capture Image
+                </button>
+                
+                <button class="button button-royal button-full button-small" ng-click="captureAudio()">
+                        Capture Audio
+                </button>
+                
+            </ion-content>
+          </div>
+          
+     </script>
+          
+  </ion-content>
+</ion-view>  
