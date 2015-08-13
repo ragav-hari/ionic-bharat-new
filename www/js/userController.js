@@ -1,10 +1,13 @@
 (function(){
-    bharat.controller('userController', ['$q','$timeout','$scope','$cordovaCapture','$ionicModal',userController]); 
+    bharat.controller('userController', ['$q','$timeout','$scope','$cordovaCapture','$ionicModal','$cordovaEmailComposer',userController]); 
     
-    function userController($q,$timeout,$scope,$cordovaCapture,$ionicModal)
+    function userController($q,$timeout,$scope,$cordovaCapture,$ionicModal,$cordovaEmailComposer)
     {
         $scope.audio = [];
         $scope.image = [];
+
+        $scope.user  = {}; 
+        $scope.attachments = [];
         
         $ionicModal.fromTemplateUrl('my-modal.html', {
             scope: $scope,
@@ -27,7 +30,8 @@
 
             $cordovaCapture.captureAudio(options).then(function(audioData) {
                 alert(audioData);
-                $scope.audio.push(audioData[0]);
+                $scope.audio.push(audioData[0].fullPath);
+                 //$scope.attachments.push(audioData[0].fullPath);
             }, function(err) {
               console.log("ERROR AUDIO");
             });
@@ -40,6 +44,10 @@
                     for (var i = 0; i < results.length; i++) 
                     {
                         $scope.image.push(results[i]);
+                        alert("Selected"+results[i]);
+                       // $scope.attachments.push(""+results[i].replace("file://",""));
+                         //$scope.attachments.push(results[i].replace("file:///","file:/"));
+                       //  $scope.attachments.push(results[i]);
                     }
                     if(!$scope.$$phase) 
                     {
@@ -59,6 +67,8 @@
 
             $cordovaCapture.captureImage(options).then(function(imageData) {
               $scope.image.push(imageData[0].fullPath);
+             // $scope.attachments.push(""+imageData[0].replace('file://',''));
+              //  $scope.attachments.push(imageData[0].fullPath);
             }, function(err) {
               // An error occurred. Show a message to the user
             });
@@ -72,25 +82,37 @@
      $scope.removeAudio = function(index)
      {
           $scope.audio.splice(index,1);
+          
      }
      
      $scope.sendEmail = function()
      {
-        /*    var email = {
-            to: 'mynameisragav@gmail.com',
-            subject: 'Cordova Icons',
-            body: 'How are you? Nice greetings from Leipzig',
-            isHtml: true
+         
+         
+        $scope.attachments = $scope.image.concat($scope.audio);
+        
+       
+         
+         alert("ATTACH"+$scope.attachments);
+         
+         $scope.messagebody = "Mobile :"+$scope.user.user_mobile+"<br/>"+"Comment :"+$scope.user.user_comment;
+            var email = {
+            to: 'ragavitcian@gmail.com',
+            subject: 'Bharat Purchase',
+            body: $scope.messagebody,
+            isHtml: true,
+            attachments: $scope.attachments
           };
+         
         $cordovaEmailComposer.isAvailable().then(function() {
-            alert("EMAIL Available");
+            //alert("EMAIL Available");
          }, function () {
-            alert("EMAIL Not Available");
+           // alert("EMAIL Not Available");
          });        
 
         $cordovaEmailComposer.open(email).then(null, function () {
-           alert("EMAIL OPEN");
-         });*/
+          // alert("EMAIL OPEN");
+         });
      }
 
     }
