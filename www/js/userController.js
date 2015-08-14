@@ -1,7 +1,7 @@
 (function(){
-    bharat.controller('userController', ['$q','$timeout','$scope','$cordovaCapture','$ionicModal','$cordovaEmailComposer',userController]); 
+    bharat.controller('userController', ['$q','$timeout','$scope','$cordovaCapture','$ionicModal','$cordovaEmailComposer','$cordovaCamera','$cordovaFile',userController]); 
     
-    function userController($q,$timeout,$scope,$cordovaCapture,$ionicModal,$cordovaEmailComposer)
+    function userController($q,$timeout,$scope,$cordovaCapture,$ionicModal,$cordovaEmailComposer,$cordovaCamera,$cordovaFile)
     {
         $scope.audio = [];
         $scope.image = [];
@@ -37,17 +37,95 @@
             });
        }
     
+       
+        $scope.urlForImage = function(imageName) {
+           /* var filename = imageName.substring(imageName.lastIndexOf('/')+1);
+  var trueOrigin = cordova.file.dataDirectory + filename;
+  console.log("TRUEORIGIN"+trueOrigin);     */
+            var filename = imageName.substring(imageName.lastIndexOf('/')+1);
+          console.log("TRUEORIGIN"+filename); 
+  return trueOrigin;
+}         
+       
+      /*  $scope.errorCallback1 = function(data)
+        {
+            console.log("ERROR 1"+JSON.stringify(data));
+        }
+        
+        $scope.errorCallback2 = function(data)
+        {
+            console.log("ERROR 2"+JSON.stringify(data));
+        }
+        
+        $scope.errorCallback3 = function(data)
+        {
+            console.log("ERROR 3"+JSON.stringify(data));
+        }
+        */
+        
+       
+       
        $scope.selectimage = function() 
         {
+           
             window.imagePicker.getPictures(
                 function(results) {
                     for (var i = 0; i < results.length; i++) 
                     {
-                        $scope.image.push(results[i]);
+                       /* $scope.image.push(results[i]);
                         alert("Selected"+results[i]);
                        // $scope.attachments.push(""+results[i].replace("file://",""));
                          //$scope.attachments.push(results[i].replace("file:///","file:/"));
-                       //  $scope.attachments.push(results[i]);
+                       //  $scope.attachments.push(results[i]);*/
+                        
+                         var filename = results[i].substring(results[i].lastIndexOf('/')+1);
+                        
+          $cordovaFile.moveFile(cordova.file.cacheDirectory,filename, "file:///storage/emulated/0/Pictures")
+          .then(function (success) {
+                console.log("Native URL: "+ success.toURL());
+
+          $scope.image.push(success.toURL());
+            
+          }, function (error) {
+           console.log("FILE ERROR"+JSON.stringify(error));
+          });
+                        
+                        
+          
+                        /*window.resolveLocalFileSystemURL(fileUri,function(fileEntry){
+                newFileUri  = cordova.file.dataDirectory + "images/";
+                oldFileUri  = results[i];
+    
+          window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry) {
+                            // move the file to a new directory and rename it
+                                console.log("SUCCESS 1"+dirEntry);
+                            fileEntry.moveTo(dirEntry, filename, function(successCallback){
+                                console.log("SUCCESS 2"+successCallback);
+                            }, function(errorCallback1){
+                                console.log("ERROR 1"+errorCallback1);
+                            });
+                        },
+                       function(errorCallback2){
+                    console.log("ERROR 2"+errorCallback2);
+                });
+          },
+          function(errorCallback3){
+              console.log("ERROR 3"+errorCallback3);
+          });*/
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+              
+                        
+                        
+                        
+                        
+                        
+                        
                     }
                     if(!$scope.$$phase) 
                     {
@@ -59,6 +137,7 @@
                
             );
              $scope.modal.hide();
+         
 	   };
         
       $scope.captureImage = function() 
