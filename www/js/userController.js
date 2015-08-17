@@ -47,22 +47,6 @@
   return trueOrigin;
 }         
        
-      /*  $scope.errorCallback1 = function(data)
-        {
-            console.log("ERROR 1"+JSON.stringify(data));
-        }
-        
-        $scope.errorCallback2 = function(data)
-        {
-            console.log("ERROR 2"+JSON.stringify(data));
-        }
-        
-        $scope.errorCallback3 = function(data)
-        {
-            console.log("ERROR 3"+JSON.stringify(data));
-        }
-        */
-        
        
        
        $scope.selectimage = function() 
@@ -72,12 +56,6 @@
                 function(results) {
                     for (var i = 0; i < results.length; i++) 
                     {
-                       /* $scope.image.push(results[i]);
-                        alert("Selected"+results[i]);
-                       // $scope.attachments.push(""+results[i].replace("file://",""));
-                         //$scope.attachments.push(results[i].replace("file:///","file:/"));
-                       //  $scope.attachments.push(results[i]);*/
-                        
                          var filename = results[i].substring(results[i].lastIndexOf('/')+1);
                         
           $cordovaFile.moveFile(cordova.file.cacheDirectory,filename, "file:///storage/emulated/0/Pictures")
@@ -91,41 +69,6 @@
           });
                         
                         
-          
-                        /*window.resolveLocalFileSystemURL(fileUri,function(fileEntry){
-                newFileUri  = cordova.file.dataDirectory + "images/";
-                oldFileUri  = results[i];
-    
-          window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry) {
-                            // move the file to a new directory and rename it
-                                console.log("SUCCESS 1"+dirEntry);
-                            fileEntry.moveTo(dirEntry, filename, function(successCallback){
-                                console.log("SUCCESS 2"+successCallback);
-                            }, function(errorCallback1){
-                                console.log("ERROR 1"+errorCallback1);
-                            });
-                        },
-                       function(errorCallback2){
-                    console.log("ERROR 2"+errorCallback2);
-                });
-          },
-          function(errorCallback3){
-              console.log("ERROR 3"+errorCallback3);
-          });*/
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-              
-                        
-                        
-                        
-                        
-                        
-                        
                     }
                     if(!$scope.$$phase) 
                     {
@@ -136,15 +79,22 @@
                 }
                
             );
-             $scope.modal.hide();
-         
+             $scope.modal.hide();    
 	   };
+        
+        
+   
+        
+     $scope.createdirectory = function()
+     {
+         // checkIfFileExists("file:///storage/emulated/0/Pictures");
+     }
         
       $scope.captureImage = function() 
       {
             var options = { limit: 1 };
 
-            $cordovaCapture.captureImage(options).then(function(imageData) {
+            $cordovaCapture.captureImage(options).then(function(imageData) {    
               $scope.image.push(imageData[0].fullPath);
              // $scope.attachments.push(""+imageData[0].replace('file://',''));
               //  $scope.attachments.push(imageData[0].fullPath);
@@ -164,6 +114,22 @@
           
      }
      
+     function deletefile(fileEntry)
+     {
+        console.log(fileEntry);
+        fileEntry.remove(success, fail);
+     }
+
+    function success(entry) 
+    {
+        console.log("Removal succeeded");
+    }
+
+    function fail(error) 
+    {
+        console.log("Error removing file: " + error.code);
+    }
+
      $scope.sendEmail = function()
      {
          

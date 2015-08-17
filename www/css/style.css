@@ -1,3 +1,56 @@
 .customIcon {
     font-size: 52px;
 }
+
+.welcome
+{
+  text-align: center;
+  text-transform: uppercase;    
+}
+
+
+.starter_shop_icon
+{
+  width:60%;
+  height:auto;
+  margin: 0 auto;    
+  display: block;
+}
+
+
+.product_offer
+{
+    background-image: url('');
+    margin: 0 auto;
+}
+
+#delievery_detail
+{
+    text-align: left;
+}
+
+#purchase_detail
+{
+    text-align: right;
+}
+
+.banner
+{
+    width:100%;
+}
+
+.title
+{
+    text-align: center !important;
+}
+
+.press_here
+{
+    text-align: center;
+    margin: 0 auto;
+}
+
+.press_here_img
+{
+    width:50%;   
+}

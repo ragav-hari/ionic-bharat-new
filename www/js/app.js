@@ -30,21 +30,14 @@ bharat.config(function($stateProvider, $urlRouterProvider) {
  
   .state('bharat', {
     url: '/bharat',
-    templateUrl: 'view/bharat.html'
+    templateUrl: 'view/front.html'
   })
 
-   .state('getuserdetail', {
-        url: '/getuserdetail',
-        templateUrl: 'view/userdetail.html',
-        controller: 'usersController'
+   .state('placeorder', {
+        url: '/placeorder',
+        templateUrl: 'view/bharat.html',
+        controller: 'userController'
   })
-    
-   .state('uploadimage', {
-        url: '/uploadimage',
-        templateUrl: 'view/imageupload.html',
-        controller: 'usersController'
-  })
-
  
   $urlRouterProvider.otherwise('/bharat');
 
