@@ -159,6 +159,14 @@
           // alert("EMAIL OPEN");
          });
      }
+     
+     
+     $scope.openwebsite = function()
+     {
+         alert("Opening");
+         window.open('http://www.bharathration.com/we_view/index.php','_system');
+     }
+     
 
     }
     
