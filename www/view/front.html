@@ -1,17 +1,23 @@
-<ion-view view-title="User Detail">  
+<ion-view view-title="User Detail" ng-controller="userController">  
   <ion-content scroll="true">
      
         <div class="banner">
-                <img src="img/banner6.jpg" alt="Slide Image Here" class="slider_image"/>
+                <img src="img/banner6.png" alt="Slide Image Here" class="slider_image"/>
         </div>
       
       
       <div class="row">
         <div class="col product_offer">
                 <div class="press_here">
-                   <a href="http://www.bharathration.com/we_view/index.php" target="_blank">
+                    <a onclick ="window.open('http://www.bharathration.com/we_view/index.php');"><img src="img/3.png" usemap="#Map" style="width:100%"/></a>
+                    
+                   <!-- <map name="Map" id="Map">
+                        <area alt="" title="" href="#" shape="poly" onclick ="window.open('http://www.bharathration.com/we_view/index.php');" coords="362,48,361,307,380,308,405,302,433,290,462,263,489,220,496,181,488,133,473,103,445,75,422,61,399,54" />
+                        <area alt="" title="" href="#" shape="poly" onclick ="window.open('http://www.bharathration.com/we_view/index.php');" coords="360,305,360,50,351,50,315,61,263,103,241,138,236,182,243,219,257,246,277,275,305,292,328,304" />
+                    </map> -->
+                <!--   <a onclick ="window.open('http://www.bharathration.com/we_view/index.php');">
                         <img src="img/shop.png" class="press_here_img" alt="Press Here"/>
-                   </a>
+                   </a> -->
                 </div>    
         </div>     
       </div>
@@ -19,12 +25,12 @@
      <div class="row">
         <div class="col">
             <a href="#/placeorder">
-            <button class="button icon-left ion-camera button-positive">Capture Image</button>
+            <button class="button icon-left ion-camera btn-custom">Capture Image</button>
             </a>    
         </div>  
-        <div class="col">
+        <div class="col audio_div">
             <a href="#/placeorder">
-            <button class="button icon-left ion-mic-a button-positive">Capture Audio</button>
+            <button class="button icon-left ion-mic-a btn-custom">Capture Audio</button>
             </a>    
         </div>      
       </div>

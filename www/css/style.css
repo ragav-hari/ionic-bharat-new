@@ -1,5 +1,5 @@
 .customIcon {
-    font-size: 52px;
+    font-size: 32px;
 }
 
 .welcome
@@ -17,10 +17,40 @@
   display: block;
 }
 
+.input-label
+{
+    font-weight: bold;
+}
+
+.modal-outer
+{
+    margin-top:15%;
+}
+
+.icon-spacing
+{
+    margin:0 10px
+}
+
+.audio-file
+{
+    text-align: center;
+}
+
+.audio-data
+{
+    padding:2px;
+    border:1px dotted grey;
+    width:100%;
+}
+
+.list
+{
+    width:100%;
+}
 
 .product_offer
 {
-    background-image: url('');
     margin: 0 auto;
 }
 
@@ -53,4 +83,32 @@
 .press_here_img
 {
     width:50%;   
+}
+
+.slider_image
+{
+    width:100%;
+    height:auto;
+}
+
+.audio_div
+{
+    text-align: right
+}
+
+.btn-custom
+{
+    background-color: #CD2129;
+    color:#ffffff;
+}
+
+.modal-content
+{
+    padding:10px;
+    margin-top: 10px;
+}
+
+.bar-footer-custom
+{
+    background-color: #CD2129;
 }

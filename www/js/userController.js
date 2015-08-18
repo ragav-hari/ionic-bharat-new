@@ -1,7 +1,7 @@
 (function(){
-    bharat.controller('userController', ['$q','$timeout','$scope','$cordovaCapture','$ionicModal','$cordovaEmailComposer','$cordovaCamera','$cordovaFile',userController]); 
+    bharat.controller('userController', ['$q','$timeout','$scope','$cordovaCapture','$ionicModal','$cordovaEmailComposer','$cordovaCamera','$cordovaFile','$window',userController]); 
     
-    function userController($q,$timeout,$scope,$cordovaCapture,$ionicModal,$cordovaEmailComposer,$cordovaCamera,$cordovaFile)
+    function userController($q,$timeout,$scope,$cordovaCapture,$ionicModal,$cordovaEmailComposer,$cordovaCamera,$cordovaFile,$window)
     {
         $scope.audio = [];
         $scope.image = [];
@@ -29,12 +29,11 @@
            var options = { limit: 1, duration: 10 };
 
             $cordovaCapture.captureAudio(options).then(function(audioData) {
-                alert(audioData);
                 $scope.audio.push(audioData[0].fullPath);
-                 //$scope.attachments.push(audioData[0].fullPath);
             }, function(err) {
               console.log("ERROR AUDIO");
             });
+            $scope.modal.hide();    
        }
     
        
@@ -96,11 +95,10 @@
 
             $cordovaCapture.captureImage(options).then(function(imageData) {    
               $scope.image.push(imageData[0].fullPath);
-             // $scope.attachments.push(""+imageData[0].replace('file://',''));
-              //  $scope.attachments.push(imageData[0].fullPath);
             }, function(err) {
               // An error occurred. Show a message to the user
             });
+           $scope.modal.hide();    
       }
       
      $scope.removeImage = function(index)
@@ -111,7 +109,6 @@
      $scope.removeAudio = function(index)
      {
           $scope.audio.splice(index,1);
-          
      }
      
      function deletefile(fileEntry)
@@ -132,17 +129,12 @@
 
      $scope.sendEmail = function()
      {
-         
-         
         $scope.attachments = $scope.image.concat($scope.audio);
         
-       
-         
-         alert("ATTACH"+$scope.attachments);
          
          $scope.messagebody = "Mobile :"+$scope.user.user_mobile+"<br/>"+"Comment :"+$scope.user.user_comment;
             var email = {
-            to: 'ragavitcian@gmail.com',
+            to: 'tacttechnologies18@gmail.com',
             subject: 'Bharat Purchase',
             body: $scope.messagebody,
             isHtml: true,
@@ -161,10 +153,10 @@
      }
      
      
-     $scope.openwebsite = function()
+     $window.openlink = function(url)
      {
-         alert("Opening");
-         window.open('http://www.bharathration.com/we_view/index.php','_system');
+         alert(url);
+         window.open(url,'_system');
      }
      
 
