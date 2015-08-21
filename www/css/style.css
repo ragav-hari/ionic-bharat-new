@@ -29,7 +29,8 @@
 
 .icon-spacing
 {
-    margin:0 10px
+    margin:0 10px;
+    font-size:16px;
 }
 
 .audio-file
@@ -102,13 +103,40 @@
     color:#ffffff;
 }
 
-.modal-content
+.process-content
 {
     padding:10px;
     margin-top: 10px;
+}
+
+
+.process-content button
+{
+    font-size: 15px; 
 }
 
 .bar-footer-custom
 {
     background-color: #CD2129;
 }
+
+.imagemodal
+{
+    width:100%;
+    background-color: transparent;
+}
+
+.zoomimage
+{
+    width:100%;
+    height:auto;
+}
+
+select
+{
+    margin-top:10px;
+    height:35px;
+    width:90%;
+    background-color: white;
+}
+

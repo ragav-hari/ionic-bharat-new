@@ -28,17 +28,23 @@ bharat.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
  
-  .state('bharat', {
-    url: '/bharat',
+  .state('front', {
+    url: '/front',
     templateUrl: 'view/front.html'
   })
 
-   .state('placeorder', {
-        url: '/placeorder',
+   .state('process', {
+        url: '/process',
+        templateUrl: 'view/process.html',
+        controller: 'userController'
+  })
+  
+   .state('bhart', {
+        url: '/bharat',
         templateUrl: 'view/bharat.html',
         controller: 'userController'
   })
  
-  $urlRouterProvider.otherwise('/bharat');
+  $urlRouterProvider.otherwise('/front');
 
 });
