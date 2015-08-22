@@ -5,37 +5,32 @@
           
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Name</span>
-                <input type="text" required  ng-model="user.user_name">
-            </label>
-           <label class="item item-input item-stacked-label">
+                <input type="text" required  ng-model="user.user_name" ng-change="onchagevalidation()">
                 <span class="input-label error_message">{{error_message1}}</span>
             </label>
+          
            <label class="item item-input item-stacked-label">
                 <span class="input-label">Mobile</span>
-                <input type="tel" required  ng-model="user.user_mobile">
-            </label>
-            <label class="item item-input item-stacked-label">
+                <input type="tel" required  ng-model="user.user_mobile" ng-change="onchagevalidation()">
                 <span class="input-label error_message">{{error_message2}}</span>
             </label>
-          
+           
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Account Type</span>
-                <p><select ng-model="user.user_type" ng-change="getusertype()">
+                <p><select ng-model="user.user_type" ng-change="getusertype()" ng-change="onchagevalidation()">
                     <option value="1" selected>Bharat Ration Direct Customer</option>
                     <option value="2">Bharat Ration Dealer/Corporate</option>
                 </select></p>
+                 <span class="input-label error_message">{{error_message3}}</span>
             </label>
-          <label class="item item-input item-stacked-label">
-                <span class="input-label error_message">{{error_message3}}</span>
-            </label>
+        
           
             <label class="item item-input item-stacked-label" ng-show="usertypedata == true">
                 <span class="input-label">Dealer Code</span>
-                <input type="text" required  ng-model="user.dealer_code">
-            </label>
-             <label class="item item-input item-stacked-label">
+                <input type="text" required  ng-model="user.dealer_code" ng-change="onchagevalidation()">
                 <span class="input-label error_message">{{error_message4}}</span>
             </label>
+            
            <label class="item item-input item-stacked-label">
                 <span class="input-label">Comments</span>
                 <input type="text" required  ng-model="user.user_comments">
@@ -43,7 +38,9 @@
            <label class="item item-input item-stacked-label">
                 <span class="input-label error_message">{{error_message}}</span>
             </label>
-          
+             <button class="btn-custom button-full button-small" ng-click="openAttachmentModal()">
+                    Attachments
+            </button>
             <div ng-show="image !== undefined">
                
                 <div class="row"  style="flex-wrap: wrap;">
@@ -77,13 +74,51 @@
          <br/>
           <br/>
           <br/>
+          
+          
+          
+          
+    <script id="attachment.html" type="text/ng-template">
+         <ion-modal-view>
+          <div class="modal imagemodal">
+            <ion-content class="modalclass">
+                
+                <div class="row">
+    <div class="col process-padding">
+        <div class="process-content">    
+            <button class="btn-custom button-full button-large" ng-show="hasimage == true" ng-click="selectimage()">
+                   <i class="ion-social-chrome icon-spacing customIcon"></i>Select image from gallery
+            </button>
+        </div>
+        <div class="process-content">        
+            <button class="btn-custom button-full button-large  modal-data" ng-show="hasimage == true" ng-click="captureImageModal()">
+                     <i class="ion-camera icon-spacing customIcon"></i>Take a snap of your order list
+            </button>
+        </div>
+         <div class="process-content">    
+            <button class="btn-custom button-full button-large  modal-data" ng-show="hasaudio == true" ng-click="captureAudioModal()">
+                     <i class="ion-mic-a icon-spacing customIcon"></i>Record your order list
+            </button>
+        </div>
+    </div>
+</div>   
+  
+            </ion-content> 
+             </div>
+        </ion-modal-view>
+          
+    </script>      
+          
+          
+          
+          
     
       
       <script id="my-modal.html" type="text/ng-template">
          
-          <div class="modal imagemodal">
+         <!-- <div class="modal imagemodal">
              
-         <!--   <ion-content class="modalclass">
+            <ion-content class="modalclass">
                 <div class="modal-outer">
               <div class="modal-content">    
                <button class="button btn-custom button-full button-large" ng-click="selectimage()">
@@ -113,7 +148,6 @@
                 </div>
               </ion-content>
                    </ion-modal-view>
-          </div>
           
      </script>
       </div>     

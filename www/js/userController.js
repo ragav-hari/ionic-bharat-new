@@ -10,6 +10,8 @@
         $scope.user  = {}; 
         $scope.attachments = [];
         $scope.user.user_type = 1;
+        $rootScope.hasaudio = false;
+        $rootScope.hasimage = false;
         
         $scope.usertypedata = false;
         
@@ -27,6 +29,20 @@
             $scope.modal.hide();
         };
         
+        $ionicModal.fromTemplateUrl('attachment.html', {
+            scope: $scope,
+            animation: 'slide-in-up',
+            backdropClickToClose: true
+        }).then(function(modal) {
+            $scope.attachmentmodal = modal;
+        });
+        $scope.openAttachmentModal = function() {
+            $scope.attachmentmodal.show();
+        };
+        $scope.closeAttachmentModal = function() {
+            $scope.attachmentmodal.hide();
+        };
+        
         
        $scope.captureAudio = function()
        {
@@ -34,11 +50,26 @@
 
             $cordovaCapture.captureAudio(options).then(function(audioData) {
                 $rootScope.audiodata.push(audioData[0].fullPath);
+                 $rootScope.hasaudio = true;
             }, function(err) {
               console.log("ERROR AUDIO");
             });
-            //$scope.modal.hide();    
+           // $scope.modal.hide();    
             $location.path('/bharat');
+       }
+       
+        $scope.captureAudioModal = function()
+       {
+           var options = { limit: 1, duration: 10 };
+
+            $cordovaCapture.captureAudio(options).then(function(audioData) {
+                $rootScope.audiodata.push(audioData[0].fullPath);
+                 $scope.attachmentmodal.hide();    
+            }, function(err) {
+               $scope.attachmentmodal.hide();    
+            });
+            $scope.attachmentmodal.hide();    
+           // $location.path('/bharat');
        }
     
        
@@ -66,7 +97,7 @@
           .then(function (success) {
                 console.log("Native URL: "+ success.toURL());
 
-          $scope.image.push(success.toURL());
+          $scope.imagedata.push(success.toURL());
             
           }, function (error) {
            console.log("FILE ERROR"+JSON.stringify(error));
@@ -80,11 +111,12 @@
                     }
                 }, function (error) {
                     console.log('Error: ' + error);
+                    $scope.attachmentmodal.hide();    
                 }
                
             );
-            // $scope.modal.hide();    
-           $location.path('/bharat');
+             $scope.attachmentmodal.hide();    
+           //$location.path('/bharat');
 	   };
         
         
@@ -101,7 +133,7 @@
 
             $cordovaCapture.captureImage(options).then(function(imageData) {    
               $rootScope.imagedata.push(imageData[0].fullPath);  
-                
+                 $rootScope.hasimage = true;
                 $location.path('/bharat');
                 
                 
@@ -112,8 +144,30 @@
                 $location.path('/process');
             
             });
-          // $scope.modal.hide();    
+           //$scope.modal.hide();    
           $location.path('/bharat');
+           
+      }
+      
+       $scope.captureImageModal = function() 
+      {
+            var options = { limit: 1 };
+
+            $cordovaCapture.captureImage(options).then(function(imageData) {    
+              $rootScope.imagedata.push(imageData[0].fullPath);  
+                
+               $scope.modal.hide();  
+                
+                
+                  //$scope.image.push(imageData[0].fullPath);
+            }, function(err) {
+              // An error occurred. Show a message to the user
+                
+                $scope.attachmentmodal.hide();   
+            
+            });
+           $scope.attachmentmodal.hide();    
+          //$location.path('/bharat');
            
       }
       
@@ -160,6 +214,53 @@
              $scope.zoomimage = url;
              $scope.modal.show();
          }
+     
+     $scope.onchagevalidation = function()
+     {
+          if($scope.user.user_name==null)
+        {
+             $scope.error_message1="please type your name";   
+            
+        }
+        else
+        {
+
+            $scope.error_message1=""; 
+        }
+        
+         if($scope.user.user_mobile==null)
+        {
+               $scope.error_message2="please type your mobile number"; 
+            
+        }
+         else
+        {
+
+            $scope.error_message2=" "; 
+        }
+       if($scope.user.user_type==null) 
+        {
+            
+           $scope.error_message3="please select user type"; 
+        }
+        else
+        {
+
+            $scope.error_message3=" "; 
+        }
+         if($scope.user.user_type == 2 && $scope.user.dealer_code==null)  
+        {
+            
+          $scope.error_message4="please enter dealer code"; 
+  
+        }
+         else
+        {
+
+            $scope.error_message4=" "; 
+        } 
+     }
+     
       $scope.validationChecking=function()
      {
        
@@ -171,7 +272,7 @@
         else
         {
 
-            $scope.error_message1=" "; 
+            $scope.error_message1=""; 
         }
         
          if($scope.user.user_mobile==null)
@@ -238,17 +339,25 @@
            $scope.user.user_type = "Bharat Ration Dealer/Corporate";           
         }
 
-         $scope.messagebodyuser = "Name :"+$scope.user.user_name+"<br/>"+"User Type :"+$scope.user.user_type+"<br/>";
+         $scope.messagebodyuser = "Name :"+$scope.user.user_name+"<br/>"+"Mobile:"+$scope.user.user_mobile+"<br/>"+"User Type :"+$scope.user.user_type+"<br/>";
          if($scope.user.user_type == "Bharat Ration Dealer/Corporate")   
          {
-                  $scope.messagebodydealer = "Dealer Code :"+$scope.user.dealer_code;
+                  $scope.messagebodydealer = "Dealer Code :"+$scope.user.dealer_code+"<br/>";
           }
          else
          {
                  $scope.messagebodydealer  = "";
           }
          
-         $scope.messagebody = $scope.messagebodyuser + $scope.messagebodydealer;
+         if(($scope.user.user_comments !== "") || ($scope.user.user_comments !== undefined))
+             {
+                 $scope.messagecomment = "Comment :"+$scope.user.user_comments;
+             }
+         else{
+             $scope.messagecomment = "";
+         }
+         
+         $scope.messagebody = $scope.messagebodyuser + $scope.messagebodydealer + $scope.messagecomment;
          
             var email = {
             to: 'tacttechnologies18@gmail.com',
