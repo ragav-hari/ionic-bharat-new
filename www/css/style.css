@@ -30,7 +30,7 @@
 .icon-spacing
 {
     margin:0 10px;
-    font-size:16px;
+    
 }
 
 .audio-file
@@ -102,7 +102,10 @@
     background-color: #CD2129;
     color:#ffffff;
 }
-
+.btn-custom:active
+{
+    
+}
 .process-content
 {
     padding:10px;
@@ -118,6 +121,8 @@
 .bar-footer-custom
 {
     background-color: #CD2129;
+    color: #ffffff;
+    font-size: 34px;
 }
 
 .imagemodal
@@ -139,4 +144,50 @@ select
     width:90%;
     background-color: white;
 }
+.header-custom
+{
+    min-height: 59px;
+    line-height: 53px;
+}
+.payment-time
+{
+ background-color: gainsboro;
 
+}
+a
+{
+text-decoration: none !important;
+    
+}
+
+.heading-bordertime
+{
+ border-bottom: 1px dotted black !important;
+width: 82% !important;   
+    
+}
+.heading-borderpay
+{
+border-bottom: 1px dotted black !important;
+width: 100% !important;
+    
+}
+.error_message
+{
+color:red;
+    
+}
+.image-close
+{
+text-align: center;
+
+}
+.process-padding
+{
+    
+ margin-top: 24% !important;   
+}
+.usergiude
+{
+    color: #ffffff !important;
+}

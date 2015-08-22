@@ -9,6 +9,7 @@
         $rootScope.audiodata = [];
         $scope.user  = {}; 
         $scope.attachments = [];
+        $scope.user.user_type = 1;
         
         $scope.usertypedata = false;
         
@@ -100,12 +101,20 @@
 
             $cordovaCapture.captureImage(options).then(function(imageData) {    
               $rootScope.imagedata.push(imageData[0].fullPath);  
+                
+                $location.path('/bharat');
+                
+                
                   //$scope.image.push(imageData[0].fullPath);
             }, function(err) {
               // An error occurred. Show a message to the user
+                
+                $location.path('/process');
+            
             });
           // $scope.modal.hide();    
-           $location.path('/bharat');
+          $location.path('/bharat');
+           
       }
       
      $scope.removeImage = function(index)
@@ -151,7 +160,70 @@
              $scope.zoomimage = url;
              $scope.modal.show();
          }
-     
+      $scope.validationChecking=function()
+     {
+       
+        if($scope.user.user_name==null)
+        {
+             $scope.error_message1="please type your name";   
+            
+        }
+        else
+        {
+
+            $scope.error_message1=" "; 
+        }
+        
+         if($scope.user.user_mobile==null)
+        {
+               $scope.error_message2="please type your mobile number"; 
+            
+        }
+         else
+        {
+
+            $scope.error_message2=" "; 
+        }
+       if($scope.user.user_type==null) 
+        {
+            
+           $scope.error_message3="please select user type"; 
+        }
+        else
+        {
+
+            $scope.error_message3=" "; 
+        }
+         if($scope.user.user_type == 2 && $scope.user.dealer_code==null)  
+        {
+            
+          $scope.error_message4="please enter dealer code"; 
+  
+        }
+         else
+        {
+
+            $scope.error_message4=" "; 
+        }
+        if(($scope.user.user_name!=null) && ($scope.user.user_mobile!=null))
+        {
+             if($scope.user.user_type == 2 && $scope.user.dealer_code==null) 
+             {
+                 
+                 
+             }
+            else
+           {
+              
+            $scope.sendEmail(); 
+           }
+            
+        }
+        
+       
+        
+     }
+    
      $scope.sendEmail = function()
      {
         $scope.attachments = $rootScope.imagedata.concat($rootScope.audiodata);
@@ -166,11 +238,6 @@
            $scope.user.user_type = "Bharat Ration Dealer/Corporate";           
         }
 
-          
-        
-         
-              
-         
          $scope.messagebodyuser = "Name :"+$scope.user.user_name+"<br/>"+"User Type :"+$scope.user.user_type+"<br/>";
          if($scope.user.user_type == "Bharat Ration Dealer/Corporate")   
          {

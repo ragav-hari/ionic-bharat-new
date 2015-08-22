@@ -38,7 +38,11 @@ bharat.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: 'view/process.html',
         controller: 'userController'
   })
-  
+  .state('userguide', {
+        url: '/userguide',
+        templateUrl: 'view/userguide.html',
+        controller: 'userController'
+  })
    .state('bhart', {
         url: '/bharat',
         templateUrl: 'view/bharat.html',

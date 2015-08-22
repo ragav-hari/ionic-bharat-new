@@ -7,26 +7,50 @@
                 <span class="input-label">Name</span>
                 <input type="text" required  ng-model="user.user_name">
             </label>
+           <label class="item item-input item-stacked-label">
+                <span class="input-label error_message">{{error_message1}}</span>
+            </label>
+           <label class="item item-input item-stacked-label">
+                <span class="input-label">Mobile</span>
+                <input type="tel" required  ng-model="user.user_mobile">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label error_message">{{error_message2}}</span>
+            </label>
           
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Account Type</span>
                 <p><select ng-model="user.user_type" ng-change="getusertype()">
-                    <option value="1">Bharat Ration Direct Customer</option>
+                    <option value="1" selected>Bharat Ration Direct Customer</option>
                     <option value="2">Bharat Ration Dealer/Corporate</option>
                 </select></p>
+            </label>
+          <label class="item item-input item-stacked-label">
+                <span class="input-label error_message">{{error_message3}}</span>
             </label>
           
             <label class="item item-input item-stacked-label" ng-show="usertypedata == true">
                 <span class="input-label">Dealer Code</span>
                 <input type="text" required  ng-model="user.dealer_code">
             </label>
+             <label class="item item-input item-stacked-label">
+                <span class="input-label error_message">{{error_message4}}</span>
+            </label>
+           <label class="item item-input item-stacked-label">
+                <span class="input-label">Comments</span>
+                <input type="text" required  ng-model="user.user_comments">
+            </label>
+           <label class="item item-input item-stacked-label">
+                <span class="input-label error_message">{{error_message}}</span>
+            </label>
           
             <div ng-show="image !== undefined">
                
                 <div class="row"  style="flex-wrap: wrap;">
                     <div class="col col-33" ng-repeat="imageuri in imagedata">
-                         <img style="width:50px;height:50px" ng-show="image !== undefined" ng-click="zoom('{{imageuri}}')" ng-src="{{imageuri}}">
-                         <button class="button btn-custom button-small" ng-click="removeImage($index)">Remove</button>
+                         <img style="width:100%;height:100px" ng-show="image !== undefined" ng-click="zoom('{{imageuri}}')" ng-src="{{imageuri}}">
+                      <p class="image-close">  <i class="ion-close-circled customIcon " ng-click="removeImage($index)"> </i></p>
+                        <!-- <button class="button btn-custom button-small" >Remove</button> !-->
                     </div>  
                 </div>    
           </div>
@@ -46,7 +70,7 @@
                 </div>    
           </div>
           
-          <button class="button btn-custom button-full button-large" ng-click="sendEmail()">
+          <button class="btn-custom button-full button-large" ng-click="validationChecking()">
                     Submit
             </button>
           
@@ -92,6 +116,6 @@
           </div>
           
      </script>
-          
+      </div>     
   </ion-content>
 </ion-view>  
