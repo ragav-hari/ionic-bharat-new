@@ -45,27 +45,27 @@
                
                 <div class="row"  style="flex-wrap: wrap;">
                     <div class="col col-33" ng-repeat="imageuri in imagedata">
-                         <img style="width:100%;height:100px" ng-show="image !== undefined" ng-click="zoom('{{imageuri}}')" ng-src="{{imageuri}}">
+                         <img style="width:100%;height:100px" ng-show="imageuri !== undefined" ng-click="zoom('{{imageuri}}')" ng-src="{{imageuri}}">
                       <p class="image-close">  <i class="ion-close-circled customIcon " ng-click="removeImage($index)"> </i></p>
                         <!-- <button class="button btn-custom button-small" >Remove</button> !-->
                     </div>  
                 </div>    
           </div>
           
-          <div ng-show="audio !== undefined">
+       
               
                  <div class="row"  style="flex-wrap: wrap;">
                     <ul class="list">
                             <li ng-repeat="aud in audiodata">
                                 <div class="row audio-data">
                             <div class="col col-10"><i class="ion-mic-a customIcon"></i></div>
-                            <div class="col col-80 audio-file">{{aud.substring(aud.lastIndexOf('/')+1)}}</div>
+                            <div class="col col-80 audio-file">{{aud.fullPath.substring(aud.fullPath.lastIndexOf('/')+1)}}</div>
                             <div class="col col-10"><i class="ion-ios-close customIcon" ng-click="removeAudio($index)"></i></div>
                                 </div>    
                             </li>
                     </ul>
                 </div>    
-          </div>
+      
           
           <button class="btn-custom button-full button-large" ng-click="validationChecking()">
                     Submit
