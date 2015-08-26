@@ -1,7 +1,8 @@
 (function(){
-    bharat.controller('userController', ['$q','$timeout','$scope','$cordovaCapture','$ionicModal','$cordovaEmailComposer','$cordovaCamera','$cordovaFile','$window','$location','$rootScope',userController]); 
+    bharat.controller('userController', ['$q','$timeout','$scope','$cordovaCapture','$ionicModal','$cordovaEmailComposer','$cordovaCamera','$cordovaFile','$window','$location','$rootScope','$cordovaNativeAudio','$cordovaMedia',userController]); 
     
-    function userController($q,$timeout,$scope,$cordovaCapture,$ionicModal,$cordovaEmailComposer,$cordovaCamera,$cordovaFile,$window,$location,$rootScope)
+    function userController($q,$timeout,$scope,$cordovaCapture,$ionicModal,$cordovaEmailComposer,$cordovaCamera,$cordovaFile,
+                             $window,$location,$rootScope,$cordovaNativeAudio,$cordovaMedia)
     {
         $scope.audio = [];
         $scope.image = [];
@@ -44,7 +45,7 @@
             $scope.attachmentmodal.hide();
         };
         
-        
+      
        $scope.captureAudio = function()
        {
            var options = { limit: 1, duration: 10 };
@@ -52,6 +53,7 @@
             $cordovaCapture.captureAudio(options).then(function(audioData) {
                // alert("FILE SIZE"+getfileSize(audioData[0].fullPath));
                //  alert("FILE SIZE"+JSON.stringify(audioData.size));
+                alert("AUDIODATA"+JSON.stringify(audioData));
                 $rootScope.size += audioData[0].size;
                 if($rootScope.size >= 10000000)
                 {
@@ -126,11 +128,14 @@
           $cordovaFile.moveFile(cordova.file.cacheDirectory,filename, "file:///storage/emulated/0/Pictures")
           .then(function (success) {
                 console.log("Native URL: "+ success.toURL());
-
-          $scope.imagedata.push(success.toURL());
+           $scope.tempsizeimage = getfileSize(success.toURL());
+               
+              alert("TEMPSIZE"+$scope.tempsizeimage);
+            $rootScope.size += $scope.tempsizeimage;  
+          $rootScope.imagedata.push(success.toURL());
             
           }, function (error) {
-           console.log("FILE ERROR"+JSON.stringify(error));
+           alert("Please attach Valid File");
           });
                         
                         
@@ -155,10 +160,9 @@
         window.resolveLocalFileSystemURI(Uri, function(fileEntry) {
             fileEntry.file(function(fileObj) {
                 size =  fileObj.size;
+                return size;
             });
-        });
-           return size;
-           alert("SIZE"+size);
+        });  
     }
         
      $scope.createdirectory = function()
@@ -166,17 +170,66 @@
          // checkIfFileExists("file:///storage/emulated/0/Pictures");
      }
         
+     $scope.audoicClick=function(uri)
+     {
+         
+         alert("HELLO");
+         var temp = 'audio/aud1.mp3';
+           var src =uri.localURL;
+        // var src=src1.toString();
+       //  alert("TEMP"+temp);
+         alert("uri is"+uri);
+         alert("LOCAL"+src);
+  //var media = $cordovaMedia.newMedia(src);
+         
+         var my_media = new Media(src,
+        // success callback
+        function () {
+            alert("playAudio():Audio Success");
+        },
+        // error callback
+        function (err) {
+            alert("playAudio():Audio Error: " +JSON.stringify(err));
+        }
+    );
+    // Play audio
+         
+          my_media.setVolume('1.0');
+    my_media.play();
+         
+         
+         
+         
+         
+    
+
+        
+
+     }
       $scope.captureImage = function() 
       {
             var options = { limit: 1 };
 
             $cordovaCapture.captureImage(options).then(function(imageData) {  
-               // alert("IMGDATA"+JSON.stringify(imageData))
-              $rootScope.imagedata.push(imageData[0].fullPath);  
-              //   $rootScope.hasimage = true;
+                  $rootScope.size += imageData[0].size;
+                if($rootScope.size >= 10000000)
+                {
+                    alert("Size Exceeds the Max Limit");    
+                    $location.path('/bharat');
+                }
+                else
+                {
+                    alert("TOTAL SIZE"+$rootScope.size);
+                     $rootScope.imagedata.push(imageData[0].fullPath);  
+                     $rootScope.hasimage = true;
+                     $location.path('/bharat');
+                } 
+                
+               
+            
                   //$scope.image.push(imageData[0].fullPath);
                // $scope.openCamera($scope.image);
-                 $location.path('/bharat');
+                
             }, function(err) {
               // An error occurred. Show a message to the user
                 
@@ -184,7 +237,7 @@
             
             });
            //$scope.modal.hide();    
-         
+          $location.path('/bharat');
            
       }
       
@@ -230,7 +283,8 @@
      $scope.removeImage = function(index)
      {
           $scope.tempsize = $rootScope.size;
-          $rootScope.size -= $rootScope.imagedata[index].size;
+          $rootScope.size -= getfileSize($rootScope.imagedata[index]);
+          alert("IMGREMOVE"+$rootScope.size+"ORIGINAL"+$scope.tempsize);
           $rootScope.imagedata.splice(index,1);
      }
      

@@ -1,6 +1,6 @@
 var bharat = angular.module('bharat', ['ionic','ngCordova']);
 
-bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture) {
+bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
