@@ -171,6 +171,7 @@
             
             var media_playing = "";
             var media_toplay = "";
+         
        
             if($rootScope.audiourl == "")
             {
@@ -188,6 +189,14 @@
             }
         }
 
+        $scope.removePlayAudio = function(url)
+        {
+            if($rootScope.audiourl.src === url.localURL)
+            {
+                $scope.audiostop($rootScope.audiourl);        
+            }
+        }
+        
         $scope.audioplay = function(media,uri){
             media.play();
         }
@@ -284,6 +293,8 @@
 
         $scope.removeAudio = function(index) {
             $scope.tempsize = $rootScope.size;
+            $scope.removePlayAudio($rootScope.audiodata[index]);
+          //  alert(JSON.stringify($rootScope.audiodata[index]));
             $rootScope.size -= $rootScope.audiodata[index].size;
             $rootScope.audiodata.splice(index, 1);
         }
