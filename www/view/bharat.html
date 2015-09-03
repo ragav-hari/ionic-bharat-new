@@ -58,8 +58,9 @@
                     <ul class="list">
                             <li ng-repeat="aud in audiodata">
                                 <div class="row audio-data">
-                            <div class="col col-10"><i class="ion-mic-a customIcon"></i></div>
-                            <div class="col col-80 audio-file" ng-click="audioClick(aud)">{{aud.fullPath.substring(aud.fullPath.lastIndexOf('/')+1)}}</div>
+                            <div class="col col-10"><i class="ion-mic-a customIcon" id="{{$index}}"></i>
+                            </div>
+                            <div class="col col-80 audio-file" ng-click="audioClick(aud,$index)">{{aud.fullPath.substring(aud.fullPath.lastIndexOf('/')+1)}}</div>
                             <div class="col col-10"><i class="ion-ios-close customIcon" ng-click="removeAudio($index)"></i></div>
                                 </div>    
                             </li>
