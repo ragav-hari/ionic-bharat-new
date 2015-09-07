@@ -1,8 +1,8 @@
 (function() {
-    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio', '$cordovaMedia', userController]);
+    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio', '$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer',userController]);
 
     function userController($q, $timeout, $scope, $cordovaCapture, $ionicModal, $cordovaEmailComposer, $cordovaCamera, $cordovaFile,
-        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia) {
+        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer) {
         $scope.audio = [];
         $scope.image = [];
         $rootScope.imagedata = [];
@@ -139,7 +139,39 @@
             
         }
         
+        $scope.uploadfile = function()
+        {
+            var filePath = $rootScope.imagedata[0];
+            alert("FILE"+filePath);
+             $cordovaFileTransfer.upload('192.168.1.2/br/fileupload.php', filePath, options)
+                  .then(function(result) {
+                    alert("RES"+JSON.stringify(result));
+                  }, function(err) {
+                    alert("ERR"+JSON.stringify(err));
+                  }, function (progress) {
+                    //alert(JSON.stringify(result));
+                  });
+
+            
+        }
         
+        $scope.selectimage1 = function() {
+            var options = {
+                   maximumImagesCount: 10,
+                   width: 800,
+                   height: 800,
+                   quality: 80
+                  };
+            $cordovaImagePicker.getPictures(options)
+            .then(function (results) {
+              for (var i = 0; i < results.length; i++) {
+                 $rootScope.imagedata.push(results[i]);
+              }
+            }, function(error) {
+              alert(JSON.stringify(error));
+            });
+            $scope.attachmentmodal.hide();
+        }
 
         $scope.selectimage = function() {
 
@@ -151,6 +183,7 @@
             window.imagePicker.getPictures(
                 function(results) {
                     for (var i = 0; i < results.length; i++) {
+                        alert(JSON.stringify(results));
                   
                         var filename = results[i].substring(results[i].lastIndexOf('/') + 1);
 
