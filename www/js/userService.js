@@ -67,7 +67,7 @@
          function  setPassword(datas)
         {  
            
-            alert("CALLING"+JSON.stringify(datas));
+            alert("tttttttttttttttt"+JSON.stringify(datas));
             
               return $http({
                 method : 'POST',

@@ -1,8 +1,8 @@
 (function() {
-    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','userService',userController]);
+    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService',userController]);
 
     function userController($q, $timeout, $scope, $cordovaCapture, $ionicModal, $cordovaEmailComposer, $cordovaCamera, $cordovaFile,
-        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,userService) {
+        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService) {
         $scope.audio = [];
         $scope.image = [];
         $rootScope.imagedata = [];
@@ -560,9 +560,10 @@
         $scope.validateMobile=function()
         {
             console.log("the mobile number is"+$scope.user.user_mobileno);
-                   $rootScope.mobileno=$scope.user.user_mobileno;
-                    console.log("rootscope number");
-                    console.log($rootScope.mobileno);
+                 //  $rootScope.mobileno=$scope.user.user_mobileno;
+                 //   console.log("rootscope number");
+                 //   console.log($rootScope.mobileno);
+            window.localStorage.setItem("mobile",$scope.user.user_mobileno);
             if($scope.user.user_mobileno==undefined)
                 {
                     
@@ -597,7 +598,6 @@
          }
           $scope.validateOtp=function()
          { 
-              alert("OTP"+$rootScope.mobileno);
                 $scope.ermessage=" ";
                if($scope.user.user_otp==undefined)
                    {
@@ -606,8 +606,8 @@
                   else
                   {
                       console.log("otp is"+$scope.user.user_otp);
-                      console.log("the mobile isssss"+$rootScope.mobileno);
-                      var data={"user_otp":$scope.user.user_otp,"user_mobileno":$rootScope.mobileno}
+                     var mobile=window.localStorage.getItem("mobile");
+                      var data={"user_otp":$scope.user.user_otp,"user_mobileno":mobile}
                       $scope.ermessage=" ";
                       
                        userService.verifyOtp(data).then(validateOtpres);
@@ -635,7 +635,8 @@
              
              console.log("Pass"+$scope.user.user_password);
              console.log("CPass"+$scope.user.user_cpassword); 
-             console.log("mobile"+$rootScope.mobileno);
+              var mobile=window.localStorage.getItem("mobile");
+              console.log("mob"+mobile);
               
               if($scope.user.user_password ==null)
                   {
@@ -647,7 +648,7 @@
                  }
               else
                 {
-                   var data={"user_password":$scope.user.user_password,"user_mobileno":$rootScope.mobileno}
+                   var data={"user_password":$scope.user.user_password,"user_mobileno":mobile}
                    $scope.ermessage=" ";
                     userService.setPassword(data).then(setPasswordResp)
                     function setPasswordResp(responsedata)
