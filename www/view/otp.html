@@ -1,0 +1,31 @@
+<ion-view view-title="Signin" ng-controller="userController">  
+  <ion-content scroll="true">
+     
+<div class="list">
+  <label class="item item-input" ng-hide="hideOTP==true">
+    <input type="number" placeholder="Enter OTP" ng-model="user.user_otp"  ng-minlength="5" ng-maxlength="5"
+           ng-change="validateOtp()">
+  </label>
+    
+    
+    
+    
+  
+    <div ng-show="showDiv==true">
+      <label class="item item-input">
+      <input type="password" placeholder="Enter Password" ng-model="user.user_password">
+     </label>
+     <label class="item item-input">
+      <input type="password" placeholder="Re enter Password" ng-model="user.user_cpassword">
+     </label>
+         <button ng-click="setPassword()" class="button button-full button-positive">Submit</button>
+
+    </div>
+      <div> 
+      {{ermessage}}
+    </div>
+</div>
+             
+
+  </ion-content>
+</ion-view>

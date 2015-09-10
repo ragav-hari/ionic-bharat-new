@@ -1,8 +1,8 @@
 (function() {
-    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio', '$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer',userController]);
+    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','userService',userController]);
 
     function userController($q, $timeout, $scope, $cordovaCapture, $ionicModal, $cordovaEmailComposer, $cordovaCamera, $cordovaFile,
-        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer) {
+        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,userService) {
         $scope.audio = [];
         $scope.image = [];
         $rootScope.imagedata = [];
@@ -19,8 +19,9 @@
         $scope.hidemikeIcon = [];
         $scope.usertypedata = false;
         $scope.audioicon = "ion-play customIcon";
-  
-        
+        $rootScope.mobileno= "";
+        $scope.showDiv=false;
+        $scope.hideOTP=false;
         $ionicModal.fromTemplateUrl('my-modal.html', {
             scope: $scope,
             animation: 'slide-in-up',
@@ -555,8 +556,111 @@
             alert(url);
             window.open(url, '_system');
         }
+        
+        $scope.validateMobile=function()
+        {
+            console.log("the mobile number is"+$scope.user.user_mobileno);
+                   $rootScope.mobileno=$scope.user.user_mobileno;
+                    console.log("rootscope number");
+                    console.log($rootScope.mobileno);
+            if($scope.user.user_mobileno==undefined)
+                {
+                    
+                    $scope.ermessage="Enter 10 digit mobile number";
+                }
+            else
+                {
+             
+                    userService.sendMobilenumber($scope.user).then(sendMobilenumberres);
+                    function sendMobilenumberres(responsedata)
+                    {
+                        
+                        console.log("DAT"+responsedata.status);
+                        if(responsedata.status=="Success")
+                            {
+                               
+                                $location.path('/otp');
+                            }
+                        else
+                            {
+                                
+                            }
+                    }
+                    
+                }
+           
+        }
+         $scope.signin=function()
+         { 
+           console.log("hi"+$scope.user.num);
+           console.log("hi2"+$scope.user.pass);
+         }
+          $scope.validateOtp=function()
+         { 
+              alert("OTP"+$rootScope.mobileno);
+                $scope.ermessage=" ";
+               if($scope.user.user_otp==undefined)
+                   {
+                          $scope.ermessage="Enter Valid OTP";
+                   }
+                  else
+                  {
+                      console.log("otp is"+$scope.user.user_otp);
+                      console.log("the mobile isssss"+$rootScope.mobileno);
+                      var data={"user_otp":$scope.user.user_otp,"user_mobileno":$rootScope.mobileno}
+                      $scope.ermessage=" ";
+                      
+                       userService.verifyOtp(data).then(validateOtpres);
+                    function validateOtpres(responsedata)
+                    {
+                      
+                        console.log("DAT success in controller"+responsedata.status);
+                        if(responsedata.status=="Success")
+                            {
+                               
+                            $scope.showDiv=true;
+                            $scope.hideOTP=true;
+                            }
+                        else
+                            {
+                                
+                            }
+                    }
+                    
+                  }
+            
+         }
+          $scope.setPassword=function()
+          {  
+             
+             console.log("Pass"+$scope.user.user_password);
+             console.log("CPass"+$scope.user.user_cpassword); 
+             console.log("mobile"+$rootScope.mobileno);
+              
+              if($scope.user.user_password ==null)
+                  {
+                      $scope.ermessage="Please Enter Password";
+                  }
+              else if($scope.user.user_password!=$scope.user.user_cpassword)
+                {
+                      $scope.ermessage="Password Does not Match ";
+                 }
+              else
+                {
+                   var data={"user_password":$scope.user.user_password,"user_mobileno":$rootScope.mobileno}
+                   $scope.ermessage=" ";
+                    userService.setPassword(data).then(setPasswordResp)
+                    function setPasswordResp(responsedata)
+                    {
+                      
+                        console.log("DAT success in controller PAAS"+responsedata);
+                      
+                    }
 
-
+                }
+             
+          }
+        
     }
 
 }());

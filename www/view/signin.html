@@ -1,0 +1,21 @@
+<ion-view view-title="Signin" ng-controller="userController">  
+  <ion-content scroll="true">
+     
+<div class="list">
+  <label class="item item-input">
+    <input type="number" placeholder="Enter Mobile Number" ng-model="user.num">
+  </label>
+  <label class="item item-input">
+    <input type="password" placeholder="Enter Password" ng-model="user.pass">
+  </label>
+ 
+    <button ng-click="signin()" class="button button-full button-positive">Submit</button>
+
+    <div>
+      {{ermessage}}
+    </div>
+</div>
+             
+
+  </ion-content>
+</ion-view>

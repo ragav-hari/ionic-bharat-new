@@ -1,0 +1,17 @@
+<ion-view view-title="Profile" ng-controller="userController">  
+  <ion-content scroll="true">
+     
+<div class="list">
+  <label class="item item-input">
+    <input type="number" placeholder="Enter OTP" ng-model="user.user_otp"  ng-minlength="5" ng-maxlength="5"
+           ng-change="validateOtp()">
+  </label>
+    
+    <div>
+      {{ermessage}}
+    </div>
+</div>
+             
+
+  </ion-content>
+</ion-view>

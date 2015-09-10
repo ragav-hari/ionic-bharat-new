@@ -1,4 +1,19 @@
 {
   "name": "master",
-  "app_id": ""
+  "app_id": "",
+  "proxies": [
+    {
+      "path": "/addphonenumber",
+      "proxyUrl": "http://www.cloudservices.ashinetech.com/Bharat/service/addPhoneNumber.php"
+    },
+    {
+      "path": "/verifyotp",
+      "proxyUrl": "http://www.cloudservices.ashinetech.com/Bharat/service/verifyOTP.php"
+    },
+    {
+      "path": "/addpassword",
+      "proxyUrl": "http://www.cloudservices.ashinetech.com/Bharat/service/addPassword.php"
+    }
+    
+]
 }

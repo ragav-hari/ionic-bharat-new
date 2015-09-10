@@ -26,8 +26,12 @@ bharat.config(function($stateProvider, $urlRouterProvider) {
 
   
   $stateProvider
-
- 
+  
+  .state('landing', {
+        url: '/landing',
+        templateUrl: 'view/landingpage.html',
+        controller: 'userController'
+  })
   .state('front', {
     url: '/front',
     templateUrl: 'view/front.html'
@@ -48,7 +52,28 @@ bharat.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: 'view/bharat.html',
         controller: 'userController'
   })
+  .state('mobile', {
+        url: '/mobile',
+        templateUrl: 'view/mobile.html',
+        controller: 'userController'
+  })
+   
+   .state('signin', {
+        url: '/signin',
+        templateUrl: 'view/signin.html',
+        controller: 'userController'
+  })
+  .state('otp', {
+        url: '/otp',
+        templateUrl: 'view/otp.html',
+        controller: 'userController'
+  })
+   .state('profile', {
+        url: '/profile',
+        templateUrl: 'view/userprofile.html',
+        controller: 'userController'
+  })
  
-  $urlRouterProvider.otherwise('/front');
+  $urlRouterProvider.otherwise('/landing');
 
 });
