@@ -10,6 +10,7 @@
           setPassword : setPassword,
           sendProfileData : sendProfileData,
           preloadData : preloadData,
+          fileUpload :  fileUpload,
  
         };
         
@@ -121,11 +122,8 @@
         
         
         
-          function   preloadData()
-        {  
-           
-           
-            
+        function   preloadData()
+        {              
               return $http({
                 method : 'GET',
                 url    : 'preloaddata'
@@ -144,6 +142,33 @@
             console.log("ERROR IN PASSS Service"+JSON.stringify(err));
        
         }
+        
+          function   fileUpload(datas)
+        {  
+           
+            console.log("FFFF"+JSON.stringify(datas));
+            
+              return $http({
+                method : 'POST',
+                data:datas,
+                url    : 'updateprofile'
+              })
+              .then(fileUploadResponse)
+              .catch(fileUploadError);
+            
+        }
+        function  fileUploadResponse(response)
+        {
+          console.log("Pass INSERT SUCCESS"+JSON.stringify(response));
+             return response.data;
+        }
+        function   fileUploadResponse(err)
+        {
+            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
+       
+    
+        }
+        
         
         
     }

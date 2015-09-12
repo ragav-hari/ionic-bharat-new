@@ -143,13 +143,28 @@
         $scope.uploadfile = function()
         {
             var filePath = $rootScope.imagedata[0];
+            var trustAllHosts=true;
+            var options = {};
+           
             alert("FILE"+filePath);
-             $cordovaFileTransfer.upload('192.168.1.2/br/fileupload.php', filePath, options)
+             $cordovaFileTransfer.upload('fileupload',filePath, options,trustAllHosts)
                   .then(function(result) {
+                    console.log("success");
+                    alert("sssssss");
                     alert("RES"+JSON.stringify(result));
                   }, function(err) {
+                 console.log("Error");
+                    alert("fffff");
                     alert("ERR"+JSON.stringify(err));
+                   
                   }, function (progress) {
+                 console.log("progress");
+                 alert("proeeeeeeeeeeeeeeg");
+                 $timeout(function () {
+                     alert("prog");
+          $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+        })
+                 
                     //alert(JSON.stringify(result));
                   });
 
