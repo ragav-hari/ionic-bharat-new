@@ -653,15 +653,136 @@
                     userService.setPassword(data).then(setPasswordResp)
                     function setPasswordResp(responsedata)
                     {
-                      
-                        console.log("DAT success in controller PAAS"+responsedata);
+                       if(responsedata.status=="Success")
+                            {
+                            
+                              
+                                $location.path('/profile');
+                            }
+                        else
+                            {
+                                
+                            }
+                        
                       
                     }
 
                 }
              
           }
+          lodaData();
+          function lodaData()
+          {    
+               $scope.user.user_mobileno=window.localStorage.getItem("mobile");
+               userService.preloadData().then(preloadResponse);
+              function preloadResponse(response)
+              {
+                  
+                //  console.log("country"+response.country_name);
+                //  console.log("country id"+response.country_id);
+                 $scope.user.country_id=response.country_id;
+                 $scope.user.country_name=response.country_name;
+                  $scope.user.state_id=response.states[0].state_id;
+                  $scope.user.state_name=response.states[0].state_name;
+                  console.log("city is "+response.states[0].city);
+                  $scope.citylist=response.states[0].city;
+            
+              }
+              
+          }
+         
+         
+          $scope.updateProfile=function()
+          {
+               alert("inside update pro");
+              if($scope.user.user_first_name==undefined)
+                   {
+                          $scope.ermessage="First Name Required ";
+                   }
+                  else 
+                  {
+                       $scope.ermessage=" ";
+                  }
+              if($scope.user.user_mobileno==undefined)
+                   {
+                          $scope.ermessage="Mobile Number Required ";
+                   }
+                  else 
+                  {
+                       $scope.ermessage=" ";
+                  }
+               if($scope.user.user_email==undefined)
+                   {
+                          $scope.ermessage="Email Required ";
+                   }
+                  else 
+                  {
+                       $scope.ermessage=" ";
+                  }
+               if($scope.user.user_address1==undefined)
+                   {
+                          $scope.ermessage="Address1 Required ";
+                   }
+                  else 
+                  {
+                       $scope.ermessage=" ";
+                  }
+               if($scope.user.user_address2==undefined)
+                   {
+                          $scope.ermessage="Address2 Required ";
+                   }
+                  else 
+                  {
+                       $scope.ermessage=" ";
+                  }
+               if($scope.user.user_pincode==undefined)
+                   {
+                          $scope.ermessage="Pincode Required ";
+                   }
+                  else 
+                  {
+                       $scope.ermessage=" ";
+                  }
+               if($scope.user.user_landmark==undefined)
+                   {
+                          $scope.ermessage="Landmark Required ";
+                   }
+                  else 
+                  {
+                       $scope.ermessage=" ";
+                  }
+          
+              
+              
+              if(($scope.user.user_first_name != null)&&($scope.user.user_mobileno != null)&&($scope.user.user_email != null)&&($scope.user.user_address1 != null)&&($scope.user.user_address2 != null)&&
+                 ($scope.user.user_pincode != null)&&($scope.user.user_landmark != null))
+                  {
+                         
+                         $scope.sendData();
+                    
+                  }
+              
+          }
+          $scope.sendData=function()
+          {  
+         
+           var data={"user_first_name":$scope.user.user_first_name,"user_mobileno":$scope.user.user_mobileno
+                    ,"user_email":$scope.user.user_email,"user_address1":$scope.user.user_address1,"user_address2":$scope.user.user_address2,"user_country":$scope.user.country_id,"user_state":$scope.user.state_id,"user_city":$scope.user.city.city_id,
+                    "user_pincode":$scope.user.user_pincode,"user_landmark":$scope.user.user_landmark}
+           console.log("user data"+data);
+            alert("user data"+data);
+           userService.sendProfileData(data).then(sendDataResponse);
+              
+              function sendDataResponse(response)
+              {
+                  
+                  console.log("RES"+JSON.stringify(response));
+              }
+              
+              
+          }
         
     }
+    
 
 }());

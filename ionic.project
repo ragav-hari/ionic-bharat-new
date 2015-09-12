@@ -13,7 +13,16 @@
     {
       "path": "/addpassword",
       "proxyUrl": "http://www.cloudservices.ashinetech.com/Bharat/service/addPassword.php"
+    },
+     {
+      "path": "/updateprofile",
+      "proxyUrl": "http://www.cloudservices.ashinetech.com/Bharat/service/addUserDetails.php"
+    },
+    {
+      "path": "/preloaddata",
+      "proxyUrl": "http://www.cloudservices.ashinetech.com/Bharat/service/getpreloaddata.php"
     }
+    
     
 ]
 }

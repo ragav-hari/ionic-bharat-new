@@ -8,7 +8,9 @@
           sendMobilenumber : sendMobilenumber,
           verifyOtp :  verifyOtp,
           setPassword : setPassword,
-
+          sendProfileData : sendProfileData,
+          preloadData : preloadData,
+ 
         };
         
          function  sendMobilenumber(datas)
@@ -89,6 +91,60 @@
        
     
         }
+        
+         
+         function   sendProfileData(datas)
+        {  
+           
+            console.log("tttttttttttttttt"+JSON.stringify(datas));
+            
+              return $http({
+                method : 'POST',
+                data:datas,
+                url    : 'updateprofile'
+              })
+              .then(sendProfileDataResponse)
+              .catch(sendProfileDataError);
+            
+        }
+        function   sendProfileDataResponse(response)
+        {
+          console.log("Pass INSERT SUCCESS"+JSON.stringify(response));
+             return response.data;
+        }
+        function   sendProfileDataError(err)
+        {
+            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
+       
+    
+        }
+        
+        
+        
+          function   preloadData()
+        {  
+           
+           
+            
+              return $http({
+                method : 'GET',
+                url    : 'preloaddata'
+              })
+              .then(preloadDataResponse)
+              .catch(preloadDataError);
+            
+        }
+        function   preloadDataResponse(response)
+        {
+        
+             return response.data;
+        }
+        function   preloadDataError(err)
+        {
+            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
+       
+        }
+        
         
     }
 	
