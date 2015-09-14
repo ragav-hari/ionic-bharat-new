@@ -99,7 +99,7 @@
 
 .btn-custom
 {
-    background-color: #CD2129;
+    background-color: #00BFF5;
     color:#ffffff;
 }
 .btn-custom:active
@@ -153,6 +153,11 @@ select
 {
  background-color: gainsboro;
 
+}
+
+.userguide-div
+{
+    background-color: #00BFF5;
 }
 a
 {

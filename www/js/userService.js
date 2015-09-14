@@ -11,7 +11,7 @@
           sendProfileData : sendProfileData,
           preloadData : preloadData,
           fileUpload :  fileUpload,
- 
+          getUserPrefilledData:getUserPrefilledData
         };
         
          function  sendMobilenumber(datas)
@@ -22,7 +22,7 @@
               return $http({
                 method : 'POST',
                 data:datas,
-                url    : 'addphonenumber'
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/addPhoneNumber.php'
               })
               .then(sendMobilenumberResponse)
               .catch(sendMobilenumberError);
@@ -31,12 +31,12 @@
         
         function sendMobilenumberResponse(mobileresponse)
         {
-          alert("SUCCESS",JSON.stringify(mobileresponse));
+         // alert("SUCCESS",JSON.stringify(mobileresponse));
              return mobileresponse.data;
         }
         function sendMobilenumberError(err)
         {
-            alert("ERROR"+JSON.stringify(err));
+          //  alert("ERROR RESPONSE"+JSON.stringify(err));
        
         }
         
@@ -44,12 +44,12 @@
          function  verifyOtp(datas)
         {  
            
-            alert("CALLING"+JSON.stringify(datas));
+           // alert("CALLING"+JSON.stringify(datas));
             
               return $http({
                 method : 'POST',
                 data:datas,
-                url    : 'verifyotp'
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/verifyOTP.php'
               })
               .then(verifyOtpResponse)
               .catch(verifyOtpError);
@@ -57,12 +57,12 @@
         }
         function  verifyOtpResponse(otpresponse)
         {
-          alert("SUCCESS in service"+JSON.stringify(otpresponse));
+       //   alert("SUCCESS in service"+JSON.stringify(otpresponse));
              return otpresponse.data;
         }
         function  verifyOtpError(err)
         {
-            alert("ERROR"+JSON.stringify(err));
+          //  alert("ERROR"+JSON.stringify(err));
        
     
         }
@@ -70,7 +70,7 @@
          function  setPassword(datas)
         {  
            
-            alert("tttttttttttttttt"+JSON.stringify(datas));
+          //  alert("tttttttttttttttt"+JSON.stringify(datas));
             
               return $http({
                 method : 'POST',
@@ -102,7 +102,7 @@
               return $http({
                 method : 'POST',
                 data:datas,
-                url    : 'updateprofile'
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/addUserDetails.php'
               })
               .then(sendProfileDataResponse)
               .catch(sendProfileDataError);
@@ -126,7 +126,7 @@
         {              
               return $http({
                 method : 'GET',
-                url    : 'preloaddata'
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/getpreloaddata.php'
               })
               .then(preloadDataResponse)
               .catch(preloadDataError);
@@ -169,6 +169,16 @@
     
         }
         
+        function getUserPrefilledData(datas)
+        {
+              return $http({
+                method : 'POST',
+                data:datas,
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/getUserPreloadData.php'
+              })
+              .then(function(response){return response})
+              .catch(function(error){return error});
+        }
         
         
     }

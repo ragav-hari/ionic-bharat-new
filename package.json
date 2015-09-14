@@ -16,7 +16,8 @@
   },
   "cordovaPlugins": [
     "R:\\cordova-imagePicker-master\\cordova-imagePicker-master",
-    "org.apache.cordova.media"
+    "org.apache.cordova.media",
+    "C:\\Users\\ragavendran\\Desktop\\cordova-plugin-whitelist-master\\cordova-plugin-whitelist-master"
   ],
   "cordovaPlatforms": [
     "android"

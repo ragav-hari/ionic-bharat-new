@@ -1,19 +1,57 @@
 <ion-view view-title="Upload Image" ng-controller="userController">
-  <ion-content class="padding"> 
+  <ion-content class="padding"  > 
       
-      <div class="list">
+      <div class="list" ng-init="loadData()">
           
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Name</span>
-                <input type="text" required  ng-model="user.user_name" ng-change="onchagevalidation()">
-                <span class="input-label error_message">{{error_message1}}</span>
-            </label>
-          
-           <label class="item item-input item-stacked-label">
-                <span class="input-label">Mobile</span>
-                <input type="tel" required  ng-model="user.user_mobile" ng-change="onchagevalidation()">
-                <span class="input-label error_message">{{error_message2}}</span>
-            </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">First Name</span>
+        <input type="text" placeholder="First Name" ng-model="user.user_first_name">
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Mobile Number</span>
+        <input type="text" placeholder="Mobile" ng-model="user.user_mobileno">
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Email</span>
+        <input type="text" placeholder="Email" ng-model="user.user_email">
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Address Line1</span>
+        <input type="text" placeholder="Email" ng-model="user.user_address1">
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Address Line2</span>
+        <input type="text" placeholder="Email" ng-model="user.user_address2">
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Country</span>
+        <p></p>
+        <select>
+        <option ng-model="user.country_id">{{user.country_name}}</option>
+        </select>
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">State</span>
+        <p></p>
+        <select>
+        <option ng-model="user.state_id">{{user.state_name}}</option>
+        </select>
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">City</span>
+        <p></p>
+        <select ng-options="city.city_name for city in citylist track by city.city_id"
+        ng-model="user.city">
+        </select>
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Pincode</span>
+        <input type="text" placeholder="Pincode" ng-model="user.user_pincode">
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Landmark</span>
+        <input type="text" placeholder="Landmark" ng-model="user.user_landmark">
+        </label>
            
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Account Type</span>
@@ -68,7 +106,7 @@
                 </div>    
       
           
-          <button class="btn-custom button-full button-large" ng-click="uploadfile()">
+          <button class="btn-custom button-full button-large" ng-click="sendEmail()">
                     Submit
             </button>
           
