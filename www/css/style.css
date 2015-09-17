@@ -200,3 +200,8 @@ text-align: center;
 {
 text-align: center;
 }
+
+.selected
+{
+background-color: aqua !important;
+}

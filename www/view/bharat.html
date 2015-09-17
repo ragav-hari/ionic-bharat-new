@@ -2,7 +2,7 @@
   <ion-content class="padding"  > 
       
       <div class="list" ng-init="loadData()">
-          
+          <!--
         <label class="item item-input item-stacked-label">
         <span class="input-label">First Name</span>
         <input type="text" placeholder="First Name" ng-model="user.user_first_name">
@@ -15,6 +15,7 @@
         <span class="input-label">Email</span>
         <input type="text" placeholder="Email" ng-model="user.user_email">
         </label>
+-->
         <label class="item item-input item-stacked-label">
         <span class="input-label">Address Line1</span>
         <input type="text" placeholder="Email" ng-model="user.user_address1">
@@ -40,7 +41,7 @@
         <label class="item item-input item-stacked-label">
         <span class="input-label">City</span>
         <p></p>
-        <select ng-options="city.city_name for city in citylist track by city.city_id"
+        <select ng-options="city.city_name for city in citylist track by city.city_name"
         ng-model="user.city">
         </select>
         </label>
@@ -52,7 +53,7 @@
         <span class="input-label">Landmark</span>
         <input type="text" placeholder="Landmark" ng-model="user.user_landmark">
         </label>
-           
+           <!--
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Account Type</span>
                 <p><select ng-model="user.user_type" ng-change="getusertype()" ng-change="onchagevalidation()">
@@ -67,12 +68,32 @@
                 <span class="input-label">Dealer Code</span>
                 <input type="text" required  ng-model="user.dealer_code" ng-change="onchagevalidation()">
                 <span class="input-label error_message">{{error_message4}}</span>
-            </label>
+            </label>-->
             
            <label class="item item-input item-stacked-label">
                 <span class="input-label">Comments</span>
                 <input type="text" required  ng-model="user.user_comments">
             </label>
+             <label class="item item-input item-stacked-label">
+                <span class="input-label">Select Amount Range</span>
+                 <p></p>
+                 <select ng-model="user.amount" ng-change="getGift()">
+                  <option value="0">I Don't Know</option>
+                  <option ng-repeat="amount in amountinfo" value={{amount.amount_id}}>{{amount.amount_range}}                     </option>     
+                 </select>
+            </label>
+          <label class="item item-input item-stacked-label" ng-show="giftList==true">
+                <span class="input-label">Select Price</span>
+               
+            </label>
+          
+            <ul class="list" ng-show="giftList==true">
+                        
+                        <li class="item"  ng-class="{'selected':$index == selected}" ng-repeat="gift in giftdata" ng-click="selectList(gift.gift_name,$index)">
+                            {{gift.gift_name}}
+                        </li>
+                   </ul>
+                   
            <label class="item item-input item-stacked-label">
                 <span class="input-label error_message">{{error_message}}</span>
             </label>

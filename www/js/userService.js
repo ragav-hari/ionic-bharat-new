@@ -11,7 +11,10 @@
           sendProfileData : sendProfileData,
           preloadData : preloadData,
           fileUpload :  fileUpload,
-          getUserPrefilledData:getUserPrefilledData
+          getUserPrefilledData:getUserPrefilledData,
+          getCustomerType:getCustomerType,
+          createProfile:createProfile,
+          getGiftandAmount :getGiftandAmount
         };
         
          function  sendMobilenumber(datas)
@@ -119,11 +122,34 @@
        
     
         }
-        
+       
+        function    getGiftandAmount()
+        {   
+            
+              return $http({
+                method : 'GET',
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/getGiftandAmount.php'
+              })
+              .then(GiftandAmountResponse)
+              .catch(GiftandAmountError);
+            
+        }
+        function   GiftandAmountResponse(response)
+        {
+             
+             return response.data;
+        }
+        function   GiftandAmountError(err)
+        {  
+            
+            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
+       
+        }
         
         
         function   preloadData()
-        {              
+        {   
+            
               return $http({
                 method : 'GET',
                 url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/getpreloaddata.php'
@@ -134,11 +160,12 @@
         }
         function   preloadDataResponse(response)
         {
-        
+             
              return response.data;
         }
         function   preloadDataError(err)
-        {
+        {  
+            
             console.log("ERROR IN PASSS Service"+JSON.stringify(err));
        
         }
@@ -179,6 +206,56 @@
               .then(function(response){return response})
               .catch(function(error){return error});
         }
+        
+        
+         
+        function   getCustomerType()
+        {              
+              return $http({
+                method : 'GET',
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/getUserType.php'
+              })
+              .then(CustomerTypeResponse)
+              .catch(CustomerTypeError);
+            
+        }
+        function   CustomerTypeResponse(response)
+        {
+        
+             return response.data;
+        }
+        function   CustomerTypeError(err)
+        {
+            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
+       
+        }
+        
+         function  createProfile(datas)
+        {  
+           
+        
+            
+              return $http({
+                method : 'POST',
+                data:datas,
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/verifyOTP.php'
+              })
+              .then(createProfileResponse)
+              .catch(createProfileError);
+            
+        }
+        function  createProfileResponse(response)
+        {
+       //   alert("SUCCESS in service"+JSON.stringify(otpresponse));
+             return response.data;
+        }
+        function  createProfileError(err)
+        {
+          //  alert("ERROR"+JSON.stringify(err));
+       
+    
+        }
+        
         
         
     }

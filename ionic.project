@@ -1,6 +1,6 @@
 {
   "name": "master",
-  "app_id": "",
+  "app_id": "2483996b",
   "proxies": [
     {
       "path": "/addphonenumber",
@@ -14,7 +14,7 @@
       "path": "/addpassword",
       "proxyUrl": "http://www.cloudservices.ashinetech.com/Bharat/service/addPassword.php"
     },
-     {
+    {
       "path": "/updateprofile",
       "proxyUrl": "http://www.cloudservices.ashinetech.com/Bharat/service/addUserDetails.php"
     },
@@ -22,11 +22,9 @@
       "path": "/preloaddata",
       "proxyUrl": "http://www.cloudservices.ashinetech.com/Bharat/service/getpreloaddata.php"
     },
-     {
+    {
       "path": "/fileupload",
       "proxyUrl": "http://www.cloudservices.ashinetech.com/Bharat/service/uploadfile.php"
     }
-    
-    
-]
+  ]
 }

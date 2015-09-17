@@ -1,0 +1,34 @@
+<ion-view view-title="Customer Type" ng-controller="userController">  
+  <ion-content scroll="true">
+     
+     
+      
+<div class="list" ng-init="loadUserType()">
+    <label class="item item-input item-stacked-label">
+        <span class="input-label">Name</span>
+    <input type="text" placeholder="First Name" ng-model="user.user_name">
+  </label>
+    <label class="item item-input item-stacked-label">
+        <span class="input-label">User Type</span>
+        <p></p>
+        <select ng-change="getusertype()">
+          <option ng-model="user.user_type">{{user.user_typename}}</option>
+        </select>
+  </label>
+   <label class="item item-input item-stacked-label" ng-show="usertypedata == true">
+        <span class="input-label">Dealer Code</span>
+    <input type="text" placeholder="Code" ng-model="user.user_code">
+  </label>
+   <label class="item item-input item-stacked-label">
+        <span class="input-label">Email</span>
+      <input type="text" placeholder="Landmark" ng-model="user.user_email">
+  </label>
+   <button ng-click="createProfile()" class="button button-full button-positive">Submit</button>
+    <div>
+      {{ermessage}}
+    </div>
+</div>
+             
+
+  </ion-content>
+</ion-view>

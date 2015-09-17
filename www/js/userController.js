@@ -1,8 +1,8 @@
 (function() {
-    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService',userController]);
+    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService','$ionicUser','$ionicPush',userController]);
 
     function userController($q, $timeout, $scope, $cordovaCapture, $ionicModal, $cordovaEmailComposer, $cordovaCamera, $cordovaFile,
-        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService) {
+        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService,$ionicUser,$ionicPush) {
         $scope.audio = [];
         $scope.image = [];
         $rootScope.imagedata = [];
@@ -22,6 +22,14 @@
         $rootScope.mobileno= "";
         $scope.showDiv=false;
         $scope.hideOTP=false;
+        $scope.user.amount_id=[];
+        $scope.user.amount_range=[];
+        $scope.amountinfo = [];
+        $scope.giftitems = [];
+        $scope.giftdata = [];
+        
+        
+        
         $ionicModal.fromTemplateUrl('my-modal.html', {
             scope: $scope,
             animation: 'slide-in-up',
@@ -38,7 +46,7 @@
         
         $scope.ifMobileExists = function()
         {
-            var mobile=window.localStorage.getItem("mobile");
+          /*  var mobile=window.localStorage.getItem("mobile");
             if(mobile === null)
             {
                 $location.path('/mobile');     
@@ -47,7 +55,106 @@
             {
                 $location.path('/front'); 
             }
+            */
+             $location.path('/front'); 
         }
+        
+        
+        
+        
+        $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
+    alert("Successfully registered token " + data.token);
+    console.log('Ionic Push: Got token ', data.token, data.platform);
+    $scope.token = data.token;
+  });
+
+  // Identifies a user with the Ionic User service
+  $scope.identifyUser = function() {
+    console.log('Ionic User: Identifying with Ionic User service');
+
+    var user = $ionicUser.get();
+    if(!user.user_id) {
+      // Set your user_id here, or generate a random one.
+      user.user_id = $ionicUser.generateGUID();
+    };
+
+    // Add some metadata to your user object.
+    angular.extend(user, {
+      name: 'Ionitron',
+      bio: 'I come from planet Ion'
+    });
+
+    // Identify your user with the Ionic User Service
+    $ionicUser.identify(user).then(function(){
+      $scope.identified = true;
+      alert('Identified user ' + user.name + '\n ID ' + user.user_id);
+    });
+  };
+
+  // Registers a device for push notifications and stores its token
+  $scope.pushRegister = function() {
+    console.log('Ionic Push: Registering user');
+
+    // Register with the Ionic Push service.  All parameters are optional.
+    $ionicPush.register({
+      canShowAlert: true, //Can pushes show an alert on your screen?
+      canSetBadge: true, //Can pushes update app icon badges?
+      canPlaySound: true, //Can notifications play a sound?
+      canRunActionsOnWake: true, //Can run actions outside the app,
+      onNotification: function(notification) {
+        // Handle new push notifications here
+        alert(notification);
+        return true;
+      }
+    });
+  };
+
+        /*
+        window.parsePlugin.initialize("bharat", "Ragav$12345", function() {
+      console.log('Parse initialized successfully.');
+            alert("Parse initialized successfully.");
+
+
+      window.parsePlugin.subscribe('SampleChannel', function() {
+        console.log('Successfully subscribed to SampleChannel.');
+           alert("Successfully subscribed to SampleChannel..");
+
+          window.parsePlugin.getInstallationId(function(id) {
+            // update the view to show that we have the install ID
+            alert('Retrieved install id: ' + id);
+
+               var install_data = {
+                  installation_id: id,
+                  channels: ['SampleChannel']
+               }
+              
+          }, function(e) {
+            alert('Failure to retrieve install id.');
+          });
+
+      }, function(e) {
+          alert('Failed trying to subscribe to SampleChannel.');
+      });
+
+    }, function(e) {
+        alert('Failure to initialize Parse.');
+    });
+        
+        
+        */
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
 
         $ionicModal.fromTemplateUrl('attachment.html', {
@@ -563,7 +670,13 @@
             window.localStorage.setItem("user_landmark",$scope.user.user_landmark); 
             window.localStorage.setItem("user_type",$scope.user.user_type); 
             
-            $scope.messagebodyuser = "Name :" + $scope.user.user_first_name + "<br/>"  + "Mobile:" + $scope.user.user_mobile + "Email :" + $scope.user.user_email + "<br/>" + "Address Line 1 :" + $scope.user.user_address1 + "<br/>" + "Address Line 2 :" + $scope.user.user_address2 + "Pincode" + $scope.user.user_pincode + "LandMark" + $scope.user.user_landmark + "User Type :" + $scope.user.user_type + "<br/>";
+          /*  $scope.messagebodyuser = "Name :" + $scope.user.user_first_name + "<br/>"  + "Mobile:" + $scope.user.user_mobile + "Email :" + $scope.user.user_email + "<br/>" + "Address Line 1 :" + $scope.user.user_address1 + "<br/>" + "Address Line 2 :" + $scope.user.user_address2 + "Pincode" + $scope.user.user_pincode + "LandMark" + $scope.user.user_landmark + "User Type :" + $scope.user.user_type + "<br/>";*/
+            
+            $scope.messagebodyuser = "Name :" + "Arun" + "<br/>" + "Mobile no " + "8220178274 " + "<br/>" 
+            + "Email: " + "arun@gmail.com"  + "<br/>" + "Address Line 1 " + $scope.user.user_address1 + "<br/>" 
+            + "Address Line 2 " + $scope.user.user_address2 + "<br/>" + "city " + $scope.user.city + 
+                "<br/>" + "State" + "Tamilnadu" + "<br/>" + "Country" +"India" + "<br/>" + "Pincode :" + $scope.user.user_pincode + "<br/>" + "LandMark :" + $scope.user.user_landmark + "<br/>" + "User Type :" + "Bharat Ration Direct Customer" + "<br/>";
+                
             if ($scope.user.user_type == "Bharat Ration Dealer/Corporate") {
                 $scope.messagebodydealer = "Dealer Code :" + $scope.user.dealer_code + "<br/>";
             } else {
@@ -571,12 +684,23 @@
             }
 
             if (($scope.user.user_comments !== "") || ($scope.user.user_comments !== undefined)) {
-                $scope.messagecomment = "Comment :" + $scope.user.user_comments;
+                $scope.messagecomment = "Comment :" + $scope.user.user_comments + "<br/>";
             } else {
                 $scope.messagecomment = "";
             }
 
-            $scope.messagebody = $scope.messagebodyuser + $scope.messagebodydealer + $scope.messagecomment;
+            $scope.amtrange=  "Amount Range :" + window.localStorage.getItem("amountrangevalue") + "<br/>";
+            if($scope.amtrange == "Enquire")
+                {
+                    $scope.amtprice = "";
+                }
+            else
+                {
+                    $scope.amtprice = "Gift Items :" +  window.localStorage.getItem("giftname");
+                }
+            
+            $scope.messagebody = $scope.messagebodyuser + $scope.messagebodydealer + $scope.messagecomment + $scope.amtrange + $scope.amtprice;
+            
 
             var email = {
                 to: 'tacttechnologies18@gmail.com',
@@ -664,10 +788,12 @@
                         if(responsedata.status=="Success")
                             {
                                
-                         //   $scope.showDiv=true;
-                         //   $scope.hideOTP=true;
+        
+                                alert("HHHH");
+                               $location.path('/profile');
                                 
-                                $location.path('/profile');
+                              
+                                
                             }
                         else
                             {
@@ -719,22 +845,35 @@
              
           }
 
-        
+           
+          $scope.loadUserType = function()
+          {
+            userService.getCustomerType.then(customerTypeResponse);
+            function customerTypeResponse(response)
+             {
+                  
+                  console.log("Json is"+JSON.stringify(response));
+              }
+
+              
+          }
+          
           $scope.loadData = function()
           {    
+            
                $scope.user.user_mobileno=window.localStorage.getItem("mobile");
                userService.preloadData().then(preloadResponse);
               function preloadResponse(response)
               {
-                  
-                //  console.log("country"+response.country_name);
-                //  console.log("country id"+response.country_id);
+                
                  $scope.user.country_id=response.country_id;
                  $scope.user.country_name=response.country_name;
+                
                   $scope.user.state_id=response.states[0].state_id;
                   $scope.user.state_name=response.states[0].state_name;
-                  console.log("city is "+response.states[0].city);
+                  
                   $scope.citylist=response.states[0].city;
+                
                   
                 $scope.user.user_first_name = window.localStorage.getItem("user_first_name"); 
                 $scope.user.user_email =  window.localStorage.getItem("user_email"); 
@@ -745,15 +884,80 @@
                  $scope.user.city = window.localStorage.getItem("city"); 
                 $scope.user.user_pincode = window.localStorage.getItem("user_pincode"); 
                 $scope.user.user_landmark = window.localStorage.getItem("user_landmark"); 
+                  
               //  $scope.user.user_type = window.localStorage.getItem("user_type"); 
            // alert("USER"+JSON.stringify($scope.user));
               }
               
+              userService.getGiftandAmount().then(GiftResponse);
+              function GiftResponse(response)
+              {
+
+                  $scope.amountinfo = response;
+                  
+                  window.localStorage.setItem("amountData",JSON.stringify(response));
+                  
+              }
+              
           }
-         
-         
-          $scope.updateProfile=function()
+        
+          $scope.getGift=function()
           {
+        
+              $scope.giftdatalist = JSON.parse(window.localStorage.getItem("amountData"));
+              $scope.count = ($scope.user.amount)-1;
+              if($scope.count === -1)
+              {
+                  $scope.giftdata = "";
+                  $scope.giftList=false;
+                  window.localStorage.setItem("amountrangevalue","Enquire");
+              }
+              else
+              {
+                  $scope.giftdata = $scope.giftdatalist[$scope.count].gift;
+                  $scope.giftList=true;
+                 window.localStorage.setItem("amountrangevalue",$scope.giftdatalist[$scope.count].amount_range);
+              }
+              
+          }
+         $scope.selectList=function(data,$index)
+         {
+           $scope.finalGift=data;
+             $scope.selected = $index;
+           window.localStorage.setItem("giftname",$scope.finalGift);     
+           
+          }
+        
+          
+           $scope.createProfile=function()
+           {
+               
+            if($scope.user.user_type==1)
+             {
+                 $scope.user.user_code="empty";
+              }
+               var mobile=window.localStorage.getItem("mobile");
+
+               
+              var data = {
+                  "user_name":$scope.user.user_name,
+                  "user_type":$scope.user.user_type,
+                  "user_code":$scope.user.user_code,
+                  "user_email":$scope.user.user_email,
+                  "user_mobileno":mobile
+              };
+               
+               userService.createProfile(data).then(createProfileResponse);
+               function createProfileResponse(response)
+               {
+                  console.log("THEEEE RESPONSE"+JSON.stringify(response));
+                   
+               }
+               
+               
+           }
+          $scope.updateProfile=function()
+          { 
               // alert("inside update pro");
               if($scope.user.user_first_name==undefined)
                    {
