@@ -1,11 +1,23 @@
 var bharat = angular.module('bharat', ['ionic','ionic.service.core','ionic.service.push','ngCordova','ionic.service.core','ionic.service.push']);
 
-bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope) {
+bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     //Parse.initialize("bharat", "Ragav$12345");
-   
+    if(window.Connection) {
+         if(navigator.connection.type == Connection.NONE) {
+                    $ionicPopup.confirm({
+                        title: "Internet Disconnected",
+                        content: "The internet is disconnected on your device."
+                    })
+                    .then(function(result) {
+                        if(!result) {
+                            ionic.Platform.exitApp();
+                        }
+                    });
+         }
+    }
       
       
       
@@ -90,9 +102,10 @@ bharat.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: 'view/userprofile.html',
         controller: 'userController'
   })
-   .state('customertype', {
-        url: '/customertype',
-        templateUrl: 'view/customertype.html',
+  
+   .state('profileinitial', {
+        url: '/profileinitial',
+        templateUrl: 'view/profileinitial.html',
         controller: 'userController'
   })
   

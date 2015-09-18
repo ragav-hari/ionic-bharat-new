@@ -1,24 +1,29 @@
 <ion-view view-title="CustomerType" ng-controller="userController">  
-  <ion-content scroll="true">
+  <ion-content scroll="true" ng-init="loadUserType()">
      
      
       
-<div class="list" ng-init="loadUserType()">
+<div class="list"  ng-init="loadUserType()">
     <label class="item item-input item-stacked-label">
         <span class="input-label">Name</span>
     <input type="text" placeholder="First Name" ng-model="user.user_name">
   </label>
+
     <label class="item item-input item-stacked-label">
         <span class="input-label">User Type</span>
         <p></p>
-        <select ng-change="getusertype()">
-          <option ng-model="user.user_type">{{user.user_typename}}</option>
+       <!-- <select ng-change="getusertype()" ng-model="user.user_type" ng-options="usertype.usertype_name for usertype in usertypelists track by usertype.usertype_id">
+        </select> -->
+        <select ng-model="user.usertype_id" ng-change="getusertype(user.usertype_id)">
+          <option ng-repeat="usertype in usertypelists" value={{usertype.usertype_id}}>{{usertype.usertype_name}}            </option>     
         </select>
   </label>
+    
    <label class="item item-input item-stacked-label" ng-show="usertypedata == true">
         <span class="input-label">Dealer Code</span>
     <input type="text" placeholder="Code" ng-model="user.user_code">
   </label>
+
    <label class="item item-input item-stacked-label">
         <span class="input-label">Email</span>
       <input type="text" placeholder="Landmark" ng-model="user.user_email">

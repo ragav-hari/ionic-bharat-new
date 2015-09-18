@@ -1,8 +1,8 @@
 (function() {
-    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService','$ionicUser','$ionicPush',userController]);
+    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService','$ionicUser','$ionicPush','$cordovaNetwork',userController]);
 
     function userController($q, $timeout, $scope, $cordovaCapture, $ionicModal, $cordovaEmailComposer, $cordovaCamera, $cordovaFile,
-        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService,$ionicUser,$ionicPush) {
+        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService,$ionicUser,$ionicPush,$cordovaNetwork) {
         $scope.audio = [];
         $scope.image = [];
         $rootScope.imagedata = [];
@@ -27,7 +27,14 @@
         $scope.amountinfo = [];
         $scope.giftitems = [];
         $scope.giftdata = [];
-        
+        $scope.usertypelists = [];
+     
+        function checkConnection() {
+    var networkState = navigator.connection.type;
+
+    var states = {};
+            return networkState;
+        }
         
         
         $ionicModal.fromTemplateUrl('my-modal.html', {
@@ -46,7 +53,7 @@
         
         $scope.ifMobileExists = function()
         {
-          /*  var mobile=window.localStorage.getItem("mobile");
+            var mobile=window.localStorage.getItem("mobile");
             if(mobile === null)
             {
                 $location.path('/mobile');     
@@ -55,8 +62,6 @@
             {
                 $location.path('/front'); 
             }
-            */
-             $location.path('/front'); 
         }
         
         
@@ -142,19 +147,6 @@
         
         
         */
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
 
         $ionicModal.fromTemplateUrl('attachment.html', {
@@ -388,25 +380,25 @@
                 $scope.audioicon = "ion-stop customIcon";
                 $rootScope.audiourl = media_playing;
                 $scope.audioplay(media_playing,src); 
-                $scope.audioicon = "ion-play customIcon";
+               // $scope.audioicon = "ion-play customIcon";
             }
             else
             {
                 if($rootScope.audiourl.src == src)
                 {
-                    $scope.audioicon = "ion-play customIcon";
+                  //  $scope.audioicon = "ion-play customIcon";
                     $scope.audiostop($rootScope.audiourl);
                     $rootScope.audiourl = "";
                 }
                 else
                 {
                     $scope.audiostop($rootScope.audiourl);
-                    $scope.audioicon = "ion-stop customIcon";
+                 //   $scope.audioicon = "ion-stop customIcon";
                     media_toplay = new Media(src,function() {},function(err) {}); 
                     $rootScope.audiourl = media_toplay;
                  
                     $scope.audioplay(media_toplay,src); // new media playing
-                    $scope.audioicon = "ion-play customIcon";
+                  //  $scope.audioicon = "ion-play customIcon";
                 }
                
                  
@@ -422,7 +414,11 @@
         }
         
         $scope.audioplay = function(media,uri){
+           alert("play");
             media.play();
+            $scope.audioicon = " ";
+            $rootScope.audioiconplay="ion-stop customIcon";
+          
         }
         
         $scope.audiopause = function(media,uri){
@@ -430,7 +426,9 @@
         }
          
         $scope.audiostop = function(media){
+             $rootScope.audioiconplay=" ";
             media.stop();
+            $rootScope.audioiconplay="ion-play customIcon";
         }
         
        
@@ -543,7 +541,10 @@
         }
 
         $scope.getusertype = function() {
-            if ($scope.user.user_type == 2) {
+            
+            alert("Get user type called");
+            alert("usertype id is"+$scope.user.usertype_id);
+            if ($scope.user.usertype_id== 2) {
                 $scope.usertypedata = true;
             } else {
                 $scope.usertypedata = false;
@@ -746,7 +747,8 @@
                     function sendMobilenumberres(responsedata)
                     {
                         
-                        console.log("DAT"+responsedata.status);
+                        alert("DATASSS"+JSON.stringify(responsedata));
+                        alert("SSS"+responsedata.staus);
                         if(responsedata.status=="Success")
                             {
                                
@@ -784,20 +786,15 @@
                     function validateOtpres(responsedata)
                     {
                       
-                        console.log("DAT success in controller"+responsedata.status);
-                        if(responsedata.status=="Success")
+                        alert("DAT success in controller"+responsedata.status);
+                        if(responsedata.status === "Success")
                             {
-                               
-        
-                                alert("HHHH");
-                               $location.path('/profile');
-                                
-                              
-                                
+                                alert("SUCCESS");
+                               $location.path('/profileinitial');  
                             }
                         else
                             {
-                                
+                                $location.path('/profileinitial');  
                             }
                     }
                     
@@ -848,11 +845,12 @@
            
           $scope.loadUserType = function()
           {
-            userService.getCustomerType.then(customerTypeResponse);
+            userService.getCustomerType().then(customerTypeResponse);
             function customerTypeResponse(response)
              {
-                  
-                  console.log("Json is"+JSON.stringify(response));
+                 $scope.usertypelists = response;    
+                 // alert("Json is"+JSON.stringify($scope.usertypelists));
+              
               }
 
               
@@ -860,9 +858,19 @@
           
           $scope.loadData = function()
           {    
-            
-               $scope.user.user_mobileno=window.localStorage.getItem("mobile");
-               userService.preloadData().then(preloadResponse);
+             $scope.user.user_mobileno=window.localStorage.getItem("mobile");
+              if(checkConnection() != "none")
+                  {
+                      userService.preloadData().then(preloadResponse);
+                  }
+              else
+                  {
+                      alert("Internet Disconnected");
+                      $location.path('/front'); 
+                  }
+              
+             
+               
               function preloadResponse(response)
               {
                 
@@ -932,25 +940,38 @@
            $scope.createProfile=function()
            {
                
-            if($scope.user.user_type==1)
+            if($scope.user.usertype_id==1)
              {
-                 $scope.user.user_code="empty";
+                 $scope.user.user_code1="empty";
               }
+               else
+               {
+                    $scope.user.user_code1=$scope.user.user_code;
+                       
+               }
                var mobile=window.localStorage.getItem("mobile");
 
                
               var data = {
                   "user_name":$scope.user.user_name,
-                  "user_type":$scope.user.user_type,
-                  "user_code":$scope.user.user_code,
+                  "user_type":$scope.user.usertype_id,
+                  "user_code":$scope.user.user_code1,
                   "user_email":$scope.user.user_email,
                   "user_mobileno":mobile
               };
                
-               userService.createProfile(data).then(createProfileResponse);
+               alert("LOL"+data);
+                alert("LOL333"+JSON.stringify(data));
+               
+              userService.createProfile(data).then(createProfileResponse);
                function createProfileResponse(response)
                {
-                  console.log("THEEEE RESPONSE"+JSON.stringify(response));
+                //  alert("THEEEE RESPONSE"+JSON.stringify(response));
+                   
+                    
+                               
+                                $location.path('/front');
+                       
                    
                }
                

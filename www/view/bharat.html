@@ -113,7 +113,7 @@
          
        
               
-                 <div class="row"  style="flex-wrap: wrap;">
+           <!--      <div class="row"  style="flex-wrap: wrap;">
                     <ul class="list">
                             <li ng-repeat="aud in audiodata">
                                 <div class="row audio-data">
@@ -124,7 +124,24 @@
                                 </div>    
                             </li>
                     </ul>
-                </div>    
+                </div>    -->
+          
+            <div class="row"  style="flex-wrap: wrap;">
+                    <ul class="list">
+                            <li ng-repeat="aud in audiodata">
+                                <div class="row audio-data">
+                            <div class="col col-10">
+                                <i class="{{audioicon}}" id="{{$index}}">
+                                </i>
+                                <i class="{{audioiconplay}}">
+                                </i>
+                            </div>
+                            <div class="col col-80 audio-file" ng-click="audioClick(aud,$index)">{{aud.fullPath.substring(aud.fullPath.lastIndexOf('/')+1)}}</div>
+                            <div class="col col-10"><i class="ion-ios-close customIcon" ng-click="removeAudio($index)"></i></div>
+                                </div>    
+                            </li>
+                    </ul>
+                </div> 
       
           
           <button class="btn-custom button-full button-large" ng-click="sendEmail()">

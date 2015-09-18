@@ -20,8 +20,6 @@
          function  sendMobilenumber(datas)
         {  
            
-            alert("CALLING"+JSON.stringify(datas));
-            
               return $http({
                 method : 'POST',
                 data:datas,
@@ -40,6 +38,7 @@
         function sendMobilenumberError(err)
         {
           //  alert("ERROR RESPONSE"+JSON.stringify(err));
+            return err;
        
         }
         
@@ -60,12 +59,12 @@
         }
         function  verifyOtpResponse(otpresponse)
         {
-       //   alert("SUCCESS in service"+JSON.stringify(otpresponse));
+          alert("SUCCESS in service"+JSON.stringify(otpresponse));
              return otpresponse.data;
         }
         function  verifyOtpError(err)
         {
-          //  alert("ERROR"+JSON.stringify(err));
+            alert("ERROR"+JSON.stringify(err));
        
     
         }
@@ -221,11 +220,12 @@
         }
         function   CustomerTypeResponse(response)
         {
-        
+            alert("RRR"+JSON.stringify(response));
              return response.data;
         }
         function   CustomerTypeError(err)
         {
+            alert("EEE"+JSON.stringify(err));
             console.log("ERROR IN PASSS Service"+JSON.stringify(err));
        
         }
@@ -238,7 +238,7 @@
               return $http({
                 method : 'POST',
                 data:datas,
-                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/verifyOTP.php'
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/updateUserType.php'
               })
               .then(createProfileResponse)
               .catch(createProfileError);
@@ -251,7 +251,7 @@
         }
         function  createProfileError(err)
         {
-          //  alert("ERROR"+JSON.stringify(err));
+           alert("ERROR"+JSON.stringify(err));
        
     
         }
