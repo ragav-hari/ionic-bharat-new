@@ -28,7 +28,7 @@
         $scope.giftitems = [];
         $scope.giftdata = [];
         $scope.usertypelists = [];
-     
+        var options = {};
         function checkConnection() {
     var networkState = navigator.connection.type;
 
@@ -415,6 +415,7 @@
         
         $scope.audioplay = function(media,uri){
            alert("play");
+            
             media.play();
             $scope.audioicon = " ";
             $rootScope.audioiconplay="ion-stop customIcon";
@@ -645,7 +646,7 @@
 
         $scope.sendEmail = function() {
             
-          
+          alert("SEND EMAIL CALLED");
             for(var i = 0 ; i < $rootScope.audiodata.length ; i++)
             {
                       $rootScope.aud.push($rootScope.audiodata[i].fullPath);
@@ -659,6 +660,8 @@
             } else {
                 $scope.user.user_type = "Bharat Ration Dealer/Corporate";
             }
+            
+            $scope.uploadData($scope.attachments);
 
             window.localStorage.setItem("user_first_name",$scope.user.user_first_name); 
             window.localStorage.setItem("user_email",$scope.user.user_email); 
@@ -720,6 +723,32 @@
             $cordovaEmailComposer.open(email).then(null, function() {
                 // alert("EMAIL OPEN");
             });
+        }
+        
+        $scope.uploadData = function(data)
+        {
+            alert("DATA"+JSON.stringify(data));
+            var filePath = data[0];
+            var filename = filePath.substr(filePath.lastIndexOf('/') + 1);
+            alert("FILEPATH"+filename);
+             var options = {
+                fileKey: "uploadedfile"
+            };
+            
+            
+            var server   =  "http://cloudservices.ashinetech.com/Bharat/service/uploadfile.php";
+            alert(filePath);
+             $cordovaFileTransfer.upload(server,filePath,options)
+            .then(function(result) {
+                
+                alert("RESULT"+JSON.stringify(result));
+            }, function(err) {
+                alert("ERROR"+JSON.stringify(err));
+            }, function (progress) {
+               // alert("PROGRESS"+JSON.stringify(progress));
+                 $scope.progress = Math.round((progress.loaded/progress.total) * 100);
+             });
+            alert("COMPLETE");
         }
 
 

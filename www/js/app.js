@@ -1,7 +1,8 @@
 var bharat = angular.module('bharat', ['ionic','ionic.service.core','ionic.service.push','ngCordova','ionic.service.core','ionic.service.push']);
 
-bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup) {
+bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup,$cordovaFileTransfer) {
   $ionicPlatform.ready(function() {
+      console.log("Filetransfer"+$cordovaFileTransfer);
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     //Parse.initialize("bharat", "Ragav$12345");
