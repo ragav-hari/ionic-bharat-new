@@ -67,11 +67,7 @@
         
         
         
-        $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
-    alert("Successfully registered token " + data.token);
-    console.log('Ionic Push: Got token ', data.token, data.platform);
-    $scope.token = data.token;
-  });
+
 
   // Identifies a user with the Ionic User service
   $scope.identifyUser = function() {
@@ -85,8 +81,8 @@
 
     // Add some metadata to your user object.
     angular.extend(user, {
-      name: 'Ionitron',
-      bio: 'I come from planet Ion'
+      name: 'Hari',
+      bio: '8056598186'
     });
 
     // Identify your user with the Ionic User Service

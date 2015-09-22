@@ -1,8 +1,26 @@
-var bharat = angular.module('bharat', ['ionic','ionic.service.core','ionic.service.push','ngCordova','ionic.service.core','ionic.service.push']);
+var bharat = angular.module('bharat', ['ionic','ionic.service.core','ngCordova','ionic.service.push']);
 
-bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup,$cordovaFileTransfer) {
+bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup,$cordovaFileTransfer,$cordovaDevice) {
   $ionicPlatform.ready(function() {
+      var device = $cordovaDevice.getDevice();
+
+    var cordova = $cordovaDevice.getCordova();
+
+    var model = $cordovaDevice.getModel();
+
+    var platform = $cordovaDevice.getPlatform();
+
+    var uuid = $cordovaDevice.getUUID();
+
+    var version = $cordovaDevice.getVersion();
+      alert("PLATFORM"+platform);
       console.log("Filetransfer"+$cordovaFileTransfer);
+      alert("READY");
+      $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
+  alert('Got token'+data.token+"Platform"+data.platform);
+  $rootScope.token = data.token;          
+  // Do something with the token
+});
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     //Parse.initialize("bharat", "Ragav$12345");
@@ -14,7 +32,7 @@ bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cord
                     })
                     .then(function(result) {
                         if(!result) {
-                            ionic.Platform.exitApp();
+                            //ionic.Platform.exitApp();
                         }
                     });
          }
@@ -41,11 +59,12 @@ bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cord
 
 bharat.config(['$ionicAppProvider', function($ionicAppProvider) {
   // Identify app
+    alert("Config Called");
   $ionicAppProvider.identify({
     // The App ID (from apps.ionic.io) for the server
-    app_id: '89deb7cf',
+    app_id: '2483996b',
     // The public API key all services will use for this app
-    api_key: '0aaf73a326b1c0c633f7c28bd72cc64ee0ce3326f825b98c',
+    api_key: '944de8f5d2876371d1bd8166639725638d4c21a5375e93b8',
     // Set the app to use development pushes
     dev_push: true
   });
