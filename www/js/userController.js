@@ -1,8 +1,8 @@
 (function() {
-    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService','$ionicUser','$ionicPush','$cordovaNetwork',userController]);
+    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService','$ionicUser','$ionicPush','$cordovaNetwork','$ionicLoading',userController]);
 
     function userController($q, $timeout, $scope, $cordovaCapture, $ionicModal, $cordovaEmailComposer, $cordovaCamera, $cordovaFile,
-        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService,$ionicUser,$ionicPush,$cordovaNetwork) {
+        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService,$ionicUser,$ionicPush,$cordovaNetwork,$ionicLoading) {
         $scope.audio = [];
         $scope.image = [];
         $rootScope.imagedata = [];
@@ -174,10 +174,13 @@
                 } else {
                     $rootScope.audiodata.push(audioData[0]);
                     $rootScope.hasaudio = true;
+                   // $scope.mobileno = window.localStorage.getItem("mobile");
+                  //    $scope.getOrderId($scope.mobileno);
                     $location.path('/bharat');
                 }
             }, function(err) {
                 // $location.path('/front');
+                alert("ERROR AUDIO"+JSON.stringify(err));
             });
             // $scope.modal.hide();    
             $location.path('/bharat');
@@ -217,6 +220,7 @@
         }
 
 
+        
         $scope.getCameraImage = function()
         {
             var options = {
@@ -444,12 +448,20 @@
                     //    {
                              $rootScope.imagedata.push(imageData[0].fullPath);
                              $rootScope.hasimage = true;
+                             
                       //  }
                 
                  //  $scope.openCamera($rootScope.imagedata);
                  //  alert("image data"+JSON.stringify($rootScope.imagedata));
                     
+                    
+                    $scope.mobileno = window.localStorage.getItem("mobile");
+                    
+                     $scope.getOrderId($scope.mobileno);
+                    
                 }
+                
+                
 
             }, function(err) {
                 alert("CAMERA ERROR"+JSON.stringify(err));
@@ -540,8 +552,8 @@
         $scope.getusertype = function() {
             
             alert("Get user type called");
-            alert("usertype id is"+$scope.user.usertype_id);
-            if ($scope.user.usertype_id== 2) {
+            alert("usertype id is"+$scope.user.user_type);
+            if ($scope.user.user_type== 2) {
                 $scope.usertypedata = true;
             } else {
                 $scope.usertypedata = false;
@@ -721,30 +733,56 @@
             });
         }
         
+        $scope.uploadDataNew = function(count)
+        {
+            
+             for(var i = 0 ; i < $rootScope.audiodata.length ; i++)
+            {
+                      $rootScope.aud.push($rootScope.audiodata[i].fullPath);
+            }
+           
+            $scope.attachments = $rootScope.imagedata.concat($rootScope.aud);
+            
+            $rootScope.showuploading();
+            $scope.uploadData($scope.attachments[count]);
+            $rootScope.hideuploading();
+        }
+        
+        
         $scope.uploadData = function(data)
         {
-            alert("DATA"+JSON.stringify(data));
-            var filePath = data[0];
+            
+            var params = {};
+            var order_id = window.localStorage.getItem("order_id");
+            params.order_id = order_id;
+            //alert("OID"+order_id);
+            //alert("DATA"+JSON.stringify(data));
+            //alert(JSON.stringify(params));
+          //  params = {"order_id":$scope.order_id};
+            var filePath = data;
             var filename = filePath.substr(filePath.lastIndexOf('/') + 1);
-            alert("FILEPATH"+filename);
+            //alert("FILEPATH"+filename);
              var options = {
-                fileKey: "uploadedfile"
+                fileKey: "uploadedfile",
+                fileName : filename,
+                params :  params,
+                httpMethod : "POST" 
             };
             
             
             var server   =  "http://cloudservices.ashinetech.com/Bharat/service/uploadfile.php";
-            alert(filePath);
              $cordovaFileTransfer.upload(server,filePath,options)
             .then(function(result) {
                 
-                alert("RESULT"+JSON.stringify(result));
+               // alert("RESULT"+JSON.stringify(result));
             }, function(err) {
-                alert("ERROR"+JSON.stringify(err));
+             //   alert("ERROR"+JSON.stringify(err));
             }, function (progress) {
                // alert("PROGRESS"+JSON.stringify(progress));
                  $scope.progress = Math.round((progress.loaded/progress.total) * 100);
              });
-            alert("COMPLETE");
+           // alert("COMPLETE");
+         
         }
 
 
@@ -927,7 +965,8 @@
               {
 
                   $scope.amountinfo = response;
-                  
+                  alert("AMT"+ JSON.stringify($scope.amountinfo));
+                 // $scope.amount.amount_range = $scope.amountinfo.amount_from+"-"+$scope.amountinfo.amount_to;
                   window.localStorage.setItem("amountData",JSON.stringify(response));
                   
               }
@@ -955,10 +994,12 @@
           }
          $scope.selectList=function(data,$index)
          {
-           $scope.finalGift=data;
-             $scope.selected = $index;
+              $scope.finalGift=data;
+              $scope.selected = $index;
+             alert("GIFT"+JSON.stringify(data[$index]));
+             $scope.user.giftdatas = data[$index].gift_id;
            window.localStorage.setItem("giftname",$scope.finalGift);     
-           
+          
           }
         
           
@@ -1110,6 +1151,48 @@
               }
               
               
+          }
+          
+          
+          $scope.getOrderId = function(mobileno)
+          {
+              var order_id = window.localStorage.getItem("order_id");
+              if(order_id)
+              {
+                  alert("ORDER ID EXIST"+order_id);
+                  $scope.order_id = order_id;
+              }
+              else
+              {
+                  var data = {"user_mobileno":mobileno};
+                    userService.getOrderID(data).then(function(response){
+                        alert("RESP"+JSON.stringify(response)); 
+                        window.localStorage.setItem("order_id",response.order_id);
+                        $scope.order_id = order_id;
+                    });  
+              }
+          }
+          
+          $scope.getWordFromNumber = function(number)
+          {
+              alert("Number"+number);
+              $scope.wordfromnumber =  convertNumbertoWord(number);
+              alert("Word"+$scope.wordfromnumber);
+          }
+          
+          
+          $rootScope.showuploading = function() {
+            $ionicLoading.show({
+              template: 'Uploading Please Wait...'
+            });
+          };
+          $rootScope.hideuploading = function(){
+            $ionicLoading.hide();
+          };
+        
+          $scope.addAddressDetail = function()
+          {
+              alert("USER"+JSON.stringify($scope.user));
           }
         
     }

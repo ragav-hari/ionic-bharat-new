@@ -1,0 +1,105 @@
+<ion-view view-title="CustomerType" ng-controller="userController">  
+  <ion-content scroll="true">
+      
+       <div class="list" ng-init="loadData()">
+
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">First Name</span>
+        <input type="text" placeholder="First Name" ng-model="user.user_first_name">
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Mobile Number</span>
+        <input type="text" placeholder="Mobile" ng-model="user.user_mobileno">
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Email</span>
+        <input type="text" placeholder="Email" ng-model="user.user_email">
+        </label>
+           
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Address</span>
+            <textarea type="text" ng-model="user.user_address1"></textarea>
+        </label>
+        <!--
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Address Line2</span>
+        <input type="text" placeholder="Email" ng-model="user.user_address2">
+        </label>
+        
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Country</span>
+        <p></p>
+        <select>
+        <option ng-model="user.country_id">{{user.country_name}}</option>
+        </select>
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">State</span>
+        <p></p>
+        <select>
+        <option ng-model="user.state_id">{{user.state_name}}</option>
+        </select>
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">City</span>
+        <p></p>
+        <select ng-options="city.city_name for city in citylist track by city.city_name"
+        ng-model="user.city">
+        </select>
+        </label>
+        -->
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Pincode</span>
+        <input type="text" placeholder="Pincode" ng-model="user.user_pincode">
+        </label>
+        <label class="item item-input item-stacked-label">
+        <span class="input-label">Landmark</span>
+        <input type="text" placeholder="Landmark" ng-model="user.user_landmark">
+        </label>
+           
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Account Type</span>
+                <p><select ng-model="user.user_type" ng-change="getusertype()" ng-change="onchagevalidation()">
+                    <option value="1" selected>Bharat Ration Direct Customer</option>
+                    <option value="2">Bharat Ration Dealer/Corporate</option>
+                </select></p>
+                 <span class="input-label error_message">{{error_message3}}</span>
+            </label>
+        
+          
+            <label class="item item-input item-stacked-label" ng-show="usertypedata == true">
+                <span class="input-label">Dealer Code</span>
+                <input type="text" required  ng-model="user.dealer_code" ng-change="onchagevalidation()">
+                <span class="input-label error_message">{{error_message4}}</span>
+            </label>
+            
+           <label class="item item-input item-stacked-label">
+                <span class="input-label">Comments</span>
+                <input type="text" required  ng-model="user.user_comments">
+            </label>
+             <label class="item item-input item-stacked-label">
+                <span class="input-label">Select Amount Range</span>
+                 <p></p>
+                 <select ng-model="user.amount" ng-change="getGift()">
+                  <option value="0">I Don't Know</option>
+                  <option ng-repeat="amount in amountinfo" value={{amount.amount_id}}>{{amount.amount_from}}-{{amount.amount_to}}</option>     
+                 </select>
+            </label>
+          <label class="item item-input item-stacked-label" ng-show="giftList==true">
+                <span class="input-label">Select Price</span>
+               
+            </label>
+          
+            <ul class="list" ng-model="user.giftdatas" ng-show="giftList==true">
+                        
+                        <li class="item"  ng-class="{'selected':$index == selected}" ng-repeat="gift in giftdata" ng-click="selectList(giftdata,$index)">
+                            {{gift.gift_name}}
+                        </li>
+                   </ul>
+
+</div>
+      <button ng-click="addAddressDetail()">Submit</button>
+      
+    </ion-content>
+</ion-view>    
+    

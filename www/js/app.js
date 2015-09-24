@@ -129,6 +129,12 @@ bharat.config(function($stateProvider, $urlRouterProvider) {
         controller: 'userController'
   })
   
+  .state('useraddress',{
+       url: '/useraddress',
+        templateUrl: 'view/addressdetails.html',
+        controller: 'userController'
+  })
+  
  
   $urlRouterProvider.otherwise('/landing');
 

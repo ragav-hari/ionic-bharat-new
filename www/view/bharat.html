@@ -15,7 +15,7 @@
         <span class="input-label">Email</span>
         <input type="text" placeholder="Email" ng-model="user.user_email">
         </label>
--->
+
         <label class="item item-input item-stacked-label">
         <span class="input-label">Address Line1</span>
         <input type="text" placeholder="Email" ng-model="user.user_address1">
@@ -68,7 +68,7 @@
                 <span class="input-label">Dealer Code</span>
                 <input type="text" required  ng-model="user.dealer_code" ng-change="onchagevalidation()">
                 <span class="input-label error_message">{{error_message4}}</span>
-            </label>-->
+            </label>
             
            <label class="item item-input item-stacked-label">
                 <span class="input-label">Comments</span>
@@ -100,14 +100,20 @@
              <button class="btn-custom button-full button-small" ng-click="openAttachmentModal()">
                     Attachments
             </button>
+-->
             <div ng-show="image !== undefined">
-               
+               <input type="hidden" ng-model="order_id" value="{{order_id}}">
                 <div class="row"  style="flex-wrap: wrap;">
                     <div class="col col-33" ng-repeat="imageuri in imagedata">
+                        
                          <img style="width:100%;height:100px" ng-show="imageuri !== undefined" ng-click="zoom('{{imageuri}}')" ng-src="{{imageuri}}">
                       <p class="image-close">  <i class="ion-close-circled customIcon " ng-click="removeImage($index)"> </i></p>
-                        <!-- <button class="button btn-custom button-small" >Remove</button> !-->
+                        
+                        <button class="button btn-custom button-small" ng-click="uploadDataNew($index)">Submit</button> 
                     </div>  
+                    <div class="col col-33">
+                        <button class="button btn-custom button-small" ng-click="openAttachmentModal()">Add next image</button> 
+                    </div>
                 </div>    
           </div>
          
@@ -127,26 +133,36 @@
                 </div>    -->
           
             <div class="row"  style="flex-wrap: wrap;">
+                <input type="hidden" ng-model="order_id" value="{{order_id}}">
                     <ul class="list">
                             <li ng-repeat="aud in audiodata">
                                 <div class="row audio-data">
+                                    
                             <div class="col col-10">
                                 <i class="{{audioicon}}" id="{{$index}}">
                                 </i>
                                 <i class="{{audioiconplay}}" id="{{$index}}">
                                 </i>
                             </div>
-                            <div class="col col-80 audio-file" ng-click="audioClick(aud,$index)">{{aud.fullPath.substring(aud.fullPath.lastIndexOf('/')+1)}}</div>
+                            <div class="col col-70 audio-file" ng-click="audioClick(aud,$index)">{{aud.fullPath.substring(aud.fullPath.lastIndexOf('/')+1)}}</div>
                             <div class="col col-10"><i class="ion-ios-close customIcon" ng-click="removeAudio($index)"></i></div>
-                                </div>    
+                             <div class="col col-10">
+                                     <i class="ion-plus-circled customIcon" ng-click="uploadDataNew($index)"></i> 
+                                    </div>
+                                    
+                                     </div>
+                                   
+                             
+                                
+                                <br/>
                             </li>
                     </ul>
                 </div> 
       
           <p>Progress : {{progress}}</p>
           
-          <button class="btn-custom button-full button-large" ng-click="sendEmail()">
-                    Submit
+          <button class="btn-custom button-full button-large">
+                   <a href="#useraddress">Submit</a>
             </button>
           
          <br/>

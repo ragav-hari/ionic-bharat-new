@@ -14,7 +14,8 @@
           getUserPrefilledData:getUserPrefilledData,
           getCustomerType:getCustomerType,
           createProfile:createProfile,
-          getGiftandAmount :getGiftandAmount
+          getGiftandAmount :getGiftandAmount,
+          getOrderID : getOrderID
         };
         
          function  sendMobilenumber(datas)
@@ -235,8 +236,6 @@
         
          function  createProfile(datas)
         {  
-           
-        
             
               return $http({
                 method : 'POST',
@@ -255,8 +254,31 @@
         function  createProfileError(err)
         {
            alert("ERROR"+JSON.stringify(err));
+        }
+        
+        
+         function getOrderID(data)
+        {              
+              return $http({
+                method : 'POST',
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/getOrderID.php',
+                data   : data  
+              })
+              .then(getOrderIDResponse)
+              .catch(getOrderIDError);
+            
+        }
+        function   getOrderIDResponse(response)
+        {
+            alert("RRR"+JSON.stringify(response));
+             return response.data;
+        }
+        
+        function   getOrderIDError(err)
+        {
+            alert("EEE"+JSON.stringify(err));
+            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
        
-    
         }
         
        
