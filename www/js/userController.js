@@ -27,6 +27,7 @@
         $scope.amountinfo = [];
         $scope.giftitems = [];
         $scope.giftdata = [];
+        //$scope.user.amountval = 0;
         $scope.usertypelists = [];
         var options = {};
         function checkConnection() {
@@ -174,6 +175,9 @@
                 } else {
                     $rootScope.audiodata.push(audioData[0]);
                     $rootScope.hasaudio = true;
+                    
+                     $scope.mobileno = window.localStorage.getItem("mobile");
+                     $scope.getOrderId($scope.mobileno);
                    // $scope.mobileno = window.localStorage.getItem("mobile");
                   //    $scope.getOrderId($scope.mobileno);
                     $location.path('/bharat');
@@ -182,7 +186,8 @@
                 // $location.path('/front');
                 alert("ERROR AUDIO"+JSON.stringify(err));
             });
-            // $scope.modal.hide();    
+            // $scope.modal.hide();   
+             
             $location.path('/bharat');
 
         }
@@ -853,11 +858,11 @@
                         if(responsedata.status === "Success")
                             {
                                 alert("SUCCESS");
-                               $location.path('/profileinitial');  
+                               $location.path('/front');  
                             }
                         else
                             {
-                                $location.path('/profileinitial');  
+                                //$location.path('/front');  
                             }
                     }
                     
@@ -924,7 +929,10 @@
              $scope.user.user_mobileno=window.localStorage.getItem("mobile");
               if(checkConnection() != "none")
                   {
+                      var data = {"user_mobileno":$scope.user.user_mobileno};
                       userService.preloadData().then(preloadResponse);
+                      userService.getUserPrefilledData(data).then(userPreloadResponse);
+                     
                   }
               else
                   {
@@ -932,7 +940,16 @@
                       $location.path('/front'); 
                   }
               
-             
+             function userPreloadResponse(response)
+              {
+                 alert("PRERESPONSE"+JSON.stringify(response));  
+                 $scope.user.user_first_name = response.user_first_name;
+                 $scope.user.user_email = response.user_email;
+                 $scope.user.user_address1 = response.user_address;  
+                 $scope.user.user_type = response.user_type;
+                 $scope.user.user_pincode = response.user_pincode;
+                 $scope.user.user_landmark = response.user_landmark;         
+              }
                
               function preloadResponse(response)
               {
@@ -965,13 +982,15 @@
               {
 
                   $scope.amountinfo = response;
-                  alert("AMT"+ JSON.stringify($scope.amountinfo));
+                 // alert("AMT"+ JSON.stringify($scope.amountinfo));
                  // $scope.amount.amount_range = $scope.amountinfo.amount_from+"-"+$scope.amountinfo.amount_to;
                   window.localStorage.setItem("amountData",JSON.stringify(response));
                   
               }
               
           }
+          
+          
         
           $scope.getGift=function()
           {
@@ -996,7 +1015,7 @@
          {
               $scope.finalGift=data;
               $scope.selected = $index;
-             alert("GIFT"+JSON.stringify(data[$index]));
+            // alert("GIFT"+JSON.stringify(data[$index]));
              $scope.user.giftdatas = data[$index].gift_id;
            window.localStorage.setItem("giftname",$scope.finalGift);     
           
@@ -1026,8 +1045,8 @@
                   "user_mobileno":mobile
               };
                
-               alert("LOL"+data);
-                alert("LOL333"+JSON.stringify(data));
+              // alert("LOL"+data);
+              //    alert("LOL333"+JSON.stringify(data));
                
               userService.createProfile(data).then(createProfileResponse);
                function createProfileResponse(response)
@@ -1149,28 +1168,25 @@
                             }
                   
               }
-              
-              
           }
           
           
           $scope.getOrderId = function(mobileno)
           {
-              var order_id = window.localStorage.getItem("order_id");
-              if(order_id)
-              {
-                  alert("ORDER ID EXIST"+order_id);
-                  $scope.order_id = order_id;
-              }
-              else
-              {
-                  var data = {"user_mobileno":mobileno};
-                    userService.getOrderID(data).then(function(response){
+              //var order_id = window.localStorage.getItem("order_id");
+              var data = {"user_mobileno":mobileno};
+              $scope.createOrderID(data);   
+          }
+          
+          
+          $scope.createOrderID = function(data)
+          {
+              userService.getOrderID(data).then(function(response){
                         alert("RESP"+JSON.stringify(response)); 
+                        
                         window.localStorage.setItem("order_id",response.order_id);
-                        $scope.order_id = order_id;
+                        $scope.order_id = response.order_id;
                     });  
-              }
           }
           
           $scope.getWordFromNumber = function(number)
@@ -1192,7 +1208,25 @@
         
           $scope.addAddressDetail = function()
           {
+              $scope.user_order_id =  window.localStorage.getItem("order_id"); 
+              if($scope.user_order_id  == 0){alert("Invalid Order"); location.path("/bharat");}
               alert("USER"+JSON.stringify($scope.user));
+              
+              var data = {"user_order_id":$scope.user_order_id,"user_mobileno":$scope.user.user_mobileno,"user_first_name":$scope.user.user_first_name,"user_email":$scope.user.user_email,"user_address":$scope.user.user_address1,"user_pincode":$scope.user.user_pincode,"user_landmark":$scope.user.user_landmark,"user_account_type":$scope.user.user_type,"user_dealercode":$scope.user.dealer_code,"user_comments":$scope.user.user_comments,"user_amount_range":$scope.user.amount,"user_gift":$scope.user.giftdatas};
+              
+              userService.updateAddressDetails(data).then(function(response){
+                 alert("RESP"+JSON.stringify(response)); 
+                  localStorage.removeItem("order_id");
+                  if(response.data.status == "Success")
+                  {
+                    alert("Your order has been successfully placed");      
+                    $location.path('/front');   
+                  }
+                  else
+                  {
+                    alert("Order placing failed please try again");      
+                  }
+              });
           }
         
     }

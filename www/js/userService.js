@@ -15,7 +15,9 @@
           getCustomerType:getCustomerType,
           createProfile:createProfile,
           getGiftandAmount :getGiftandAmount,
-          getOrderID : getOrderID
+          getOrderID : getOrderID,
+          updateAddressDetails : updateAddressDetails,
+          deleteOrderItemandUpdateorder : deleteOrderItemandUpdateorder    
         };
         
          function  sendMobilenumber(datas)
@@ -201,17 +203,27 @@
         
         function getUserPrefilledData(datas)
         {
-              return $http({
+             alert("Service call of prefilled"); 
+            return $http({
                 method : 'POST',
                 data:datas,
                 url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/getUserPreloadData.php'
               })
-              .then(function(response){return response})
-              .catch(function(error){return error});
+             .then(PrefilledDataResponse)
+              .catch(PrefilledDataError);
         }
+         function  PrefilledDataResponse(response)
+        {
+         // alert("Prefilled data "+JSON.stringify(response));
+             return response.data;
+        }
+        function   PrefilledDataError(err)
+        {
+            alert("ERROR IN PASSS Service"+JSON.stringify(err));
+    
+        }
+    
         
-        
-         
         function   getCustomerType()
         {              
               return $http({
@@ -281,8 +293,29 @@
        
         }
         
-       
+        function updateAddressDetails(data)
+        {
+               return $http({
+                 method : 'POST',
+                 url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/updateAddressDetails.php',
+                 data   : data 
+               })
+              .then(function(response){return response;})
+              .catch(function(error){return error});
+        }
         
+        function deleteOrderItemandUpdateorder(data)
+        {
+             return $http({
+                 method : 'POST',
+                 url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/deleteOrderItemandUpdateorder.php',
+                 data   : data 
+               })
+              .then(function(response){return response;})
+              .catch(function(error){return error});
+        }
+        
+       
     }
 	
 }());
