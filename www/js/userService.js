@@ -17,7 +17,8 @@
           getGiftandAmount :getGiftandAmount,
           getOrderID : getOrderID,
           updateAddressDetails : updateAddressDetails,
-          deleteOrderItemandUpdateorder : deleteOrderItemandUpdateorder    
+          deleteOrderItemandUpdateorder : deleteOrderItemandUpdateorder,
+          registerPush : registerPush    
         };
         
          function  sendMobilenumber(datas)
@@ -315,6 +316,16 @@
               .catch(function(error){return error});
         }
         
+        function registerPush(data)
+        {
+            return $http({
+                 method : 'POST',
+                 url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/RegisterforPush.php',
+                 data   : data 
+               })
+              .then(function(response){return response;})
+              .catch(function(error){return error});
+        }
        
     }
 	

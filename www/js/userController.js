@@ -1,8 +1,8 @@
 (function() {
-    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService','$ionicUser','$ionicPush','$cordovaNetwork','$ionicLoading',userController]);
+    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService','$ionicUser','$ionicPush','$cordovaNetwork','$ionicLoading','$cordovaPush',userController]);
 
     function userController($q, $timeout, $scope, $cordovaCapture, $ionicModal, $cordovaEmailComposer, $cordovaCamera, $cordovaFile,
-        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService,$ionicUser,$ionicPush,$cordovaNetwork,$ionicLoading) {
+        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService,$ionicUser,$ionicPush,$cordovaNetwork,$ionicLoading,$cordovaPush) {
         $scope.audio = [];
         $scope.image = [];
         $rootScope.imagedata = [];
@@ -32,6 +32,7 @@
         var options = {};
         function checkConnection() {
     var networkState = navigator.connection.type;
+            
 
     var states = {};
             return networkState;
@@ -52,6 +53,23 @@
             $scope.modal.hide();
         };
         
+       
+
+        $scope.registerPush = function(mobileno)
+        {
+              push.on('registration', function(data) {
+                    alert("REGG"+JSON.stringify(data));
+                    window.localStorage.setItem("DEVICE_TOKEN",data.registrationId);      
+                   // var mobileno = window.localStorage.getItem("mobile");
+                    //alert("MOBILE"+mobileno);
+
+                    var pushdata = {mobileno:mobileno , deviceToken: data.registrationId};
+                    userService.registerPush(pushdata).then(function(response){
+                            alert("RESP"+JSON.stringify(response));
+                        });
+              });
+        }
+        
         $scope.ifMobileExists = function()
         {
             var mobile=window.localStorage.getItem("mobile");
@@ -71,7 +89,7 @@
 
 
   // Identifies a user with the Ionic User service
-  $scope.identifyUser = function() {
+ /* $scope.identifyUser = function() {
     console.log('Ionic User: Identifying with Ionic User service');
 
     var user = $ionicUser.get();
@@ -82,7 +100,7 @@
 
     // Add some metadata to your user object.
     angular.extend(user, {
-      name: 'Hari',
+      name: 'Ramesh',
       bio: '8056598186'
     });
 
@@ -96,7 +114,7 @@
   // Registers a device for push notifications and stores its token
   $scope.pushRegister = function() {
     console.log('Ionic Push: Registering user');
-
+alert("Registering");
     // Register with the Ionic Push service.  All parameters are optional.
     $ionicPush.register({
       canShowAlert: true, //Can pushes show an alert on your screen?
@@ -109,7 +127,7 @@
         return true;
       }
     });
-  };
+  };*/
 
         /*
         window.parsePlugin.initialize("bharat", "Ragav$12345", function() {
@@ -175,7 +193,8 @@
                 } else {
                     $rootScope.audiodata.push(audioData[0]);
                     $rootScope.hasaudio = true;
-                    
+                    window.localStorage.setItem("IMAGE_AUDIO_DATA",$rootScope.audiodata);
+                    window.localStorage.setItem("HAS_AUDIO",$rootScope.hasaudio);
                      $scope.mobileno = window.localStorage.getItem("mobile");
                      $scope.getOrderId($scope.mobileno);
                    // $scope.mobileno = window.localStorage.getItem("mobile");
@@ -207,6 +226,8 @@
                 } else {
                     $rootScope.audiodata.push(audioData[0]);
                     $rootScope.hasaudio = true;
+                    window.localStorage.setItem("IMAGE_AUDIO_DATA",$rootScope.audiodata);
+                    window.localStorage.setItem("HAS_AUDIO",$rootScope.hasaudio);
                     $location.path('/bharat');
                 }
                 $scope.attachmentmodal.hide();
@@ -245,6 +266,8 @@
                  
                   $rootScope.imagedata.push(imageURI);
                   $rootScope.hasimage = true;
+                  window.localStorage.setItem("IMAGE_AUDIO_DATA",$rootScope.imagedata);
+                  window.localStorage.setItem("HAS_IMAGE",$rootScope.hasimage);
 
              }, function(err) {
                     // error'
@@ -264,22 +287,22 @@
             var trustAllHosts=true;
             var options = {};
            
-            alert("FILE"+filePath);
+           // alert("FILE"+filePath);
              $cordovaFileTransfer.upload('fileupload',filePath, options,trustAllHosts)
                   .then(function(result) {
                     console.log("success");
-                    alert("sssssss");
-                    alert("RES"+JSON.stringify(result));
+                    //alert("sssssss");
+                    //alert("RES"+JSON.stringify(result));
                   }, function(err) {
                  console.log("Error");
-                    alert("fffff");
-                    alert("ERR"+JSON.stringify(err));
+                    //alert("fffff");
+                    //alert("ERR"+JSON.stringify(err));
                    
                   }, function (progress) {
-                 console.log("progress");
-                 alert("proeeeeeeeeeeeeeeg");
+                 //console.log("progress");
+                 //alert("proeeeeeeeeeeeeeeg");
                  $timeout(function () {
-                     alert("prog");
+                     //alert("prog");
           $scope.downloadProgress = (progress.loaded / progress.total) * 100;
         })
                  
@@ -302,7 +325,7 @@
                  $rootScope.imagedata.push(results[i]);
               }
             }, function(error) {
-              alert(JSON.stringify(error));
+            //  alert(JSON.stringify(error));
             });
             $scope.attachmentmodal.hide();
         }
@@ -310,7 +333,7 @@
         $scope.selectimage = function() {
 
             if ($rootScope.size >= 10000000) {
-                    alert("Size Exceeds the Max Limit");
+                   // alert("Size Exceeds the Max Limit");
                     $location.path('/bharat');
                 } else {
                 
@@ -329,14 +352,15 @@
 
                                 $rootScope.size += $scope.tempsizeimage;
                                  if ($rootScope.size >= 10000000) {
-                                    alert("Size Exceeds the Max Limit");
+                                //    alert("Size Exceeds the Max Limit");
                                     $scope.attachmentmodal.hide();
                                     } else {
                                 $rootScope.imagedata.push(success.toURL());
+                                window.localStorage.setItem("IMAGE_AUDIO_DATA",$rootScope.imagedata);
                                         $scope.attachmentmodal.hide();
                                     }
                             }, function(error) {
-                                alert("Please attach Valid File"+JSON.stringify(error));
+                                //alert("Please attach Valid File"+JSON.stringify(error));
                             });
                     }
                     if (!$scope.$$phase) {
@@ -556,8 +580,8 @@
 
         $scope.getusertype = function() {
             
-            alert("Get user type called");
-            alert("usertype id is"+$scope.user.user_type);
+            //alert("Get user type called");
+            //alert("usertype id is"+$scope.user.user_type);
             if ($scope.user.user_type== 2) {
                 $scope.usertypedata = true;
             } else {
@@ -659,7 +683,7 @@
 
         $scope.sendEmail = function() {
             
-          alert("SEND EMAIL CALLED");
+          //alert("SEND EMAIL CALLED");
             for(var i = 0 ; i < $rootScope.audiodata.length ; i++)
             {
                       $rootScope.aud.push($rootScope.audiodata[i].fullPath);
@@ -802,7 +826,7 @@
                  //  $rootScope.mobileno=$scope.user.user_mobileno;
                  //   console.log("rootscope number");
                  //   console.log($rootScope.mobileno);
-            window.localStorage.setItem("mobile",$scope.user.user_mobileno);
+            window.localStorage.setItem("mobileno",$scope.user.user_mobileno);
             if($scope.user.user_mobileno==undefined)
                 {
                     
@@ -815,8 +839,8 @@
                     function sendMobilenumberres(responsedata)
                     {
                         
-                        alert("DATASSS"+JSON.stringify(responsedata));
-                        alert("SSS"+responsedata.staus);
+                        //alert("DATASSS"+JSON.stringify(responsedata));
+                        //alert("SSS"+responsedata.staus);
                         if(responsedata.status=="Success")
                             {
                                
@@ -838,30 +862,47 @@
          }
           $scope.validateOtp=function()
          { 
-                $scope.ermessage=" ";
-               if($scope.user.user_otp==undefined)
+                $scope.ermessage = " ";
+               if($scope.user.user_otp == undefined)
                    {
                           $scope.ermessage="Enter Valid OTP";
                    }
                   else
                   {
                       console.log("otp is"+$scope.user.user_otp);
-                     var mobile=window.localStorage.getItem("mobile");
+                     var mobile=window.localStorage.getItem("mobileno");
                       var data={"user_otp":$scope.user.user_otp,"user_mobileno":mobile}
                       $scope.ermessage=" ";
                       
-                       userService.verifyOtp(data).then(validateOtpres);
+                    userService.verifyOtp(data).then(validateOtpres);
                     function validateOtpres(responsedata)
                     {
                       
-                        alert("DAT success in controller"+responsedata.status);
+                        //alert("DAT success in controller"+responsedata.status);
                         if(responsedata.status === "Success")
                             {
-                                alert("SUCCESS");
+                                //alert("MOB"+mobile);
+                                window.localStorage.setItem("mobile",mobile);
+                                
+                                var push = PushNotification.init({ "android": {"senderID": "235999860706"}} ); 
+                                push.on('registration', function(data) {
+                                    //alert("REGG"+JSON.stringify(data));
+                                    window.localStorage.setItem("DEVICE_TOKEN",data.registrationId);      
+                                   // var mobileno = window.localStorage.getItem("mobile");
+                                    //alert("MOBILE"+mobileno);
+
+                                    var pushdata = {mobileno:mobile , deviceToken: data.registrationId};
+                                    userService.registerPush(pushdata).then(function(response){
+                                           // alert("RESP"+JSON.stringify(response));
+                                    });
+                                });
+                                
+                                //alert("SUCCESS");
                                $location.path('/front');  
                             }
                         else
                             {
+                                //alert("Failed to verify the code");
                                 //$location.path('/front');  
                             }
                     }
@@ -924,6 +965,22 @@
               
           }
           
+          $scope.loadImageAudioData = function()
+          {
+              var hasaudio = window.localStorage.getItem("HAS_AUDIO");
+              var hasimage = window.localStorage.getItem("HAS_IMAGE")
+              if(hasaudio !== null && hasaudio !== undefined)
+              {
+                  $rootScope.audiodata.push(window.localStorage.getItem("IMAGE_AUDIO_DATA"));    
+                  $rootScope.hasaudio = true;
+              }
+              else
+              {
+                 $rootScope.imagedata.push(window.localStorage.getItem("IMAGE_AUDIO_DATA"));    
+                  $rootScope.hasimage = true;
+              }
+          }
+          
           $scope.loadData = function()
           {    
              $scope.user.user_mobileno=window.localStorage.getItem("mobile");
@@ -942,7 +999,7 @@
               
              function userPreloadResponse(response)
               {
-                 alert("PRERESPONSE"+JSON.stringify(response));  
+                 //alert("PRERESPONSE"+JSON.stringify(response));  
                  $scope.user.user_first_name = response.user_first_name;
                  $scope.user.user_email = response.user_email;
                  $scope.user.user_address1 = response.user_address;  
@@ -1182,7 +1239,7 @@
           $scope.createOrderID = function(data)
           {
               userService.getOrderID(data).then(function(response){
-                        alert("RESP"+JSON.stringify(response)); 
+                        //alert("RESP"+JSON.stringify(response)); 
                         
                         window.localStorage.setItem("order_id",response.order_id);
                         $scope.order_id = response.order_id;
@@ -1191,9 +1248,9 @@
           
           $scope.getWordFromNumber = function(number)
           {
-              alert("Number"+number);
+              //alert("Number"+number);
               $scope.wordfromnumber =  convertNumbertoWord(number);
-              alert("Word"+$scope.wordfromnumber);
+              //alert("Word"+$scope.wordfromnumber);
           }
           
           
@@ -1210,12 +1267,12 @@
           {
               $scope.user_order_id =  window.localStorage.getItem("order_id"); 
               if($scope.user_order_id  == 0){alert("Invalid Order"); location.path("/bharat");}
-              alert("USER"+JSON.stringify($scope.user));
+              //alert("USER"+JSON.stringify($scope.user));
               
               var data = {"user_order_id":$scope.user_order_id,"user_mobileno":$scope.user.user_mobileno,"user_first_name":$scope.user.user_first_name,"user_email":$scope.user.user_email,"user_address":$scope.user.user_address1,"user_pincode":$scope.user.user_pincode,"user_landmark":$scope.user.user_landmark,"user_account_type":$scope.user.user_type,"user_dealercode":$scope.user.dealer_code,"user_comments":$scope.user.user_comments,"user_amount_range":$scope.user.amount,"user_gift":$scope.user.giftdatas};
               
               userService.updateAddressDetails(data).then(function(response){
-                 alert("RESP"+JSON.stringify(response)); 
+                 //alert("RESP"+JSON.stringify(response)); 
                   localStorage.removeItem("order_id");
                   if(response.data.status == "Success")
                   {

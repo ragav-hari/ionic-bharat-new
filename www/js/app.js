@@ -1,26 +1,59 @@
 var bharat = angular.module('bharat', ['ionic','ionic.service.core','ngCordova','ionic.service.push']);
 
-bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup,$cordovaFileTransfer,$cordovaDevice) {
+bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup,$cordovaFileTransfer,$cordovaPush,$http,$window,userService) {
   $ionicPlatform.ready(function() {
-      var device = $cordovaDevice.getDevice();
-
-    var cordova = $cordovaDevice.getCordova();
-
-    var model = $cordovaDevice.getModel();
-
-    var platform = $cordovaDevice.getPlatform();
-
-    var uuid = $cordovaDevice.getUUID();
-
-    var version = $cordovaDevice.getVersion();
-      alert("PLATFORM"+platform);
-      console.log("Filetransfer"+$cordovaFileTransfer);
-      alert("READY");
-      $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
+     
+     // alert("READY");
+     /* $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
   alert('Got token'+data.token+"Platform"+data.platform);
+          alert(JSON.stringify(data));
   $rootScope.token = data.token;          
   // Do something with the token
-});
+});*/
+      
+      
+      
+    var push = PushNotification.init({ "android": {"senderID": "235999860706"}} );
+
+    function registerPush()
+    {
+          push.on('registration', function(data) {
+       // alert("REGG"+JSON.stringify(data));
+        var mobileno = window.localStorage.getItem("mobile");
+       // alert("MOBILE"+mobileno);
+       
+        var pushdata = {mobileno:mobileno , deviceToken: data.registrationId};
+        userService.registerPush(pushdata).then(function(response){
+                //alert("RESP"+JSON.stringify(response));
+            });
+          });
+    }
+    
+
+    push.on('notification', function(data) {
+        alert("NOTIFICATION"+JSON.stringify(data));
+        alert("TITLE"+data.title);
+        // data.message,
+        // data.title,
+        // data.count,
+        // data.sound,
+        // data.image,
+        // data.additionalData
+    });
+      
+      
+   
+
+    push.on('error', function(e) {
+        // e.message
+        alert("ERROR"+JSON.stringify(e));
+    });
+      
+      
+      
+      
+      
+      
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     //Parse.initialize("bharat", "Ragav$12345");
@@ -59,15 +92,15 @@ bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cord
 
 bharat.config(['$ionicAppProvider', function($ionicAppProvider) {
   // Identify app
-    alert("Config Called");
-  $ionicAppProvider.identify({
+   // alert("Config Called");
+ /* $ionicAppProvider.identify({
     // The App ID (from apps.ionic.io) for the server
     app_id: '2483996b',
     // The public API key all services will use for this app
     api_key: '944de8f5d2876371d1bd8166639725638d4c21a5375e93b8',
     // Set the app to use development pushes
     dev_push: true
-  });
+  });*/
 }])
 
 bharat.config(function($stateProvider, $urlRouterProvider) {
