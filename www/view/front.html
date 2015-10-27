@@ -1,7 +1,7 @@
-<ion-view view-title="User Detail" ng-controller="userController">  
+<ion-view view-title="User Detail" ng-init="ifMobileExists()" ng-controller="userController">  
   <ion-content scroll="true">
      
-        <div class="banner">
+        <div class="banner" style="display:none">
                 <img src="img/slider.png"  alt="Slide Image Here" class="slider_image"/>
         </div>
       
@@ -10,38 +10,34 @@
         <div class="col text-center">
                 
 
-                    <img src="img/press.png"   onclick ="window.open('http://www.bharathration.com/we_view/index.php');" class="col-50"/>
+                   
           </div>
       </div>
-      <div class="row" style="margin-top:-8%">
-          <div class="col col-100">
-              <img src="img/snap.png" style="width:100%;height:70px" ng-click="captureImage()"/>
-              <img src="img/record.png" style="width:100%;height:70px" ng-click="captureAudio()"> 
-          </div>   
+      <div class="row" style="margin-top:3%">
+           
+          <div class="col col-25"></div>
+          <div class="col col-75">
+             <img src="img/snap1.png" style="width:65%;height:30%;margin-top:-10px"  ng-click="captureImage()"/> 
+          </div>
+          <div class="col col-25"></div>
       </div>
+       <div class="row">
+           <div class="col col-25"></div>
+          <div class="col col-75">
+                 <img src="img/6.png"  style="width:65%;height:30%;margin-top:-10px" onclick ="window.open('http://www.bharathration.com/we_view/index.php');" /> 
+             </div>
+          <div class="col col-25"></div>  
+      </div>      
+      <div class="row">
+           <div class="col col-25"></div>
+          <div class="col col-75">
+                  <img src="img/record1.png"  style="width:65%;height:30%;margin-top:-10px"  ng-click="captureAudio()">
+             </div>
+          <div class="col col-25"></div>  
+      </div>
+      <a href="#viewallorders" class="button button-full button-positive button-font vieworders">View Orders</a>
      
-     <div class="row payment-time">
-         <div class="col-67">
-             
-             <p class="heading-bordertime"><b>Available Delivery Time Slots</b></p>
-           <p>7:00AM - 9:00AM</p>
-           <p>11:00AM - 4:00PM</p>
-           <p>6:00PM - 9:00PM</p>
-         </div>
-         <div class="col-33">
-             <p class="heading-borderpay"><b>Payment Options</b></p>
-             <p>Cash On Delivery</p>
-             <p>Credit / Debit Card </p>
-           <p>Net Banking</p>
-         </div>
-      </div>
-      <div class="row userguide-div">
-      <div class="col">
-        <div class="title userguide"><a href="#userguide" style="color:white">User Guide</a></div>
-       </div>
-          </div>
-      <br/>
-      <br/>
+     
       
   </ion-content>
 </ion-view>

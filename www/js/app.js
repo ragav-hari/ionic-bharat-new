@@ -1,6 +1,6 @@
-var bharat = angular.module('bharat', ['ionic','ionic.service.core','ngCordova','ionic.service.push']);
+var bharat = angular.module('bharat', ['ionic','ionic.service.core','ngCordova','ionic.service.push','valdr']);
 
-bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup,$cordovaFileTransfer,$cordovaPush,$http,$window,userService) {
+bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup,$cordovaFileTransfer,$cordovaPush,$http,$window,userService,$cordovaProgress,$location,$ionicHistory) {
   $ionicPlatform.ready(function() {
      
      // alert("READY");
@@ -10,8 +10,10 @@ bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cord
   $rootScope.token = data.token;          
   // Do something with the token
 });*/
+     
       
-      
+          
+     $rootScope.HOSTURL = "http://www.cloudservices.ashinetech.com/Bharat/uploads/"; 
       
     var push = PushNotification.init({ "android": {"senderID": "235999860706"}} );
 
@@ -31,8 +33,7 @@ bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cord
     
 
     push.on('notification', function(data) {
-        alert("NOTIFICATION"+JSON.stringify(data));
-        alert("TITLE"+data.title);
+       
         // data.message,
         // data.title,
         // data.count,
@@ -90,6 +91,10 @@ bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cord
   });
 })
 
+bharat.constant('$ionicLoadingConfig', {
+  template: 'Please wait...<ion-spinner icon="spiral"></ion-spinner>'
+});
+
 bharat.config(['$ionicAppProvider', function($ionicAppProvider) {
   // Identify app
    // alert("Config Called");
@@ -102,6 +107,46 @@ bharat.config(['$ionicAppProvider', function($ionicAppProvider) {
     dev_push: true
   });*/
 }])
+
+
+
+
+
+
+bharat.config(function(valdrProvider) {
+  valdrProvider.addConstraints({
+    'addressdetails': {
+      'user_first_name': {
+        'required': {
+          'message': 'Name is required.'
+        }
+      },
+      'user_email': {
+           "email": {
+            "message": "Not a valid email address."
+          },
+          "required": {
+            "message": "The email is required."
+          }
+      },
+      'user_address1': {
+        'required': {
+          'message': 'Name is required.'
+        }
+      },
+      'user_pincode': {
+        'required': {
+          'message': 'Pincode is required.'
+        }
+      },
+      'user_landmark': {
+        'required': {
+          'message': 'Landmark is required.'
+        }
+      }    
+      }        
+    });
+});
 
 bharat.config(function($stateProvider, $urlRouterProvider) {
 
@@ -168,7 +213,61 @@ bharat.config(function($stateProvider, $urlRouterProvider) {
         controller: 'userController'
   })
   
+   .state('viewallorders',{
+       url: '/viewallorders',
+        templateUrl: 'view/viewallorders.html',
+        controller: 'userController'
+  })
  
-  $urlRouterProvider.otherwise('/landing');
+  .state('viewsingleorderdetail',{
+       url: '/viewsingleorderdetail',
+        templateUrl: 'view/viewsingleorderdetail.html',
+        controller: 'userController'
+  })
+ 
+  $urlRouterProvider.otherwise('/front');
 
+}).
+ run(function($rootScope,$location,$state,$ionicHistory) {
+    $rootScope.$on('$stateChangeStart', 
+function(event, toState, toParams, fromState, fromParams){ 
+        
+         console.log('toState.name: '+toState.name);
+        console.log('fromState.name: '+fromState.name);
+        
+        if((toState.name=="front")&&(fromState.name=="mobile"))
+        {
+         console.log("yes");
+         var a = window.localStorage.getItem("mobile");
+         console.log("mobile is" +a);
+         if(a)
+         {
+             
+         }
+         else
+         {  
+          //  console.log("mobile NOT set");
+            
+         //   alert("MOBILE NOT SET");
+          
+            event.preventDefault();
+             // $location.path('/mobile');
+         //  $state.go('mobile');
+         //  $state.go('mobile', { url:'/mobile'}); 
+                       
+             
+         }
+        }
+        
+        
+       
+  
+   
+});   
+  });
+
+bharat.directive('addressdetail', function() {
+  return {
+    templateUrl: '/view/addressdetails.html'
+  };
 });

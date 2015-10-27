@@ -18,7 +18,13 @@
           getOrderID : getOrderID,
           updateAddressDetails : updateAddressDetails,
           deleteOrderItemandUpdateorder : deleteOrderItemandUpdateorder,
-          registerPush : registerPush    
+          registerPush : registerPush,
+          getAllOrders : getAllOrders,
+          viewSingleOrderDetail : viewSingleOrderDetail ,
+          getAllDatas  : getAllDatas,
+          deleteImage  : deleteImage,
+          acceptOrder  : acceptOrder,
+          rejectOrder  : rejectOrder    
         };
         
          function  sendMobilenumber(datas)
@@ -39,12 +45,12 @@
         
         function sendMobilenumberResponse(mobileresponse)
         {
-         // alert("SUCCESS",JSON.stringify(mobileresponse));
+       
              return mobileresponse.data;
         }
         function sendMobilenumberError(err)
         {
-          //  alert("ERROR RESPONSE"+JSON.stringify(err));
+         
             return err;
        
         }
@@ -52,8 +58,6 @@
         
          function  verifyOtp(datas)
         {  
-           
-           // alert("CALLING"+JSON.stringify(datas));
             
               return $http({
                 method : 'POST',
@@ -66,21 +70,15 @@
         }
         function  verifyOtpResponse(otpresponse)
         {
-          alert("SUCCESS in service"+JSON.stringify(otpresponse));
              return otpresponse.data;
         }
         function  verifyOtpError(err)
         {
-            alert("ERROR"+JSON.stringify(err));
-       
-    
+            return err;
         }
         
          function  setPassword(datas)
-        {  
-           
-          //  alert("tttttttttttttttt"+JSON.stringify(datas));
-            
+        {   
               return $http({
                 method : 'POST',
                 data:datas,
@@ -92,22 +90,16 @@
         }
         function  setPasswordResponse(response)
         {
-          console.log("Pass INSERT SUCCESS"+JSON.stringify(response));
              return response.data;
         }
         function  setPasswordError(err)
         {
-            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
-       
-    
+            return err;
         }
         
          
          function   sendProfileData(datas)
-        {  
-           
-            console.log("tttttttttttttttt"+JSON.stringify(datas));
-            
+        {   
               return $http({
                 method : 'POST',
                 data:datas,
@@ -119,14 +111,11 @@
         }
         function   sendProfileDataResponse(response)
         {
-          console.log("Pass INSERT SUCCESS"+JSON.stringify(response));
              return response.data;
         }
         function   sendProfileDataError(err)
         {
-            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
-       
-    
+              return err;
         }
        
         function    getGiftandAmount()
@@ -147,11 +136,8 @@
         }
         function   GiftandAmountError(err)
         {  
-            
-            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
-       
+              return err;
         }
-        
         
         function   preloadData()
         {   
@@ -171,15 +157,13 @@
         }
         function   preloadDataError(err)
         {  
-            
-            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
+            return err;
        
         }
         
           function   fileUpload(datas)
         {  
-           
-            console.log("FFFF"+JSON.stringify(datas));
+
             
               return $http({
                 method : 'POST',
@@ -192,19 +176,16 @@
         }
         function  fileUploadResponse(response)
         {
-          console.log("Pass INSERT SUCCESS"+JSON.stringify(response));
              return response.data;
         }
         function   fileUploadResponse(err)
         {
-            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
-       
-    
+            return err;
         }
         
         function getUserPrefilledData(datas)
         {
-             alert("Service call of prefilled"); 
+           
             return $http({
                 method : 'POST',
                 data:datas,
@@ -215,13 +196,13 @@
         }
          function  PrefilledDataResponse(response)
         {
-         // alert("Prefilled data "+JSON.stringify(response));
              return response.data;
         }
         function   PrefilledDataError(err)
-        {
-            alert("ERROR IN PASSS Service"+JSON.stringify(err));
-    
+        {  
+        
+            return err;
+
         }
     
         
@@ -237,14 +218,12 @@
         }
         function   CustomerTypeResponse(response)
         {
-            alert("RRR"+JSON.stringify(response));
+      
              return response.data;
         }
         function   CustomerTypeError(err)
         {
-            alert("EEE"+JSON.stringify(err));
-            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
-       
+           return err;
         }
         
          function  createProfile(datas)
@@ -261,12 +240,12 @@
         }
         function  createProfileResponse(response)
         {
-       //   alert("SUCCESS in service"+JSON.stringify(otpresponse));
              return response.data;
         }
         function  createProfileError(err)
         {
-           alert("ERROR"+JSON.stringify(err));
+
+            return err;
         }
         
         
@@ -283,14 +262,12 @@
         }
         function   getOrderIDResponse(response)
         {
-            alert("RRR"+JSON.stringify(response));
              return response.data;
         }
         
         function   getOrderIDError(err)
         {
-            alert("EEE"+JSON.stringify(err));
-            console.log("ERROR IN PASSS Service"+JSON.stringify(err));
+              return err;
        
         }
         
@@ -325,6 +302,105 @@
                })
               .then(function(response){return response;})
               .catch(function(error){return error});
+        }
+        
+        function getAllOrders(data)
+        {
+             return $http({
+                 method : 'POST',
+                 url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/getallorders.php',
+                 data   : data 
+               })
+              .then(function(response){return response;})
+              .catch(function(error){return error;});
+        }
+        
+        function getAllOrdersForMobile(data)
+        {
+            return $http({
+                 method : 'POST',
+                 url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/getallordersformobile.php',
+                 data   : data 
+               })
+              .then(function(response){return response.data;})
+              .catch(function(error){return error;});
+        }
+        
+        function viewSingleOrderDetail(data)
+        {
+            return $http({
+                 method : 'POST',
+                 url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/viewSingleOrderDetail.php',
+                 data   : data 
+               })
+              .then(function(response){return response.data;})
+              .catch(function(error){return error});
+        }
+         function  getAllDatas(datas)
+        {          
+              return $http({
+                method : 'POST',
+                data:datas,
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/getAllDatas.php'
+              })
+              .then(getAllDatasResponse)
+              .catch(getAllDatasError);
+            
+        }
+        function  getAllDatasResponse(response)
+        {
+         
+             return response.data;
+        }
+        function getAllDatasError(err)
+        {
+            return err;
+           
+        }
+         function  deleteImage(datas)
+        {      
+            alert("called");
+            return $http({
+                method : 'POST',
+                data:datas,
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/deleteImages.php'
+              })
+              .then(deleteImageResponse)
+              .catch(deleteImageError);
+            
+        }
+        function  deleteImageResponse(response)
+        { 
+
+             return response.data;
+        }
+        
+        function deleteImageError(err)
+        {
+            return err;
+    
+        }
+        
+        function acceptOrder(datas)
+        {
+             return $http({
+                method : 'POST',
+                data:datas,
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/acceptorder.php'
+              })
+              .then(function(response){return response.data})
+              .catch(function(error){return error});
+        }
+        
+        function rejectOrder(datas)
+        {
+            return $http({
+                method : 'POST',
+                data:datas,
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/rejectorder.php'
+              })
+              .then(function(response){return response.data;})
+              .catch(function(error){return error;});  
         }
        
     }

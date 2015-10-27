@@ -1,8 +1,8 @@
 (function() {
-    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService','$ionicUser','$ionicPush','$cordovaNetwork','$ionicLoading','$cordovaPush',userController]);
+    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService','$ionicUser','$ionicPush','$cordovaNetwork','$ionicLoading','$cordovaPush','$cordovaProgress','$ionicHistory','$ionicLoading','$cordovaInAppBrowser','$state',userController]);
 
     function userController($q, $timeout, $scope, $cordovaCapture, $ionicModal, $cordovaEmailComposer, $cordovaCamera, $cordovaFile,
-        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService,$ionicUser,$ionicPush,$cordovaNetwork,$ionicLoading,$cordovaPush) {
+        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService,$ionicUser,$ionicPush,$cordovaNetwork,$ionicLoading,$cordovaPush,$cordovaProgress,$ionicHistory,$ionicLoading,$cordovaInAppBrowser,$state) {
         $scope.audio = [];
         $scope.image = [];
         $rootScope.imagedata = [];
@@ -11,7 +11,7 @@
         $rootScope.audiourl = "";
         $scope.user = {};
         $scope.attachments = [];
-        $scope.user.user_type = 1;
+       // $scope.user.user_type = 1;
         $rootScope.hasaudio = false;
         $rootScope.hasimage = false;
         $rootScope.size = 0;
@@ -28,8 +28,17 @@
         $scope.giftitems = [];
         $scope.giftdata = [];
         //$scope.user.amountval = 0;
+        $scope.user.amount = 0;
+        $scope.user.user_type = "1";
         $scope.usertypelists = [];
+        $scope.uploading = false;
         var options = {};
+        $scope.hideSubmit = [];
+        $scope.showSpinner = [];
+        $rootScope.image =[];
+        $rootScope.audios = [];
+        $scope.final_bool=false;
+        
         function checkConnection() {
     var networkState = navigator.connection.type;
             
@@ -54,39 +63,45 @@
         };
         
        
+        $scope.showLoading = function() {
+   
+           $ionicLoading.show(); 
+        };
+        $scope.hideLoading = function(){
+            $ionicLoading.hide();
+        };
 
         $scope.registerPush = function(mobileno)
         {
               push.on('registration', function(data) {
-                    alert("REGG"+JSON.stringify(data));
+                
                     window.localStorage.setItem("DEVICE_TOKEN",data.registrationId);      
-                   // var mobileno = window.localStorage.getItem("mobile");
-                    //alert("MOBILE"+mobileno);
-
+                  
                     var pushdata = {mobileno:mobileno , deviceToken: data.registrationId};
                     userService.registerPush(pushdata).then(function(response){
-                            alert("RESP"+JSON.stringify(response));
+                          
                         });
               });
         }
         
         $scope.ifMobileExists = function()
-        {
+        {   
+           
             var mobile=window.localStorage.getItem("mobile");
             if(mobile === null)
-            {
-                $location.path('/mobile');     
+            {   
+              
+                $location.path('/mobile');   
             }
             else
-            {
+            {   
                 $location.path('/front'); 
             }
         }
+       
         
+       
         
-        
-        
-
 
   // Identifies a user with the Ionic User service
  /* $scope.identifyUser = function() {
@@ -163,6 +178,19 @@ alert("Registering");
         
         */
         
+        $scope.checkSession = function()
+        {
+           var mobile=window.localStorage.getItem("mobile");
+            if(mobile === null)
+            {
+                $location.path('/mobile');   
+            }
+            else
+            {
+                $location.path('/front'); 
+            }
+     
+        }
 
         $ionicModal.fromTemplateUrl('attachment.html', {
             scope: $scope,
@@ -177,7 +205,62 @@ alert("Registering");
         $scope.closeAttachmentModal = function() {
             $scope.attachmentmodal.hide();
         };
+        
+        
+        $ionicModal.fromTemplateUrl('addressmodal.html', {
+            scope: $scope,
+            animation: 'slide-in-up',
+            backdropClickToClose: true
+        }).then(function(modal) {
+            $scope.addressattachmentmodal = modal;
+        });
+        $scope.openAddressAttachmentModal = function() {
+            
+           if(($rootScope.audiodata)||($rootScope.imagedata))
+           {
+             // alert("audio or image");
+            //  alert("audio"+$rootScope.audiodata);
+             // alert("image"+$rootScope.imagedata);
+              $scope.addressattachmentmodal.show();
+           }
+           else
+           { 
+              // alert("Please Select Files for Order");
+                $location.path('/front');
+                $scope.addressattachmentmodal.hide();
+             
+           }
+          
+          
+           
+        };
+        $scope.closeAddressAttachmentModal = function() {
+            $scope.addressattachmentmodal.hide();
+        };
 
+        
+        
+        
+        $scope.setDataSourceForAudioandImage = function(data,hasaudio,hasimage)
+        {
+            $rootScope.hasaudio = hasaudio;
+            $rootScope.hasimage = hasimage;
+       
+            if($rootScope.hasaudio)
+            {
+                $rootScope.audiodata.push(data);  
+                window.localStorage.setItem("AUDIO_DATA_STORAGE",$rootScope.audiodata);
+                window.localStorage.setItem("HAS_AUDIO",true);
+            }
+            else if($rootScope.hasimage)
+            {
+                $rootScope.imagedata.push(data);     
+                window.localStorage.setItem("IMAGE_DATA_STORAGE",$rootScope.removeImage);
+                window.localStorage.setItem("HAS_IMAGE",true);
+            }
+            else{alert("PLEASE PASS A VALID DATA");}
+      
+        }
 
         $scope.captureAudio = function() {
             var options = {
@@ -187,31 +270,46 @@ alert("Registering");
 
             $cordovaCapture.captureAudio(options).then(function(audioData) {
                 $rootScope.size += audioData[0].size;
-                if ($rootScope.size >= 10000000) {
+                if ($rootScope.size >= 10000000) 
+                {
                     alert("Size Exceeds the Max Limit");
                     $location.path('/front');
-                } else {
-                    $rootScope.audiodata.push(audioData[0]);
-                    $rootScope.hasaudio = true;
-                    window.localStorage.setItem("IMAGE_AUDIO_DATA",$rootScope.audiodata);
-                    window.localStorage.setItem("HAS_AUDIO",$rootScope.hasaudio);
-                     $scope.mobileno = window.localStorage.getItem("mobile");
-                     $scope.getOrderId($scope.mobileno);
-                   // $scope.mobileno = window.localStorage.getItem("mobile");
-                  //    $scope.getOrderId($scope.mobileno);
+                } 
+                else 
+                {
+                     $scope.showuploading();
+                      $scope.mobileno = window.localStorage.getItem("mobile");
+                      var data = {"user_mobileno":$scope.mobileno};
+                      userService.getOrderID(data).then(function(response){   
+                     
+                          if(response[0].status === "Success")
+                          {
+                                window.localStorage.setItem("order_id",response[0].order_id);  
+                                $scope.file_type = "audio";
+                                $scope.neworderid = response[0].order_id;
+                                $scope.setDataSourceForAudioandImage(audioData[0],true,false);
+                                $scope.uploadData(audioData[0].fullPath,$scope.file_type,$scope.neworderid);
+                                $scope.setAllAudio(audioData[0].fullPath);   
+                          }
+                          else
+                          {
+                                window.localStorage.setItem("order_id","");   
+                                $location.path('/front');
+                          }                          
+                       });     
                     $location.path('/bharat');
                 }
             }, function(err) {
-                // $location.path('/front');
-                alert("ERROR AUDIO"+JSON.stringify(err));
-            });
-            // $scope.modal.hide();   
+               
+            });  
              
             $location.path('/bharat');
 
         }
 
         $scope.captureAudioModal = function() {
+            
+           
             var options = {
                 limit: 1,
                 duration: 10
@@ -224,9 +322,12 @@ alert("Registering");
                     alert("Size Exceeds the Max Limit");
                     $scope.attachmentmodal.hide();
                 } else {
-                    $rootScope.audiodata.push(audioData[0]);
+                     $scope.file_type = "audio";
+                    $scope.neworderid = window.localStorage.getItem("order_id");  
+                    $scope.uploadData(audioData[0].fullPath,$scope.file_type,$scope.neworderid);
+                    $scope.setDataSourceForAudioandImage(audioData[0],true,false);
+                    $scope.setAllAudio(audioData[0].fullPath);
                     $rootScope.hasaudio = true;
-                    window.localStorage.setItem("IMAGE_AUDIO_DATA",$rootScope.audiodata);
                     window.localStorage.setItem("HAS_AUDIO",$rootScope.hasaudio);
                     $location.path('/bharat');
                 }
@@ -268,11 +369,11 @@ alert("Registering");
                   $rootScope.hasimage = true;
                   window.localStorage.setItem("IMAGE_AUDIO_DATA",$rootScope.imagedata);
                   window.localStorage.setItem("HAS_IMAGE",$rootScope.hasimage);
+                 var i=window.localStorage.getItem("HAS_IMAGE");
+                 
 
              }, function(err) {
-                    // error'
-                 
-                 alert("ERROR"+JSON.stringify(err));
+                
              });
             $cordovaCamera.cleanup().then(success,failure); // only for FILE_URI
                                             
@@ -287,26 +388,22 @@ alert("Registering");
             var trustAllHosts=true;
             var options = {};
            
-           // alert("FILE"+filePath);
+           
              $cordovaFileTransfer.upload('fileupload',filePath, options,trustAllHosts)
                   .then(function(result) {
                     console.log("success");
-                    //alert("sssssss");
-                    //alert("RES"+JSON.stringify(result));
+                
                   }, function(err) {
                  console.log("Error");
-                    //alert("fffff");
-                    //alert("ERR"+JSON.stringify(err));
-                   
+                 
                   }, function (progress) {
-                 //console.log("progress");
-                 //alert("proeeeeeeeeeeeeeeg");
+                 
                  $timeout(function () {
-                     //alert("prog");
+                    
           $scope.downloadProgress = (progress.loaded / progress.total) * 100;
         })
                  
-                    //alert(JSON.stringify(result));
+                 
                   });
 
             
@@ -325,7 +422,7 @@ alert("Registering");
                  $rootScope.imagedata.push(results[i]);
               }
             }, function(error) {
-            //  alert(JSON.stringify(error));
+           
             });
             $scope.attachmentmodal.hide();
         }
@@ -333,7 +430,7 @@ alert("Registering");
         $scope.selectimage = function() {
 
             if ($rootScope.size >= 10000000) {
-                   // alert("Size Exceeds the Max Limit");
+                 
                     $location.path('/bharat');
                 } else {
                 
@@ -352,15 +449,20 @@ alert("Registering");
 
                                 $rootScope.size += $scope.tempsizeimage;
                                  if ($rootScope.size >= 10000000) {
-                                //    alert("Size Exceeds the Max Limit");
+                             
                                     $scope.attachmentmodal.hide();
                                     } else {
                                 $rootScope.imagedata.push(success.toURL());
                                 window.localStorage.setItem("IMAGE_AUDIO_DATA",$rootScope.imagedata);
+                                        $scope.file_type="image";
+                                        $scope.neworderid = window.localStorage.getItem("order_id");  
+                                        $scope.uploadData(success.toURL(),$scope.file_type,$scope.neworderid);
+                                        $scope.setAllImage(success.toURL());
                                         $scope.attachmentmodal.hide();
                                     }
                             }, function(error) {
-                                //alert("Please attach Valid File"+JSON.stringify(error));
+                                
+                            
                             });
                     }
                     if (!$scope.$$phase) {
@@ -433,6 +535,46 @@ alert("Registering");
                  
             }
         }
+        
+        
+         $scope.audioPlayFromURL = function(uri,$index) {
+
+            var src = uri;
+            
+            var media_playing = "";
+            var media_toplay = "";
+           
+       
+            if($rootScope.audiourl == "")
+            {
+                media_playing = new Media(src,function() {},function(err) {}); //play audio
+                $scope.audioicon = "ion-stop customIcon";
+                $rootScope.audiourl = media_playing;
+                $scope.audioplay(media_playing,src); 
+               // $scope.audioicon = "ion-play customIcon";
+            }
+            else
+            {
+                if($rootScope.audiourl.src == src)
+                {
+                  //  $scope.audioicon = "ion-play customIcon";
+                    $scope.audiostop($rootScope.audiourl);
+                    $rootScope.audiourl = "";
+                }
+                else
+                {
+                    $scope.audiostop($rootScope.audiourl);
+                 //   $scope.audioicon = "ion-stop customIcon";
+                    media_toplay = new Media(src,function() {},function(err) {}); 
+                    $rootScope.audiourl = media_toplay;
+                 
+                    $scope.audioplay(media_toplay,src); // new media playing
+                  //  $scope.audioicon = "ion-play customIcon";
+                }
+               
+                 
+            }
+        }
 
         $scope.removePlayAudio = function(url)
         {
@@ -443,7 +585,7 @@ alert("Registering");
         }
         
         $scope.audioplay = function(media,uri){
-           alert("play");
+          
             
             media.play();
             $scope.audioicon = " ";
@@ -463,46 +605,81 @@ alert("Registering");
         
        
         
-        $scope.captureImage = function() {
+ $scope.captureImage = function() {
+       
             var options = {limit: 1,quality: 0,height:50,width:50};
-          //   alert("inside captureimage function");
             $cordovaCapture.captureImage(options).then(function(imageData) {
                 $rootScope.size += imageData[0].size;
-                if ($rootScope.size >= 10000000) {
+                if ($rootScope.size >= 10000000) 
+                {
                     alert("Size Exceeds the Max Limit");
-                    $location.path('/front');
-                    
-                } else {
-                  //  for(var i = 0 ; i < 4 ; i++)
-                    //    {
-                             $rootScope.imagedata.push(imageData[0].fullPath);
-                             $rootScope.hasimage = true;
-                             
-                      //  }
-                
-                 //  $scope.openCamera($rootScope.imagedata);
-                 //  alert("image data"+JSON.stringify($rootScope.imagedata));
-                    
-                    
-                    $scope.mobileno = window.localStorage.getItem("mobile");
-                    
-                     $scope.getOrderId($scope.mobileno);
-                    
+                    $location.path('/front'); 
+                } 
+                else 
+                {
+                      $scope.showuploading();
+                      $scope.mobileno = window.localStorage.getItem("mobile");
+                      var data = {"user_mobileno":$scope.mobileno};
+                      userService.getOrderID(data).then(function(response){   
+                          if(response[0].status === "Success")
+                          {
+                                window.localStorage.setItem("order_id",response[0].order_id);  
+                                $scope.file_type = "image";
+                                $scope.neworderid = response[0].order_id;
+                                $scope.setDataSourceForAudioandImage(imageData[0].fullPath,false,true);
+                                $scope.uploadData(imageData[0].fullPath,$scope.file_type,$scope.neworderid);
+                                $scope.setAllImage(imageData[0].fullPath);     
+                          }
+                          else
+                          {
+                                window.localStorage.setItem("order_id","");   
+                                $location.path('/front');
+                          }                          
+                       });  
                 }
-                
-                
-
             }, function(err) {
-                alert("CAMERA ERROR"+JSON.stringify(err));
                 $location.path('/front');
             });
-            //$scope.modal.hide();   
-           //  alert("image data"+$rootScope.imagedata);
             $location.path('/bharat');
-           //  $scope.openCamera(imageData);
+ }
 
-        }
-
+        
+        
+       /* $scope.captureImage = function() {
+                     $scope.mobileno = window.localStorage.getItem("mobile");
+                         
+                      var data = {"user_mobileno":$scope.mobileno};
+                      alert("DATA"+JSON.stringify($scope.data));
+                      userService.getOrderID(data).then(function(response){
+                          alert("RESP"+JSON.stringify(response));    
+                          if(response[0].status === "Success")
+                          {
+                                window.localStorage.setItem("order_id",response[0].order_id);  
+                                $scope.file_type = "image";
+                                $scope.neworderid = response[0],order_id; 
+                                alert("NEW ORDER ID"+$scope.neworderid); 
+                                $scope.setDataSourceForAudioandImage(imageData[0].fullPath,false,true);
+                                $scope.uploadData(imageData[0].fullPath,$scope.file_type,$scope.neworderid);
+                                $scope.setAllImage(imageData[0].fullPath); 
+                                
+                          }
+                          else
+                          {
+                                window.localStorage.setItem("order_id","");   
+                                //alert("Failue");
+                                $location.path('/front');
+                          }
+                       }); 
+            
+            $scope.mobileno = window.localStorage.getItem("mobile");
+            alert("MOBILE"+$scope.mobileno);
+            var data = {}
+            userService.getOrderID(data).then(function(response){
+                alert("RESPONSE"+JSON.stringify(response));
+            }
+        }*/
+        
+        
         $scope.openCamera = function(imageData) {
 
             var r = confirm("Do you want to add more photos");
@@ -538,7 +715,11 @@ alert("Registering");
                 } else {
                    //  for(var i = 0 ; i < 4 ; i++)
                      //   {
+                    $scope.file_type = "image";
+                    $scope.neworderid = window.localStorage.getItem("order_id");  
+                    $scope.uploadData(imageData[0].fullPath,$scope.file_type,$scope.neworderid);
                     $rootScope.imagedata.push(imageData[0].fullPath);
+                    $scope.setAllImage(imageData[0].fullPath);
                     $rootScope.hasimage = true;
                    
                        // }
@@ -551,37 +732,63 @@ alert("Registering");
             $scope.attachmentmodal.hide();
         }
 
-        $scope.removeImage = function(index) {
+        //todo
+        $scope.removeImage = function(index,data) {
+            $scope.showLoading();
             $scope.tempsize = $rootScope.size;
             $rootScope.size -= getfileSize($rootScope.imagedata[index]);
             $rootScope.imagedata.splice(index, 1);
+           
+               $scope.setID(data);
+        }
+        $scope.setID  = function(data)
+        {
+            var filename = data.substr(data.lastIndexOf('/') + 1);
+            var order_id = window.localStorage.getItem("order_id");
+            var data1 ={"file":filename,"order_id":order_id};
+            
+           userService.deleteImage(data1).then(DeleteResponse);
+            function DeleteResponse(resp)
+            {
+                $scope.hideLoading();
+                
+            }
         }
 
-        $scope.removeAudio = function(index) {
+        $scope.removeAudio = function(index,data) {
             $scope.tempsize = $rootScope.size;
             $scope.removePlayAudio($rootScope.audiodata[index]);
-          //  alert(JSON.stringify($rootScope.audiodata[index]));
+          
             $rootScope.size -= $rootScope.audiodata[index].size;
             $rootScope.audiodata.splice(index, 1);
+              $scope.setIdAudio(data);
+        }
+        $scope.setIdAudio = function(data)
+        {
+            var filename = data.name;
+            var order_id = window.localStorage.getItem("order_id");
+            var data1 ={"file":filename,"order_id":order_id};
+            
+           userService.deleteImage(data1).then(DeleteResponse);
+            function DeleteResponse(resp)
+            {
+                $scope.hideLoading();
+            }
         }
 
         function deletefile(fileEntry) {
-            console.log(fileEntry);
             fileEntry.remove(success, fail);
         }
 
         function success(entry) {
-            console.log("Removal succeeded");
+    
         }
 
         function fail(error) {
-            console.log("Error removing file: " + error.code);
         }
-
         $scope.getusertype = function() {
             
-            //alert("Get user type called");
-            //alert("usertype id is"+$scope.user.user_type);
+       
             if ($scope.user.user_type== 2) {
                 $scope.usertypedata = true;
             } else {
@@ -593,37 +800,29 @@ alert("Registering");
             $scope.zoomimage = url;
             $scope.modal.show();
         }
+/*  
+        $scope.onchagevalidation = function() 
+        {
+             if ($scope.user.user_type)
+             {
 
-        $scope.onchagevalidation = function() {
-            if ($scope.user.user_first_name == null) {
-                $scope.error_message1 = "please type your name";
-
-            } else {
-
-                $scope.error_message1 = "";
+                $scope.usertype_eror = " ";
             }
-
-            if ($scope.user.user_mobile == null) {
-                $scope.error_message2 = "please type your mobile number";
-
-            } else {
-
-                $scope.error_message2 = " ";
+            else 
+            {
+               $scope.usertype_eror = "please select user type";
+                
             }
-            if ($scope.user.user_type == null) {
+            if ($scope.user.user_type == 2 && $scope.user.dealer_code == null)
+            {
 
-                $scope.error_message3 = "please select user type";
-            } else {
+                $scope.dealercode_error = "please enter dealer code";
 
-                $scope.error_message3 = " ";
             }
-            if ($scope.user.user_type == 2 && $scope.user.dealer_code == null) {
+            else
+            {
 
-                $scope.error_message4 = "please enter dealer code";
-
-            } else {
-
-                $scope.error_message4 = " ";
+                $scope.dealercode_error = " ";
             }
         }
 
@@ -670,27 +869,28 @@ alert("Registering");
 
             }
         }
+        */
         
-        $scope.getUserPrefilledData = function()
+        /*$scope.getUserPrefilledData = function()
         {
 
             var mobile=window.localStorage.getItem("mobile");
             var data = {"user_mobileno":mobile};
             userService.getUserPrefilledData(data).then(function(response){
-             //   alert("RESP"+JSON.stringify(response));
+               alert("RESP"+JSON.stringify(response));
             });
-        }
+        }*/
 
         $scope.sendEmail = function() {
             
-          //alert("SEND EMAIL CALLED");
+        
             for(var i = 0 ; i < $rootScope.audiodata.length ; i++)
             {
                       $rootScope.aud.push($rootScope.audiodata[i].fullPath);
             }
            
             $scope.attachments = $rootScope.imagedata.concat($rootScope.aud);
-         //   alert("AUDIO"+JSON.stringify($rootScope.audiodata));
+       
 
             if ($scope.user.user_type == 1) {
                 $scope.user.user_type = "Bharat Ration Direct Customer";
@@ -752,13 +952,13 @@ alert("Registering");
             };
 
             $cordovaEmailComposer.isAvailable().then(function() {
-                //alert("EMAIL Available");
+               
             }, function() {
-                // alert("EMAIL Not Available");
+              
             });
 
             $cordovaEmailComposer.open(email).then(null, function() {
-                // alert("EMAIL OPEN");
+               
             });
         }
         
@@ -772,51 +972,83 @@ alert("Registering");
            
             $scope.attachments = $rootScope.imagedata.concat($rootScope.aud);
             
-            $rootScope.showuploading();
+            $scope.hideSubmit[count] = true;
+            //$scope.showSpinner[count] = true;
+            //console.log("SHOWSPINNER"+$scope.showSpinner[count]+"COunt"+count);
             $scope.uploadData($scope.attachments[count]);
-            $rootScope.hideuploading();
+            //$scope.showSpinner[count] = false;
         }
         
         
-        $scope.uploadData = function(data)
+        $scope.uploadData = function(data,type,order_id)
         {
             
+            /*    var hasaudio = window.localStorage.getItem("HAS_AUDIO");
+              var hasimage = window.localStorage.getItem("HAS_IMAGE");
+            
+               if(hasaudio)
+               {
+                 $scope.file_type="audio"; 
+               }
+               if(hasimage)
+               {
+                $scope.file_type="image";    
+                   
+               }
+               */
+         
+           // $cordovaProgress.showSimple(true);
             var params = {};
-            var order_id = window.localStorage.getItem("order_id");
+            
             params.order_id = order_id;
-            //alert("OID"+order_id);
-            //alert("DATA"+JSON.stringify(data));
-            //alert(JSON.stringify(params));
-          //  params = {"order_id":$scope.order_id};
+            params.filetype = type;
+            
             var filePath = data;
             var filename = filePath.substr(filePath.lastIndexOf('/') + 1);
-            //alert("FILEPATH"+filename);
+           
              var options = {
                 fileKey: "uploadedfile",
                 fileName : filename,
                 params :  params,
                 httpMethod : "POST" 
             };
-            
-            
+             
+             
+            $scope.showuploading();
             var server   =  "http://cloudservices.ashinetech.com/Bharat/service/uploadfile.php";
              $cordovaFileTransfer.upload(server,filePath,options)
             .then(function(result) {
-                
-               // alert("RESULT"+JSON.stringify(result));
+               
+              
+                $scope.hideuploading();
+                 
             }, function(err) {
-             //   alert("ERROR"+JSON.stringify(err));
-            }, function (progress) {
-               // alert("PROGRESS"+JSON.stringify(progress));
-                 $scope.progress = Math.round((progress.loaded/progress.total) * 100);
+                
+                 $scope.hideuploading();
+                
+            }, function(progress) {
+             
+                $scope.progressval = Math.round((progress.loaded/progress.total) * 100);
+                
              });
-           // alert("COMPLETE");
+        
          
         }
-
+        $scope.getORDERID1 =function()
+        {
+               var order_id1 = window.localStorage.getItem("order_id");
+               var oid = {"order_id":order_id1};
+            
+               userService.getAllDatas(oid).then(getdataResponse);
+               function getdataResponse(resp)
+               {
+                    window.localStorage.setItem("final_data",JSON.stringify(resp));
+               }
+            
+        }
 
         $window.openlink = function(url) {
-            alert(url);
+      
             window.open(url, '_system');
         }
         
@@ -834,23 +1066,24 @@ alert("Registering");
                 }
             else
                 {
-                    
+                    $scope.showLoading();
                     userService.sendMobilenumber($scope.user).then(sendMobilenumberres);
                     function sendMobilenumberres(responsedata)
                     {
                         
-                        //alert("DATASSS"+JSON.stringify(responsedata));
-                        //alert("SSS"+responsedata.staus);
+                      
                         if(responsedata.status=="Success")
                             {
                                
                                 $location.path('/otp');
+                                $scope.hideLoading();
                             }
                         else
                             {
                                 
                             }
                     }
+                   
                     
                 }
            
@@ -861,7 +1094,8 @@ alert("Registering");
            console.log("hi2"+$scope.user.pass);
          }
           $scope.validateOtp=function()
-         { 
+         {     
+                
                 $scope.ermessage = " ";
                if($scope.user.user_otp == undefined)
                    {
@@ -873,37 +1107,35 @@ alert("Registering");
                      var mobile=window.localStorage.getItem("mobileno");
                       var data={"user_otp":$scope.user.user_otp,"user_mobileno":mobile}
                       $scope.ermessage=" ";
-                      
+                      $scope.showLoading();
                     userService.verifyOtp(data).then(validateOtpres);
                     function validateOtpres(responsedata)
                     {
                       
-                        //alert("DAT success in controller"+responsedata.status);
+                       
                         if(responsedata.status === "Success")
-                            {
-                                //alert("MOB"+mobile);
+                            {  $scope.hideLoading();
+                               
                                 window.localStorage.setItem("mobile",mobile);
                                 
                                 var push = PushNotification.init({ "android": {"senderID": "235999860706"}} ); 
                                 push.on('registration', function(data) {
-                                    //alert("REGG"+JSON.stringify(data));
+                                   
                                     window.localStorage.setItem("DEVICE_TOKEN",data.registrationId);      
-                                   // var mobileno = window.localStorage.getItem("mobile");
-                                    //alert("MOBILE"+mobileno);
-
+                                 
                                     var pushdata = {mobileno:mobile , deviceToken: data.registrationId};
                                     userService.registerPush(pushdata).then(function(response){
-                                           // alert("RESP"+JSON.stringify(response));
+                                          
                                     });
                                 });
                                 
-                                //alert("SUCCESS");
+                              
                                $location.path('/front');  
                             }
                         else
                             {
-                                //alert("Failed to verify the code");
-                                //$location.path('/front');  
+                            
+                            
                             }
                     }
                     
@@ -958,7 +1190,7 @@ alert("Registering");
             function customerTypeResponse(response)
              {
                  $scope.usertypelists = response;    
-                 // alert("Json is"+JSON.stringify($scope.usertypelists));
+               
               
               }
 
@@ -978,40 +1210,128 @@ alert("Registering");
               {
                  $rootScope.imagedata.push(window.localStorage.getItem("IMAGE_AUDIO_DATA"));    
                   $rootScope.hasimage = true;
+                
               }
           }
           
           $scope.loadData = function()
-          {    
-             $scope.user.user_mobileno=window.localStorage.getItem("mobile");
+          {   
+              
+              $scope.user.user_mobileno = window.localStorage.getItem("mobile");
+              $scope.final_data = window.localStorage.getItem("final_data");
+            
               if(checkConnection() != "none")
                   {
+                      $scope.showuploadingover();
                       var data = {"user_mobileno":$scope.user.user_mobileno};
+                      $scope.neworderid = window.localStorage.getItem("order_id");
+                      var order_data = {"order_id":$scope.neworderid};
+                      
                       userService.preloadData().then(preloadResponse);
                       userService.getUserPrefilledData(data).then(userPreloadResponse);
-                     
+                     // userService.getAllDatas(order_data).then(getdataResponse);
                   }
               else
                   {
                       alert("Internet Disconnected");
-                      $location.path('/front'); 
+                      $location.path('/bharat'); 
                   }
+              
+              
+            
+             function getdataResponse(response)
+             {
+                 $scope.imageaudiodata = [];
+
+                 if(response[0].status === "success")
+                 {
+                    if(response[0].item_type === "image")
+                    {
+                        $scope.imagedatas = true;
+                        $scope.audiodatas  = false;
+                    }
+                    else
+                    {
+                       $scope.imagedatas  = false;
+                       $scope.audiodatas  = true;    
+                    }
+                    $scope.imageaudiodata = response;     
+                 }
+                 else
+                 {
+                     $scope.imageaudiodata = [];
+                 }
+             }
               
              function userPreloadResponse(response)
               {
-                 //alert("PRERESPONSE"+JSON.stringify(response));  
+                 // $scope.user.user_type=1;
+                  /*
+                 
                  $scope.user.user_first_name = response.user_first_name;
                  $scope.user.user_email = response.user_email;
                  $scope.user.user_address1 = response.user_address;  
                  $scope.user.user_type = response.user_type;
                  $scope.user.user_pincode = response.user_pincode;
-                 $scope.user.user_landmark = response.user_landmark;         
+                 $scope.user.user_landmark = response.user_landmark;   
+                 */
+        
+                  if(response.user_first_name)
+                  {
+                     $scope.user.user_first_name = response.user_first_name;  
+                  }
+                  else
+                  {
+                       $scope.user.user_first_name =" ";
+                  }
+                   if(response.user_email)
+                  {
+                       $scope.user.user_email = response.user_email; 
+                  }
+                  else
+                  {
+                     $scope.user.user_email =" ";
+                  }
+                   if(response.user_address)
+                  {
+                          $scope.user.user_address1 = response.user_address;  
+                  }
+                  else
+                  {
+                     $scope.user.user_address1 =" ";
+                  }
+                  if(response.user_type)
+                  {
+                               $scope.user.user_type = response.user_type;
+                  }
+                  else
+                  {
+                          $scope.user.user_type = " ";
+                  }
+                  if(response.user_pincode)
+                  {
+                               $scope.user.user_pincode = response.user_pincode;
+                  }
+                  else
+                  {
+                         $scope.user.user_pincode = " ";
+                  }
+                   if(response.user_landmark)
+                  {
+                                  $scope.user.user_landmark = response.user_landmark;   
+                  }
+                  else
+                  {
+                            $scope.user.user_landmark = " ";   
+                  }
+                 // $scope.hideLoading();  
+                  $scope.hideuploadingover();
               }
                
               function preloadResponse(response)
               {
                 
-                 $scope.user.country_id=response.country_id;
+                 /*$scope.user.country_id=response.country_id;
                  $scope.user.country_name=response.country_name;
                 
                   $scope.user.state_id=response.states[0].state_id;
@@ -1029,9 +1349,9 @@ alert("Registering");
                  $scope.user.city = window.localStorage.getItem("city"); 
                 $scope.user.user_pincode = window.localStorage.getItem("user_pincode"); 
                 $scope.user.user_landmark = window.localStorage.getItem("user_landmark"); 
-                  
+                  */
               //  $scope.user.user_type = window.localStorage.getItem("user_type"); 
-           // alert("USER"+JSON.stringify($scope.user));
+         
               }
               
               userService.getGiftandAmount().then(GiftResponse);
@@ -1039,7 +1359,6 @@ alert("Registering");
               {
 
                   $scope.amountinfo = response;
-                 // alert("AMT"+ JSON.stringify($scope.amountinfo));
                  // $scope.amount.amount_range = $scope.amountinfo.amount_from+"-"+$scope.amountinfo.amount_to;
                   window.localStorage.setItem("amountData",JSON.stringify(response));
                   
@@ -1072,7 +1391,6 @@ alert("Registering");
          {
               $scope.finalGift=data;
               $scope.selected = $index;
-            // alert("GIFT"+JSON.stringify(data[$index]));
              $scope.user.giftdatas = data[$index].gift_id;
            window.localStorage.setItem("giftname",$scope.finalGift);     
           
@@ -1101,27 +1419,19 @@ alert("Registering");
                   "user_email":$scope.user.user_email,
                   "user_mobileno":mobile
               };
-               
-              // alert("LOL"+data);
-              //    alert("LOL333"+JSON.stringify(data));
-               
+                          
               userService.createProfile(data).then(createProfileResponse);
                function createProfileResponse(response)
                {
-                //  alert("THEEEE RESPONSE"+JSON.stringify(response));
-                   
-                    
-                               
-                                $location.path('/front');
-                       
-                   
+            
+                 $location.path('/front');
                }
                
                
            }
           $scope.updateProfile=function()
           { 
-              // alert("inside update pro");
+            
               if($scope.user.user_first_name==undefined)
                    {
                           $scope.ermessage="First Name Required ";
@@ -1197,7 +1507,7 @@ alert("Registering");
                     ,"user_email":$scope.user.user_email,"user_address1":$scope.user.user_address1,"user_address2":$scope.user.user_address2,"user_country":$scope.user.country_id,"user_state":$scope.user.state_id,"user_city":$scope.user.city.city_id,
                     "user_pincode":$scope.user.user_pincode,"user_landmark":$scope.user.user_landmark}
            console.log("user data"+data);
-           // alert("user data"+data);
+         
            userService.sendProfileData(data).then(sendDataResponse);
               
               function sendDataResponse(response)
@@ -1230,63 +1540,384 @@ alert("Registering");
           
           $scope.getOrderId = function(mobileno)
           {
-              //var order_id = window.localStorage.getItem("order_id");
               var data = {"user_mobileno":mobileno};
-              $scope.createOrderID(data);   
+              return $scope.createOrderID(data);   
           }
           
           
           $scope.createOrderID = function(data)
-          {
+          {    
               userService.getOrderID(data).then(function(response){
-                        //alert("RESP"+JSON.stringify(response)); 
-                        
-                        window.localStorage.setItem("order_id",response.order_id);
-                        $scope.order_id = response.order_id;
-                    });  
+                  
+                        if(response[0].status === "Success")
+                        {
+                            window.localStorage.setItem("order_id",response[0].order_id);  
+                            $scope.status = true;
+                        }
+                        else
+                        {
+                            window.localStorage.setItem("order_id","");   
+                            $scope.status = false;
+                        }
+                        return $scope.status;
+              });  
           }
           
           $scope.getWordFromNumber = function(number)
           {
-              //alert("Number"+number);
+              
               $scope.wordfromnumber =  convertNumbertoWord(number);
-              //alert("Word"+$scope.wordfromnumber);
+        
           }
           
           
-          $rootScope.showuploading = function() {
+          $rootScope.showuploading= function() {
             $ionicLoading.show({
-              template: 'Uploading Please Wait...'
+              template: 'Uploading file please wait'
             });
           };
           $rootScope.hideuploading = function(){
             $ionicLoading.hide();
           };
+        $rootScope.showuploadingover= function() {
+            $ionicLoading.show({
+              template: 'Uploading File Completed '
+            });
+          };
+          $rootScope.hideuploadingover = function(){
+            $ionicLoading.hide();
+          };
         
           $scope.addAddressDetail = function()
           {
+              
+            $scope.showLoading();
               $scope.user_order_id =  window.localStorage.getItem("order_id"); 
               if($scope.user_order_id  == 0){alert("Invalid Order"); location.path("/bharat");}
-              //alert("USER"+JSON.stringify($scope.user));
+            
               
               var data = {"user_order_id":$scope.user_order_id,"user_mobileno":$scope.user.user_mobileno,"user_first_name":$scope.user.user_first_name,"user_email":$scope.user.user_email,"user_address":$scope.user.user_address1,"user_pincode":$scope.user.user_pincode,"user_landmark":$scope.user.user_landmark,"user_account_type":$scope.user.user_type,"user_dealercode":$scope.user.dealer_code,"user_comments":$scope.user.user_comments,"user_amount_range":$scope.user.amount,"user_gift":$scope.user.giftdatas};
               
               userService.updateAddressDetails(data).then(function(response){
-                 //alert("RESP"+JSON.stringify(response)); 
                   localStorage.removeItem("order_id");
                   if(response.data.status == "Success")
                   {
-                    alert("Your order has been successfully placed");      
+                    $ionicHistory.clearHistory();
+                    $ionicHistory.clearCache(); 
+                      $rootScope.imagedata=[];
+                      $rootScope.audiodata=[];
+                      window.localStorage.setItem("IMAGE_AUDIO_DATA"," ");
+                      window.localStorage.setItem("AUDIO_DATA_STORAGE"," ");
+                      window.localStorage.setItem("HAS_AUDIO"," ");
+                      window.localStorage.setItem("IMAGE_DATA_STORAGE"," ");
+                      window.localStorage.setItem("HAS_IMAGE"," ");
+                      window.localStorage.setItem("order_id",""); 
+                      window.localStorage.setItem("IMG"," ");
+                      window.localStorage.setItem("AUD"," ");
+                      $scope.hideLoading();
+                    alert("Your order has been successfully placed"); 
+                     $scope.addressattachmentmodal.hide();
                     $location.path('/front');   
                   }
                   else
                   {
-                    alert("Order placing failed please try again");      
+                      $scope.hideLoading();
+                    alert("Order placing failed please try again"); 
+                  
+                   // $location.path('/front');   
                   }
               });
           }
+          
+          $scope.getAllOrders = function()
+          {
+              $scope.showLoading();
+              $scope.allorder = [];
+              var data = {"user_mobileno":window.localStorage.getItem('mobile')};
+             // alert("DATA"+JSON.stringify(data));
+              userService.getAllOrders(data).then(function(response){
+                    $scope.allorders = response.data;   
+                    $scope.hideLoading(); 
+              });
+          }
+          
+          $scope.viewSingleOrderDetail = function(orderid)
+          {
+              $scope.showLoading();
+              userService.viewSingleOrderDetail({"order_id":orderid}).then(function(response){
+                $scope.singleorder = response;
+                  window.localStorage.setItem("singleorder",JSON.stringify($scope.singleorder));
+                  $scope.hideLoading();
+                  $location.path('/viewsingleorderdetail');  
+              });
+              
+          }
+          
+          $scope.acceptOrder = function(orderid)
+          {
+               $scope.showLoading();
+              var data = {"order_id":orderid};
+              userService.acceptOrder(data).then(function(response){
+                   $scope.hideLoading();
+                   $location.path('/viewallorders');  
+              });
+          }
+          
+          $scope.rejectOrder = function(orderid)
+          {
+               $scope.showLoading();
+              var data = {"order_id":orderid};
+              userService.rejectOrder(data).then(function(response){
+                   $scope.hideLoading();
+                  $location.path('/viewallorders');  
+              });
+          }
+          
+          $scope.singleorderpage = function()
+          {
+               $scope.showLoading();
+              $scope.singleorder = [];
+              var response = JSON.parse(window.localStorage.getItem("singleorder"));  
+                if(response === "null" || response === null)
+                {  
+                   $scope.noorders = true;    
+                   $scope.singleorderstatus = false;   
+                   $scope.invoiceoption = false;    
+                }
+                else
+                {
+                      if(response[0].Status === "Success")
+                      {
+                           $scope.singleorder = response;
+                           $scope.singleorderstatus = true;    
+                           if(response[0].order_status === "106")
+                           {
+                               $scope.invoiceoption = true;    
+                           }
+                           else
+                           {
+                               $scope.invoiceoption = false;       
+                           }
+                      }
+                      else
+                      {
+                            $scope.singleorder = [];
+                            $scope.singleorderstatus = false;   
+                      }
+                }
+                 $scope.hideLoading(); 
+    
+              $location.path('/viewsingleorderdetail');      
+          }
+          
+          $scope.downloadfile = function(url,filename)
+          {   
+            
+              
+              var targetPath = "/" + filename;
+              var trustHosts = true
+              var options = {};
+              
+                $cordovaFileTransfer.download(url, targetPath, options, trustHosts)
+                  .then(function(result) {
+                
+                  }, function(err) {
+                
+                  }, function (progress) {
+                    $timeout(function () {
+                      $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+                    })
+                  });
+
+              
+          }
+          $scope.setAllImage= function(data)
+          {
+            $rootScope.image.push(data);
+            
+              window.localStorage.setItem("IMG",$rootScope.image);
+        
+            
+          }
+           $scope.setAllAudio= function(data)
+          {
+         
+            $rootScope.audios.push(data);
+            
+              window.localStorage.setItem("AUD",$rootScope.audios);
+             
+            
+          }
+           
+          $scope.openFileinBrowser = function(url)
+          {
+              window.open(url, '_system', 'location=yes');
+          }
+           
+           
+          $scope.finalValidation = function()
+          {  
+              
+              if($scope.user.user_type==2)
+                  {
+                     if($scope.user.dealer_code)
+                     {
+                         
+                     }
+                      else
+                      {
+                          $scope.dealercode_error="Please Enter Dealer Code";
+                          document.getElementById('code').style.display= 'block';
+                      }
+                      
+                  }
+           
+              if($scope.user.amount != 0)
+              {
+                  if($scope.user.giftdatas)  
+                  {
+                      
+                  }
+                  else
+                  {
+                      
+                        $scope.gift_error = "Please Select Gift Amount"; 
+                       // document.getElementById('aa').style.display= 'block';
+                  }
+             }
+             else
+              {
+                  
+              }
+
+              if($scope.user.user_first_name)
+              {
+           
+                    $scope.name_error = " ";
+              }
+                 
+             else
+             {
+                      $scope.name_error = "Please Enter Your Name";
+                      document.getElementById('name').style.display= 'block';
+                     
+
+              }
+               if($scope.user.user_mobileno)
+              {
+                  
+                   $scope.mobile_error = " ";
+              }
+                 
+             else
+             {
+               $scope.mobile_error ="Please Enter Your Mobile Number";
+               document.getElementById('mobile').style.display= 'block';
+               
+               
+              }
+               if($scope.user.user_email)
+              {
+                  
+                  $scope.email_error = " ";
+              }
+                 
+             else
+             {
+               
+                  $scope.email_error = "Please Enter Your Email ";
+                 document.getElementById('email').style.display= 'block';
+               
+              }
+               if($scope.user.user_address1)
+              {
+                  $scope.address_error = " ";
+              }
+                 
+             else
+             {
+               
+               $scope.address_error = "Please Enter Your Address";
+               document.getElementById('address').style.display= 'block';
+              }
+               if($scope.user.user_pincode)
+              {
+                  $scope.pincode_error = " ";
+                  
+              }  
+             else
+             {
+               
+               $scope.pincode_error = "Please Enter Your Pincode";
+               document.getElementById('pincode').style.display= 'block';
+               
+              }
+               if($scope.user.user_landmark)
+              {
+                 $scope.landmark_error = " ";
+                  
+              }
+                 
+             else
+             {
+               
+                    $scope.landmark_error = "Please Enter Your Landmark";
+                    document.getElementById('landmark').style.display= 'block';
+               
+              }
+              if(
+                ($scope.user.user_first_name)&&
+                ($scope.user.user_mobileno)&&
+                ($scope.user.user_email)&&
+                ($scope.user.user_address1)&&
+                ($scope.user.user_pincode)&&
+                ($scope.user.user_landmark))
+              {
+                  if(($scope.user.user_type==2)&&($scope.user.dealer_code))
+                  {
+                     
+                      $scope.final_bool=true;
+                       
+                  }
+                  else
+                  {
+                      $scope.final_bool=false;
+                      
+                  }
+                  
+                if(($scope.user.amount !=0) && ($scope.user.giftdatas))
+                 {
+                      $scope.final_bool=true;
+                 }
+                 else if($scope.user.amount == 0)
+                 {
+                     $scope.final_bool=true;
+                 }
+                else  
+                {
+                        $scope.gift_error = "Please Select Gift Amount"; 
+                       $scope.final_bool=false;
+                 }
+                      
+                 if($scope.final_bool)
+                 {
+                  
+                      $scope.addAddressDetail();
+                     
+                  }
+                  else
+                 {
+                   
+                    
+                 }
+                  
+              }
+              else
+              {
+              }
+
         
     }
     
-
+    }
 }());

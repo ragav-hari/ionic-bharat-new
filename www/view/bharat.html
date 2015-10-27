@@ -1,7 +1,7 @@
 <ion-view view-title="Upload Image" ng-controller="userController">
-  <ion-content class="padding"  > 
+  <ion-content class="padding"> 
       
-      <div class="list" ng-init="loadImageAudioData1()">
+      <div class="list">
           <!--
         <label class="item item-input item-stacked-label">
         <span class="input-label">First Name</span>
@@ -107,12 +107,13 @@
                     <div class="col col-33" ng-repeat="imageuri in imagedata">
                         
                          <img style="width:100%;height:100px" ng-show="imageuri !== undefined" ng-click="zoom('{{imageuri}}')" ng-src="{{imageuri}}">
-                      <p class="image-close">  <i class="ion-close-circled customIcon " ng-click="removeImage($index)"> </i></p>
+                      <p class="image-close">  <i class="ion-close-circled customIcon " ng-click="removeImage($index,imageuri)" ng-model="imageuri"> </i></p>
                         
-                        <button class="button btn-custom button-small" ng-click="uploadDataNew($index)">Submit</button> 
+                      <!--  <button class="button btn-custom button-small" ng-hide="hideSubmit[$index] == true" ng-click="uploadDataNew($index)">Submit</button> -->
+                            <div ng-show="showSpinner[$index] == true"><ion-spinner icon="bubbles"></ion-spinner></div>
                     </div>  
                     <div class="col col-33">
-                        <button class="button btn-custom button-small" ng-click="openAttachmentModal()">Add next image</button> 
+                        <img  style="width:90%;height:100px" src="img/addimage.png" ng-if="hasimage == true" ng-click="openAttachmentModal()">
                     </div>
                 </div>    
           </div>
@@ -145,9 +146,11 @@
                                 </i>
                             </div>
                             <div class="col col-70 audio-file" ng-click="audioClick(aud,$index)">{{aud.fullPath.substring(aud.fullPath.lastIndexOf('/')+1)}}</div>
-                            <div class="col col-10"><i class="ion-ios-close customIcon" ng-click="removeAudio($index)"></i></div>
+                            <div class="col col-10"><i class="ion-ios-close customIcon" ng-click="removeAudio($index,aud)"></i></div>
                              <div class="col col-10">
-                                     <i class="ion-plus-circled customIcon" ng-click="uploadDataNew($index)"></i> 
+                                 <!--    <i class="ion-plus-circled customIcon" ng-hide="hideSubmit[$index] == true" ng-click="uploadDataNew($index)"></i> -->
+                                  <div ng-show="showSpinner[$index] == true"><ion-spinner icon="bubbles"></ion-spinner></div>
+                                  
                                     </div>
                                     
                                      </div>
@@ -157,14 +160,16 @@
                                 <br/>
                             </li>
                     </ul>
+                <img src="img/addaudio.png" ng-click="openAttachmentModal()" ng-if="hasaudio == true">
                 </div> 
       
-          <p>Progress : {{progress}}</p>
+       
           
-          <button class="btn-custom button-full button-large">
-                   <a href="#useraddress">Submit</a>
+          <button class="btn-custom button-full button-large" ng-click="openAddressAttachmentModal()">
+                 <!--  <a href="#useraddress" class="btn-custom">Submit</a> -->
+              Proceed
             </button>
-          
+          <input type="text">
          <br/>
           <br/>
           <br/>
@@ -209,29 +214,6 @@
     
       
       <script id="my-modal.html" type="text/ng-template">
-         
-         <!-- <div class="modal imagemodal">
-             
-            <ion-content class="modalclass">
-                <div class="modal-outer">
-              <div class="modal-content">    
-               <button class="button btn-custom button-full button-large" ng-click="selectimage()">
-                       <i class="ion-images icon-spacing customIcon"></i>Select Image
-                </button>
-              </div>
-               <div class="modal-content">        
-                <button class="button btn-custom button-full button-large  modal-data" ng-click="captureImage()">
-                         <i class="ion-camera icon-spacing customIcon"></i>Capture Image
-                </button>
-                </div>
-                 <div class="modal-content">    
-                <button class="button btn-custom button-full button-large  modal-data" ng-click="captureAudio()">
-                         <i class="ion-mic-a icon-spacing customIcon"></i>Capture Audio
-                </button>
-                </div>
-             </div>
-                
-            </ion-content> -->
               <ion-modal-view>
                 <ion-header-bar>
                   <h1 class="title" style="width:90%">Image Preview <i ng-click="closeModal()" class="ion-close-circled" style="float:right;font-size:22px"></i></h1>
@@ -241,9 +223,102 @@
                     <img ng-src="{{zoomimage}}" class="zoomimage"/>
                 </div>
               </ion-content>
-                   </ion-modal-view>
-          
+             </ion-modal-view>
      </script>
+          
+    <script id="addressmodal.html" type="text/ng-template">
+           <ion-modal-view>
+              <ion-content>
+                <div class="modal-content" ng-init="loadData()">
+                   <!-- address details content starts -->
+                    
+                    <form>   
+            <label class="item item-input item-stacked-label">
+            <span class="input-label">Name</span>
+            <input type="text" placeholder="First Name" ng-model="user.user_first_name">
+            <span class="error_message displaynone"  id="name">{{name_error}}</span>
+            </label>
+            <label class="item item-input item-stacked-label">
+            <span class="input-label">Mobile Number</span>
+            <input type="text" placeholder="Mobile" ng-model="user.user_mobileno">
+            <span class="error_message displaynone" id="mobile">{{mobile_error}}</span>
+            </label>
+            <label class="item item-input item-stacked-label">
+            <span class="input-label">Email</span>
+            <input type="text" placeholder="Email" ng-model="user.user_email">
+            <span class="error_message displaynone" id="email">{{email_error}}</span>
+            </label>
+
+            <label class="item item-input item-stacked-label">
+            <span class="input-label">Address</span>
+            <textarea type="text" ng-model="user.user_address1" ></textarea>
+            <span class="error_message displaynone" id="address">{{address_error}}</span>
+            </label>
+
+            <label class="item item-input item-stacked-label">
+            <span class="input-label">Pincode</span>
+            <input type="text" placeholder="Pincode" ng-model="user.user_pincode">
+                <span class="error_message displaynone" id="pincode">{{pincode_error}}</span>
+            </label>
+            <label class="item item-input item-stacked-label">
+            <span class="input-label">Landmark</span>
+            <input type="text" placeholder="Landmark" ng-model="user.user_landmark">
+            <span class="error_message displaynone" id="landmark">{{landmark_error}}</span>
+            </label>
+
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Account Type</span>
+                    <p><select ng-model="user.user_type" class="select-border" ng-change="getusertype()">
+                        <option value="1" selected>Bharat Ration Direct Customer</option>
+                        <option value="2">Bharat Ration Dealer/Corporate</option>
+                    </select></p>
+                     <span class="error_message displaynone">{{usertype_error}}</span>
+                </label>
+                <label class="item item-input item-stacked-label" ng-show="usertypedata == true">
+                    <span class="input-label">Dealer Code</span>
+                    <input type="text"   ng-model="user.dealer_code">
+                    <span class="error_message displaynone" id="code">{{dealercode_error}}</span>
+                </label>
+
+               <label class="item item-input item-stacked-label">
+                    <span class="input-label">Comments</span>
+                    <input type="text"   ng-model="user.user_comments">
+                </label>
+                 <label class="item item-input item-stacked-label">
+                    <span class="input-label">Select Amount Range</span>
+                     <p></p>
+                     <select ng-model="user.amount" class="select-border" ng-change="getGift()">
+                      <option value="0">I Don't Know</option>
+                      <option ng-repeat="amount in amountinfo" value={{amount.amount_id}}>{{amount.amount_from}}-{{amount.amount_to}}</option>     
+                     </select>
+                </label>
+              <label class="item item-input item-stacked-label" ng-show="giftList==true">
+                    <span class="input-label">Select Gift</span>
+
+                </label>
+
+                <ul class="list" ng-model="user.giftdatas" ng-show="giftList==true">
+
+                            <li class="item"  ng-class="{'selected':$index == selected}" ng-repeat="gift in giftdata" ng-click="selectList(giftdata,$index)">
+                                {{gift.gift_name}}
+                            </li>
+                       </ul>
+                        <span class="error_message"> {{gift_error}}</span>
+                <div class="final-submit-outer">
+                     <button class="btn-custom button-large button-font final-submit" 
+                             ng-click="finalValidation()">Submit</button>    
+                </div>
+               
+           </form>
+                    
+                    
+                    
+                   <!-- address details content ends -->
+                </div>
+              </ion-content>
+             </ion-modal-view>
+    </script>      
+          
       </div>     
   </ion-content>
 </ion-view>  

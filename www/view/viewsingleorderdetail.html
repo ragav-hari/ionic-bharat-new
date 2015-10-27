@@ -1,0 +1,25 @@
+<ion-view view-title="View Single Order" ng-init="singleorderpage()" ng-controller="userController">  
+  <ion-content scroll="true">
+      
+   <div class="list top-spacing">
+        
+           <h3>Invoice</h3>
+        
+        <div class="col col-100" ng-repeat="single in singleorder" ng-show="singleorderstatus == true">
+             <button class="button button-block button-positive" 
+                     ng-click="openFileinBrowser('{{single.file_url}}')">{{single.file_name}}</button> 
+            <div ng-show="invoiceoption == true">
+                <p>
+                 <button class="button btn-custom  button-font"
+                          ng-click="acceptOrder('{{single.order_id}}')">Accept</button>
+                <button class="button btn-custom  button-font"
+                        ng-click="rejectOrder('{{single.order_id}}')">Reject</button>
+               </p>
+          </div>
+        </div>
+       <div ng-show="noorders == true">
+        <p>No invoice found</p>    
+       </div>      
+    </div>
+    </ion-content>
+</ion-view>

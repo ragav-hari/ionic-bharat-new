@@ -17,6 +17,11 @@
   display: block;
 }
 
+.button
+{
+    background-color: #027fdc !important;
+}
+
 .input-label
 {
     font-weight: bold;
@@ -99,7 +104,8 @@
 
 .btn-custom
 {
-    background-color: #00BFF5;
+   // background-color: #00BFF5;
+    background-color: #027fdc !important;
     color:#ffffff;
 }
 .btn-custom:active
@@ -148,11 +154,25 @@ select
 {
     min-height: 59px;
     line-height: 53px;
+    background-color: #027fdc !important;
+  
 }
+.header-title
+{
+  
+   color: white !important;
+   font-size: 22px !important;
+}
+
 .payment-time
 {
  background-color: gainsboro;
 
+}
+.select-border
+{
+ border:  1px solid #D3D3D3;
+ 
 }
 
 .userguide-div
@@ -204,4 +224,47 @@ text-align: center;
 .selected
 {
 background-color: aqua !important;
+}
+.fontsize
+{
+font-size:20px;
+}
+.border-custom
+{
+border: 1px solid red;
+}
+.top-spacing
+{
+   margin-top: 20px; 
+}
+.button-font
+{
+font-size: 20px !important;
+}
+.input-border
+{
+border: 1px solid red !important;
+}
+.displaynone
+{
+display: none ;
+}
+.final-submit
+{
+width: 100%;    
+}
+.final-submit-outer
+{
+padding-left: 2%;
+padding-right: 2%;
+}
+.vieworders
+{
+//margin-top: -100px !important;
+}
+
+.header-title
+{
+    height:50px;
+    line-height: 50px;
 }

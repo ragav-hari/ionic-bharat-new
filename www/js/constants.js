@@ -1,0 +1,1 @@
+var HOSTURL = "http://www.cloudservices.ashinetech.com/Bharat/uploads/";
