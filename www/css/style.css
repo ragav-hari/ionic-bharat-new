@@ -263,8 +263,29 @@ padding-right: 2%;
 //margin-top: -100px !important;
 }
 
+
+.header_logo_img
+{
+    width:12%;
+    height:12%;
+    vertical-align:middle;  
+    margin-top: -20px;
+}
+
 .header-title
 {
-    height:50px;
-    line-height: 50px;
+    
+}
+
+.header_content
+{
+  text-align:center;
+    width:100%;  
+    line-height:10px;
+}
+
+.header_outer
+{
+  vertical-align:middle;  
+  position: absolute;
 }
