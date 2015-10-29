@@ -3,22 +3,24 @@
       
    <div class="list top-spacing">
         
-           <h3>Invoice</h3>
-        
+           
         <div class="col col-100" ng-repeat="single in singleorder" ng-show="singleorderstatus == true">
-             <button class="button button-block button-positive" 
-                     ng-click="openFileinBrowser('{{single.file_url}}')">{{single.file_name}}</button> 
+          <!--   <button class="button button-block button-positive" 
+                     ng-click="openFileinBrowser('{{single.file_url}}')">{{single.file_name}}</button> -->
+                <p  class="inovice-style" ng-click="openFileinBrowser('{{single.file_url}}')">Tap to Download invoice</p>
+            
             <div ng-show="invoiceoption == true">
                 <p>
-                 <button class="button btn-custom  button-font"
-                          ng-click="acceptOrder('{{single.order_id}}')">Accept</button>
-                <button class="button btn-custom  button-font"
-                        ng-click="rejectOrder('{{single.order_id}}')">Reject</button>
+                 <button class="button btn-custom order-button"
+                          ng-click="acceptOrder('{{single.order_id}}')">Accept order</button>
+                <button class="button btn-custom order-button"
+                        ng-click="rejectOrder('{{single.order_id}}')">Reject order</button>
                </p>
+                
           </div>
         </div>
        <div ng-show="noorders == true">
-        <p>No invoice found</p>    
+        <p class="inovice-style">No invoice found</p>    
        </div>      
     </div>
     </ion-content>

@@ -1636,7 +1636,19 @@ alert("Registering");
               var data = {"user_mobileno":window.localStorage.getItem('mobile')};
              // alert("DATA"+JSON.stringify(data));
               userService.getAllOrders(data).then(function(response){
-                    $scope.allorders = response.data;   
+                    $scope.allorders = response.data; 
+                    if($scope.allorders[0].status=="Failure")
+                    {
+                      $scope.noorders=true;
+                        
+                    }
+                    else
+                    {
+                       $scope.noorders=false; 
+                    }
+                    
+                 
+                    
                     $scope.hideLoading(); 
               });
           }
