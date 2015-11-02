@@ -1,18 +1,36 @@
 <ion-view view-title="Mobile" ng-controller="userController">  
-  <ion-content scroll="true">
+    
+  <ion-content scroll="true" class="mobile-background">
      
-<div class="list otp-spacing">
-  <label class="item item-input">
-    <input type="number" placeholder="Enter Mobile Number" ng-model="user.user_mobileno" ng-minlength="10" ng-maxlength="10">
-  </label>
- 
-    <button ng-click="validateMobile()" class="button button-full button-positive button-font">Submit</button>
+<div class="list otp-spacing " ng-init="loadMobile()">
 
+    <div class="row">
+        <div class="col">
+            <label class="phonelabel" ng-model="user.user_mobileno">{{user.user_mobileno}}</label>
+        </div>
+    </div>  
+      
+    <div class="row dialpad"   style="flex-wrap: wrap">
+         <div ng-repeat="button in buttons"  class="col-33">
+             <button ng-click="createPhoneNumber({{button}})" class="customkeypad">
+                 <span class="button-clr">{{button}} </span>      </button>
+         </div>
+        <div class="col-33">
+            <button class="customkeypad"  ng-click="clearPhoneNumber()"><span class="button-clr">C</span>                 </button>
+        </div>
+        <div class="col-33">
+            <button class="customkeypad"  ng-click="createPhoneNumber(0)"><span class="button-clr">0</span>                 </button>  
+        </div>
+        <div class="col-33">
+            <button class="customkeypad"  ng-click="deletePhoneNumber()"><span class="button-clr">x</span>                    </button> 
+        </div>
+   </div>
+
+    <button ng-click="validateMobile()" ng-disabled="mobile_next" class="button button-full button-positive button-font next-button">Next</button>
     <div>
       {{ermessage}}
     </div>
 </div>
              
-
   </ion-content>
 </ion-view>

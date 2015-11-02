@@ -1,8 +1,8 @@
 (function() {
-    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService','$ionicUser','$ionicPush','$cordovaNetwork','$ionicLoading','$cordovaPush','$cordovaProgress','$ionicHistory','$ionicLoading','$cordovaInAppBrowser','$state',userController]);
+    bharat.controller('userController', ['$q', '$timeout', '$scope', '$cordovaCapture', '$ionicModal', '$cordovaEmailComposer', '$cordovaCamera', '$cordovaFile', '$window', '$location', '$rootScope', '$cordovaNativeAudio','$cordovaMedia','$cordovaImagePicker','$cordovaFileTransfer','$cordovaSQLite','userService','$ionicUser','$ionicPush','$cordovaNetwork','$ionicLoading','$cordovaPush','$cordovaProgress','$ionicHistory','$ionicLoading','$cordovaInAppBrowser','$state','$cordovaKeyboard',userController]);
 
     function userController($q, $timeout, $scope, $cordovaCapture, $ionicModal, $cordovaEmailComposer, $cordovaCamera, $cordovaFile,
-        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService,$ionicUser,$ionicPush,$cordovaNetwork,$ionicLoading,$cordovaPush,$cordovaProgress,$ionicHistory,$ionicLoading,$cordovaInAppBrowser,$state) {
+        $window, $location, $rootScope, $cordovaNativeAudio, $cordovaMedia,$cordovaImagePicker,$cordovaFileTransfer,$cordovaSQLite,userService,$ionicUser,$ionicPush,$cordovaNetwork,$ionicLoading,$cordovaPush,$cordovaProgress,$ionicHistory,$ionicLoading,$cordovaInAppBrowser,$state,$cordovaKeyboard) {
         $scope.audio = [];
         $scope.image = [];
         $rootScope.imagedata = [];
@@ -982,7 +982,7 @@ alert("Registering");
         
         $scope.uploadData = function(data,type,order_id)
         {
-            
+             angular.element(document.querySelector('#next-button')).css('display','none');
             /*    var hasaudio = window.localStorage.getItem("HAS_AUDIO");
               var hasimage = window.localStorage.getItem("HAS_IMAGE");
             
@@ -1015,12 +1015,16 @@ alert("Registering");
              
              
             $scope.showuploading();
+            
             var server   =  "http://cloudservices.ashinetech.com/Bharat/service/uploadfile.php";
              $cordovaFileTransfer.upload(server,filePath,options)
             .then(function(result) {
                
               
                 $scope.hideuploading();
+               // var myEl = angular.element( document.querySelector( '#next-button'));
+               // myEl.css('display','block'));
+                angular.element(document.querySelector('#next-button')).css('display','block');
                  
             }, function(err) {
                 
@@ -1051,13 +1055,10 @@ alert("Registering");
       
             window.open(url, '_system');
         }
-        
+    
         $scope.validateMobile=function()
-        {
-            console.log("the mobile number is"+$scope.user.user_mobileno);
-                 //  $rootScope.mobileno=$scope.user.user_mobileno;
-                 //   console.log("rootscope number");
-                 //   console.log($rootScope.mobileno);
+        { 
+    
             window.localStorage.setItem("mobileno",$scope.user.user_mobileno);
             if($scope.user.user_mobileno==undefined)
                 {
@@ -1093,19 +1094,56 @@ alert("Registering");
            console.log("hi"+$scope.user.num);
            console.log("hi2"+$scope.user.pass);
          }
+         $scope.user.user_otp = [];
+
+         
+         $rootScope.OTPNumbers = [];   
+        
+         $scope.createOTPNumber = function(number)
+         {
+             var length = $rootScope.OTPNumbers.length;
+             if(length < 5)
+             {
+                $scope.user.user_otp[length] = number;
+                $rootScope.OTPNumbers.push(number);     
+             }
+         }
+         
+         $scope.deleteOTPNumber = function()
+         { 
+             $rootScope.OTPNumbers.pop();
+             var length = $rootScope.OTPNumbers.length;
+             $scope.user.user_otp[length] = '';
+         }
+         
+         $scope.clearOTPNumber = function()
+         {
+             $rootScope.OTPNumbers = [];
+             $scope.user.user_otp  = [];
+         
+         }
+
+         $scope.checkOTP = function()
+         {
+             
+         }
           $scope.validateOtp=function()
          {     
+                if($scope.user.user_otp.length === 5)
+                {
+                        
                 
-                $scope.ermessage = " ";
-               if($scope.user.user_otp == undefined)
+              $scope.userotp = $scope.user.user_otp.join('');
+               $scope.ermessage = " ";
+               if($scope.userotp == undefined)
                    {
                           $scope.ermessage="Enter Valid OTP";
                    }
                   else
                   {
-                      console.log("otp is"+$scope.user.user_otp);
+                      console.log("otp is"+$scope.userotp);
                      var mobile=window.localStorage.getItem("mobileno");
-                      var data={"user_otp":$scope.user.user_otp,"user_mobileno":mobile}
+                      var data={"user_otp":$scope.userotp,"user_mobileno":mobile}
                       $scope.ermessage=" ";
                       $scope.showLoading();
                     userService.verifyOtp(data).then(validateOtpres);
@@ -1138,7 +1176,7 @@ alert("Registering");
                             
                             }
                     }
-                    
+                  }
                   }
             
          }
@@ -1766,7 +1804,55 @@ alert("Registering");
               window.open(url, '_system', 'location=yes');
           }
            
-           
+        
+            $scope.buttons = [1,2,3,4,5,6,7,8,9];
+            $scope.user.user_mobileno = {};
+            $scope.user.user_mobileno = "Mobile Number";
+            $rootScope.tempnumber         = [];
+            $scope.mobile_next = true;
+        
+            $scope.checkMobileNextButton = function()
+            {
+                if($rootScope.tempnumber.length === 10)
+                {
+                    $scope.mobile_next = false;    
+                }
+                else
+                {
+                    $scope.mobile_next = true;    
+                }
+            }
+        
+            $scope.createPhoneNumber = function(number)
+            {
+                $rootScope.tempnumber.push(number);
+                $scope.user.user_mobileno = $rootScope.tempnumber.join(''); 
+                $scope.checkMobileNextButton();
+            }
+            
+            $scope.deletePhoneNumber = function()
+            {
+                $rootScope.tempnumber.pop();
+                $scope.checkMobileNextButton();
+               //:todo    
+               if($rootScope.tempnumber.length > 0)
+               {    
+                   $scope.user.user_mobileno = $rootScope.tempnumber.join('');  
+               }
+               else
+               {
+                   $scope.user.user_mobileno = "Mobile Number";  
+               }
+            }
+            
+            $scope.clearPhoneNumber = function()
+            {
+                $rootScope.tempnumber         = [];
+                $scope.user.user_mobileno = "Mobile Number"; 
+                
+            }
+
+            
           $scope.finalValidation = function()
           {  
               
@@ -1930,6 +2016,10 @@ alert("Registering");
 
         
     }
-    
+          
+          
+          
+          
+         
     }
 }());

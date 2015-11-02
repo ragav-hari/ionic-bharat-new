@@ -359,7 +359,7 @@
         }
          function  deleteImage(datas)
         {      
-            alert("called");
+            
             return $http({
                 method : 'POST',
                 data:datas,

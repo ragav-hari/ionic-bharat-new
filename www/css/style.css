@@ -1,13 +1,92 @@
+.background, .background .pane, .background .item, .background .item-complex .item-content
+{
+    background-color:#f2f2f2;
+}
+
 .customIcon {
     font-size: 32px;
 }
 
+.phone_bg
+{
+  
+}
 .welcome
 {
   text-align: center;
   text-transform: uppercase;    
 }
+.button-clr
+{
+color:white;
+}
+.customkeypad
+{
+    border-bottom: 1px solid #d2d2d2 !important;
+    border-top: 0px;
+    border-right: 0px;
+    border-left: 0px;
+    padding: 3%;
+    margin-top: 5%;
+    background: none;
+    width:90%;
+    font-size: 30px;
+    font-weight: bold;
+}
 
+.keypad_input
+{
+    width:90%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 3%;
+}
+.next-button
+{
+border: 1px solid white !important;
+}
+.dialpad
+{
+    margin:0 auto;
+    width:80%;
+    text-align: center;
+    padding-top: 10px;
+}
+.mobile-background
+{
+  background-color: #027fdc !important; 
+  padding-top: 100px;
+}
+.otp-background
+{
+  background-color: #027fdc !important; 
+  padding-top: 80px;  
+}
+.phonelabel
+{
+    width:90%;
+    margin-left:3%;
+    margin-right:3%;
+    height:50px;
+    text-align: center;
+    font-size:30px;
+    font-weight: 300;
+    background-color: #027fdc !important;
+    color:white;
+    display: block;
+    border-radius: 5px;
+    border: 1px solid #d2d2d2 !important;
+}
+
+.otp_label
+{
+    text-align: center;
+    width: 60%;
+    margin: 0 auto;
+    border-bottom: 1px solid #d2d2d2;
+    color: white !important;
+    
+}
 
 .starter_shop_icon
 {
@@ -99,7 +178,7 @@
 
 .audio_div
 {
-    text-align: right
+    text-align: right;
 }
 
 .btn-custom
@@ -241,7 +320,9 @@ border: 1px solid red;
 {
 font-size: 22px !important;
  min-height: 59px;
- line-height: 53px
+ line-height: 53px;
+margin-top: 20px;
+
 }
 .input-border
 {
@@ -260,9 +341,12 @@ width: 100%;
 padding-left: 2%;
 padding-right: 2%;
 }
-.vieworders
+.otp-text
 {
- 
+ color: white;
+ text-align: center;
+ font-size: 22px;
+ padding-bottom:20px;
 }
 .header_logo_img
 {
@@ -294,7 +378,7 @@ padding-right: 2%;
 }
 .otp-spacing
 {
-margin-top: 60%;
+margin-top: 5%;
 }
 
 .inovice-style
@@ -312,6 +396,16 @@ margin-left: 4px;
 .no-orders
 {
  margin-top:30px;
-font-size:22px;
+font-size:22px !important;
+width:260px !important;
 color: #027fdc !important;   
+}
+.audioicon
+{
+border: #027fdc !important; 
+background: white;
+}
+#next-button
+{
+
 }
