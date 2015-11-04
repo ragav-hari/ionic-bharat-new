@@ -20,8 +20,8 @@
           </div>  
        
       </div>
-    
-       <div class="row"> 
+      <div class="row"></div>
+       <div class="row otp-numbers"> 
 
              <label type="number" class="col-10 otp_label"  ng-model="user.user_otp[0]">{{user.user_otp[0]}}</label>
             <label type="number" class="col-10 otp_label"  ng-model="user.user_otp[1]">{{user.user_otp[1]}}</label>
@@ -52,14 +52,15 @@
         </div>
         <div class="col-33">
              <button class="customkeypad" ng-click="deleteOTPNumber()">
-                 <span class="button-clr">x</span>
+                 <span class="button-clr"><i class="ion-backspace"></i></span>
             </button> 
         </div>
    </div>
     <br/>
     <br/>
-     <button ng-click="validateOtp()" class="button button-full button-positive button-font
-                                             next-button">Next</button>
+     <button ng-click="validateOtp()" 
+              ng-disabled="disableotp" class="button button-full button-positive button-font
+                                             otpnext-button">Next</button>
       <div>    
       {{ermessage}}
     </div>

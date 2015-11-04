@@ -1,10 +1,11 @@
 .background, .background .pane, .background .item, .background .item-complex .item-content
 {
-    background-color:#f2f2f2;
+    background-color:#F5F6F7;
 }
 
-.customIcon {
-    font-size: 32px;
+.customIcon
+{
+    font-size: 22px;
 }
 
 .phone_bg
@@ -29,9 +30,9 @@ color:white;
     padding: 3%;
     margin-top: 5%;
     background: none;
-    width:90%;
+  //  width:90%;
+    width: 50%;
     font-size: 30px;
-    font-weight: bold;
 }
 
 .keypad_input
@@ -44,40 +45,47 @@ color:white;
 .next-button
 {
 border: 1px solid white !important;
+margin-top: 18% !important;
+}
+.otpnext-button
+{
+border: 1px solid white !important;
+margin-top: 6% !important;
 }
 .dialpad
 {
     margin:0 auto;
     width:80%;
     text-align: center;
-    padding-top: 10px;
+    padding-top:20px !important;
 }
 .mobile-background
 {
   background-color: #027fdc !important; 
-  padding-top: 100px;
+  padding-top: 10% !important;
 }
 .otp-background
 {
   background-color: #027fdc !important; 
-  padding-top: 80px;  
+  padding-top: 10%;  
 }
 .phonelabel
 {
-    width:90%;
-    margin-left:3%;
+    width:68%;
+    margin-left:16%;
     margin-right:3%;
-    height:50px;
     text-align: center;
-    font-size:30px;
+    font-size:22px;
     font-weight: 300;
     background-color: #027fdc !important;
-    color:white;
+    color:#d2d2d2;
     display: block;
-    border-radius: 5px;
-    border: 1px solid #d2d2d2 !important;
+    border: 1px solid #d2d2d2;   
+    margin-top:10px;
+    
+    min-height: 59px;
+    line-height: 53px;
 }
-
 .otp_label
 {
     text-align: center;
@@ -85,7 +93,7 @@ border: 1px solid white !important;
     margin: 0 auto;
     border-bottom: 1px solid #d2d2d2;
     color: white !important;
-    
+    font-size:22px;
 }
 
 .starter_shop_icon
@@ -94,6 +102,10 @@ border: 1px solid white !important;
   height:auto;
   margin: 0 auto;    
   display: block;
+}
+.final-submit
+{
+margin-bottom: 10px;
 }
 
 .button
@@ -215,7 +227,10 @@ border: 1px solid white !important;
     width:100%;
     background-color: transparent;
 }
-
+.audioimg-popup
+{
+margin-top: 60% !important;
+}
 .zoomimage
 {
     width:100%;
@@ -306,7 +321,7 @@ background-color: aqua !important;
 }
 .fontsize
 {
-font-size:20px;
+font-size:22px;
 }
 .border-custom
 {
@@ -319,10 +334,9 @@ border: 1px solid red;
 .button-font
 {
 font-size: 22px !important;
- min-height: 59px;
- line-height: 53px;
+min-height: 59px;
+line-height: 53px;
 margin-top: 20px;
-
 }
 .input-border
 {
@@ -346,7 +360,7 @@ padding-right: 2%;
  color: white;
  text-align: center;
  font-size: 22px;
- padding-bottom:20px;
+ padding-bottom:10px;
 }
 .header_logo_img
 {
@@ -372,15 +386,19 @@ padding-right: 2%;
 
 .logo_text
 {
-    font-size:22px;
+    font-size:22px !important;
     color:white;    
     margin-left: 20px;
 }
 .otp-spacing
 {
-margin-top: 5%;
+//margin-top: 5%;
 }
-
+.otp-numbers
+{
+padding-top: 20px !important; 
+min-height: 59px;
+}
 .inovice-style
 {
 padding-top: 16px;
@@ -405,7 +423,15 @@ color: #027fdc !important;
 border: #027fdc !important; 
 background: white;
 }
-#next-button
+.loading
 {
-
+background:#8E8E8E, !important;
+color:white !important;
+opacity: 0.5  !important;  
+}
+.loading-backdrop
+{
+ background:#8E8E8E, !important;
+color:white !important;   
+opacity: 0.5  !important;  
 }

@@ -1098,15 +1098,26 @@ alert("Registering");
 
          
          $rootScope.OTPNumbers = [];   
-        
+         $scope.disableotp=true;
          $scope.createOTPNumber = function(number)
          {
              var length = $rootScope.OTPNumbers.length;
-             if(length < 5)
+            console.log(length);
+             if(length === 5)
+             {
+                 
+             }
+             else
              {
                 $scope.user.user_otp[length] = number;
-                $rootScope.OTPNumbers.push(number);     
+                $rootScope.OTPNumbers.push(number);    
+                $scope.disableotp=true;
              }
+             
+             if(length === 4)
+                 {
+                     $scope.disableotp=false;
+                 }
          }
          
          $scope.deleteOTPNumber = function()
@@ -1114,12 +1125,14 @@ alert("Registering");
              $rootScope.OTPNumbers.pop();
              var length = $rootScope.OTPNumbers.length;
              $scope.user.user_otp[length] = '';
+              $scope.disableotp=true;
          }
          
          $scope.clearOTPNumber = function()
          {
              $rootScope.OTPNumbers = [];
              $scope.user.user_otp  = [];
+             $scope.disableotp=true;
          
          }
 
@@ -1611,7 +1624,7 @@ alert("Registering");
           
           $rootScope.showuploading= function() {
             $ionicLoading.show({
-              template: 'Uploading file please wait'
+              template: '<span>Uploading file please wait</span>'
             });
           };
           $rootScope.hideuploading = function(){
@@ -1828,6 +1841,7 @@ alert("Registering");
                 $rootScope.tempnumber.push(number);
                 $scope.user.user_mobileno = $rootScope.tempnumber.join(''); 
                 $scope.checkMobileNextButton();
+                document.getElementById('phonelab').style.color='white';
             }
             
             $scope.deletePhoneNumber = function()
@@ -1880,7 +1894,7 @@ alert("Registering");
                   {
                       
                         $scope.gift_error = "Please Select Gift Amount"; 
-                       // document.getElementById('aa').style.display= 'block';
+                        document.getElementById('gift_error').style.display= 'block';
                   }
              }
              else
@@ -2016,7 +2030,7 @@ alert("Registering");
 
         
     }
-          
+     
           
           
           

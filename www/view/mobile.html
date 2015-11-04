@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col">
-            <label class="phonelabel" ng-model="user.user_mobileno">{{user.user_mobileno}}</label>
+            <label class="phonelabel" ng-model="user.user_mobileno"><span id="phonelab">{{user.user_mobileno}}</span></label>
         </div>
     </div>  
       
@@ -22,7 +22,7 @@
             <button class="customkeypad"  ng-click="createPhoneNumber(0)"><span class="button-clr">0</span>                 </button>  
         </div>
         <div class="col-33">
-            <button class="customkeypad"  ng-click="deletePhoneNumber()"><span class="button-clr">x</span>                    </button> 
+            <button class="customkeypad"  ng-click="deletePhoneNumber()"><span class="button-clr"><i class="ion-backspace"></i></span>                    </button> 
         </div>
    </div>
 
