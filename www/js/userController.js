@@ -1185,8 +1185,9 @@ alert("Registering");
                             }
                         else
                             {
-                            
-                            
+                                $scope.hideLoading();
+                                alert("Enter Valid OTP");
+                                $scope.clearOTPNumber();
                             }
                     }
                   }
@@ -1838,10 +1839,19 @@ alert("Registering");
         
             $scope.createPhoneNumber = function(number)
             {
-                $rootScope.tempnumber.push(number);
-                $scope.user.user_mobileno = $rootScope.tempnumber.join(''); 
-                $scope.checkMobileNextButton();
-                document.getElementById('phonelab').style.color='white';
+                if($scope.user.user_mobileno.length === 10)
+                {
+                        
+                }
+                else
+                {
+                        $rootScope.tempnumber.push(number);
+                        $scope.user.user_mobileno = $rootScope.tempnumber.join(''); 
+                        $scope.checkMobileNextButton();
+                        document.getElementById('phonelab').style.color='white';
+                        document.getElementById('phonelabel').style.border = '1px solid white';   
+                }
+                             
             }
             
             $scope.deletePhoneNumber = function()
@@ -1856,14 +1866,18 @@ alert("Registering");
                else
                {
                    $scope.user.user_mobileno = "Mobile Number";  
+                   document.getElementById('phonelab').style.color='#d2d2d2';
+                   document.getElementById('phonelabel').style.border = '1px solid #d2d2d2';  
                }
             }
             
             $scope.clearPhoneNumber = function()
             {
                 $rootScope.tempnumber         = [];
+                $scope.mobile_next = true;
                 $scope.user.user_mobileno = "Mobile Number"; 
-                
+                document.getElementById('phonelab').style.color='#d2d2d2';
+                document.getElementById('phonelabel').style.border = '1px solid #d2d2d2'; 
             }
 
             

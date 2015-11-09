@@ -185,20 +185,23 @@
                 
  <div class="row">
     <div class="col audioimg-popup">
-        <div>    
-            <button class="button button-full button-positive" ng-show="hasimage == true" ng-click="selectimage()">
+        <div id="image_gallery">    
+            <button class="button button-full button-positive"  ng-show="hasimage == true" ng-click="selectimage()">
                    <i class="ion-social-chrome icon-spacing customIcon"></i>
                   <span class="fontsize"> Select image from gallery</span>
             </button> 
         </div>
-        <div class=" ">        
-            <button class="button button-full button-positive modal-data" ng-show="hasimage == true" ng-click="captureImageModal()">
+  
+        <div id="image_camera">        
+            <button class="button button-full button-positive modal-data"  ng-show="hasimage == true" ng-click="captureImageModal()">
                      <i class="ion-camera icon-spacing customIcon"></i>
                 <span class="fontsize"> Take a snap of your order</span>
             </button>
         </div>
-         <div class=" ">    
-            <button class="button button-full button-positive  modal-data" ng-show="hasaudio == true" ng-click="captureAudioModal()">
+        <br/>
+        <br/>
+         <div>    
+            <button class="button button-full button-positive  modal-data" id="audio_mike" ng-show="hasaudio == true" ng-click="captureAudioModal()">
                      <i class="ion-mic-a icon-spacing customIcon"></i>
                 <span class="fontsize">Record your order list</span>
             </button>

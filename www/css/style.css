@@ -50,7 +50,7 @@ margin-top: 18% !important;
 .otpnext-button
 {
 border: 1px solid white !important;
-margin-top: 6% !important;
+margin-top: 3% !important;
 }
 .dialpad
 {
@@ -71,10 +71,10 @@ margin-top: 6% !important;
 }
 .phonelabel
 {
-    width:68%;
-    margin-left:16%;
-    margin-right:3%;
+    width:78%;
+    margin-left:12%;
     text-align: center;
+    vertical-align: middle;
     font-size:22px;
     font-weight: 300;
     background-color: #027fdc !important;
@@ -82,9 +82,8 @@ margin-top: 6% !important;
     display: block;
     border: 1px solid #d2d2d2;   
     margin-top:10px;
-    
     min-height: 59px;
-    line-height: 53px;
+    line-height: 62px;
 }
 .otp_label
 {
@@ -93,7 +92,7 @@ margin-top: 6% !important;
     margin: 0 auto;
     border-bottom: 1px solid #d2d2d2;
     color: white !important;
-    font-size:22px;
+    font-size:30px;
 }
 
 .starter_shop_icon
@@ -229,7 +228,7 @@ margin-bottom: 10px;
 }
 .audioimg-popup
 {
-margin-top: 60% !important;
+margin-top: 20% !important;
 }
 .zoomimage
 {
@@ -386,9 +385,10 @@ padding-right: 2%;
 
 .logo_text
 {
-    font-size:22px !important;
+    font-size:30px !important;
     color:white;    
-    margin-left: 20px;
+    margin-left:9%;
+    text-align:center;
 }
 .otp-spacing
 {
@@ -396,8 +396,8 @@ padding-right: 2%;
 }
 .otp-numbers
 {
-padding-top: 20px !important; 
-min-height: 59px;
+padding-top: 10px !important; 
+min-height: 65px;
 }
 .inovice-style
 {
@@ -434,4 +434,24 @@ opacity: 0.5  !important;
  background:#8E8E8E, !important;
 color:white !important;   
 opacity: 0.5  !important;  
+}
+
+.button_view_order
+{
+    margin-left: 10%;
+}
+
+#image_camera
+{
+    margin-top:15%;
+}
+
+#image_gallery
+{
+    margin-top:10%;
+}
+
+#audio_mike
+{
+    margin-top:-10%;
 }
