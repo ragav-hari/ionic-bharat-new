@@ -24,7 +24,8 @@
           getAllDatas  : getAllDatas,
           deleteImage  : deleteImage,
           acceptOrder  : acceptOrder,
-          rejectOrder  : rejectOrder    
+          rejectOrder  : rejectOrder,
+          addLogContent : addLogContent    
         };
         
          function  sendMobilenumber(datas)
@@ -398,6 +399,17 @@
                 method : 'POST',
                 data:datas,
                 url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/rejectorder.php'
+              })
+              .then(function(response){return response.data;})
+              .catch(function(error){return error;});  
+        }
+        
+        function addLogContent(datas)
+        {
+            return $http({
+                method : 'POST',
+                data:datas,
+                url    : 'http://www.cloudservices.ashinetech.com/Bharat/service/addLog.php'
               })
               .then(function(response){return response.data;})
               .catch(function(error){return error;});  

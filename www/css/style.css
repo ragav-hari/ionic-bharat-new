@@ -32,7 +32,7 @@ color:white;
     background: none;
   //  width:90%;
     width: 50%;
-    font-size: 30px;
+    font-size: 1.85em;
 }
 
 .keypad_input
@@ -44,9 +44,15 @@ color:white;
 }
 .next-button
 {
-border: 1px solid white !important;
-margin-top: 18% !important;
+    border: 1px solid white !important;
 }
+
+.bottom_bottom
+{
+    position: absolute; 
+    bottom: 0px; 
+}
+
 .otpnext-button
 {
 border: 1px solid white !important;
@@ -75,7 +81,7 @@ margin-top: 3% !important;
     margin-left:12%;
     text-align: center;
     vertical-align: middle;
-    font-size:22px;
+    font-size:1.85em;
     font-weight: 300;
     background-color: #027fdc !important;
     color:#d2d2d2;
@@ -92,7 +98,7 @@ margin-top: 3% !important;
     margin: 0 auto;
     border-bottom: 1px solid #d2d2d2;
     color: white !important;
-    font-size:30px;
+    font-size:1.85em;
 }
 
 .starter_shop_icon
@@ -332,7 +338,7 @@ border: 1px solid red;
 }
 .button-font
 {
-font-size: 22px !important;
+font-size: 1.85em !important;
 min-height: 59px;
 line-height: 53px;
 margin-top: 20px;
@@ -358,7 +364,7 @@ padding-right: 2%;
 {
  color: white;
  text-align: center;
- font-size: 22px;
+ font-size: 1.85em;
  padding-bottom:10px;
 }
 .header_logo_img
@@ -385,7 +391,7 @@ padding-right: 2%;
 
 .logo_text
 {
-    font-size:30px !important;
+    font-size:2em !important;
     color:white;    
     margin-left:9%;
     text-align:center;
@@ -454,4 +460,52 @@ opacity: 0.5  !important;
 #audio_mike
 {
     margin-top:-10%;
+}
+
+.text_border
+{
+border: 1px solid #d2d2d2 !important;  
+width: 100% !important; 
+}
+
+.form_outer
+{
+width: 90%;
+padding: 3%;
+}
+
+.input-label
+{
+    width:100%;
+}
+
+.button_back
+{ 
+    margin-top: 5% !important;
+    margin-left: 2%;
+}
+
+.btn_top
+{
+    margin-top: 200px !important;
+}
+
+.ion-android-arrow-back
+{
+    font-size:35px;
+    color:white;
+}
+
+.header_icon
+{
+    margin-top:-10px;
+}
+
+.footer_button
+{
+        bottom: 0;
+    border-top-width: 1px;
+    border-bottom-width: 0;
+    background-position: top;
+    height: 44px;
 }

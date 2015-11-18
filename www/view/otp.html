@@ -1,5 +1,5 @@
-<ion-view view-title="Signin" ng-controller="userController">  
-  <ion-content scroll="true" class="otp-background">
+<ion-view view-title="Signin" ng-controller="userController" ng-init="loadOTP()">  
+  <ion-content scroll="true" class="otp-background"> 
      
 <!--<div class="list otp-spacing">
   <label class="item item-input item-stacked-label" >
@@ -31,41 +31,89 @@
 
            </div>
     
-    
-     <div class="row dialpad"   style="flex-wrap: wrap">
-         <div ng-repeat="button in buttons"  class="col-33">
-             <button ng-click="createOTPNumber({{button}})" class="customkeypad">
-                 <span class="button-clr">{{button}}</span>
-             </button>
-         </div>
-        <div class="col-33">
-            <button class="customkeypad" ng-click="clearOTPNumber()">
-                <span class="button-clr">
-                 C
-                </span>
-            </button>
-        </div>
-        <div class="col-33">
-             <button class="customkeypad" ng-click="createOTPNumber(0)">
-                 <span class="button-clr"> 0 </span>
-            </button>  
-        </div>
-        <div class="col-33">
-             <button class="customkeypad" ng-click="deleteOTPNumber()">
-                 <span class="button-clr"><i class="ion-backspace"></i></span>
-            </button> 
-        </div>
-   </div>
-    <br/>
-    <br/>
-     <button ng-click="validateOtp()" 
-              ng-disabled="disableotp" class="button button-full button-positive button-font
-                                             otpnext-button">Next</button>
+    <div class="dialpad">
+             <div class="row">
+                 <div class="col-33">
+                     <button ng-click="createOTPNumber({{1}})" class="customkeypad">
+                         <span class="button-clr">1</span>
+                     </button>
+                 </div>
+                 <div class="col-33">
+                     <button ng-click="createOTPNumber({{2}})" class="customkeypad">
+                         <span class="button-clr">2</span>
+                     </button>
+                 </div>
+                 <div class="col-33">
+                     <button ng-click="createOTPNumber({{3}})" class="customkeypad">
+                         <span class="button-clr">3</span>
+                     </button>
+                 </div>
+            </div>
+            <div class="row">
+                 <div class="col-33">
+                     <button ng-click="createOTPNumber({{4}})" class="customkeypad">
+                         <span class="button-clr">4</span>
+                     </button>
+                 </div>
+                 <div class="col-33">
+                     <button ng-click="createOTPNumber({{5}})" class="customkeypad">
+                         <span class="button-clr">5</span>
+                     </button>
+                 </div>
+                 <div class="col-33">
+                     <button ng-click="createOTPNumber({{6}})" class="customkeypad">
+                         <span class="button-clr">6</span>
+                     </button>
+                 </div>
+            </div>
+            <div class="row">
+                 <div class="col-33">
+                     <button ng-click="createOTPNumber({{7}})" class="customkeypad">
+                         <span class="button-clr">7</span>
+                     </button>
+                 </div>
+                 <div class="col-33">
+                     <button ng-click="createOTPNumber({{8}})" class="customkeypad">
+                         <span class="button-clr">8</span>
+                     </button>
+                 </div>
+                 <div class="col-33">
+                     <button ng-click="createOTPNumber({{9}})" class="customkeypad">
+                         <span class="button-clr">9</span>
+                     </button>
+                 </div>
+            </div>
+            <div class="row">
+                <div class="col-33">
+                    <button class="customkeypad" ng-click="clearOTPNumber()">
+                        <span class="button-clr">
+                         C
+                        </span>
+                    </button>
+                </div>
+                <div class="col-33">
+                     <button class="customkeypad" ng-click="createOTPNumber(0)">
+                         <span class="button-clr"> 0 </span>
+                    </button>  
+                </div>
+                <div class="col-33">
+                     <button class="customkeypad" ng-click="deleteOTPNumber()">
+                         <span class="button-clr"><i class="ion-backspace"></i></span>
+                    </button> 
+                </div>
+            </div>
+                
+           </div>
+
+   
       <div>    
       {{ermessage}}
     </div>
-</div>
-             
+    </div>
+               
 
   </ion-content>
+    <button ng-click="validateOtp()" 
+              ng-disabled="disableotp" class="button button-full button-positive button-font
+                                             otpnext-button bottom_bottom">Next</button>
 </ion-view>

@@ -1,8 +1,8 @@
 <ion-view view-title="Mobile" ng-controller="userController">  
     
   <ion-content scroll="true" class="mobile-background">
-     
-<div class="list otp-spacing " ng-init="loadMobile()">
+       
+<div class="list otp-spacing" ng-init="loadMobile()" style="height:100%">
 
     <div class="row">
         <div class="col">
@@ -10,7 +10,7 @@
         </div>
     </div>  
       
-    <div class="row dialpad"   style="flex-wrap: wrap">
+    <!--<div class="row dialpad">
          <div ng-repeat="button in buttons"  class="col-33">
              <button ng-click="createPhoneNumber({{button}})" class="customkeypad">
                  <span class="button-clr">{{button}} </span>      </button>
@@ -24,13 +24,75 @@
         <div class="col-33">
             <button class="customkeypad"  ng-click="deletePhoneNumber()"><span class="button-clr"><i class="ion-backspace"></i></span>                    </button> 
         </div>
-   </div>
+   </div> -->
+    
+    <div class="outer_dialpad dialpad">
+        <div class="row">
+            <div class="col-33">
+                <button ng-click="createPhoneNumber(1)" class="customkeypad">
+                 <span class="button-clr">1</span></button>
+            </div>
+            <div class="col-33">
+                <button ng-click="createPhoneNumber(2)" class="customkeypad">
+                 <span class="button-clr">2</span></button>
+            </div>
+            <div class="col-33">
+                <button ng-click="createPhoneNumber(3)" class="customkeypad">
+                 <span class="button-clr">3</span></button>
+            </div>
+        </div>
+        <div class="row">
+             <div class="col-33">
+                <button ng-click="createPhoneNumber(4)" class="customkeypad">
+                 <span class="button-clr">4</span></button>
+            </div>
+            <div class="col-33">
+                <button ng-click="createPhoneNumber(5)" class="customkeypad">
+                 <span class="button-clr">5</span></button>
+            </div>
+            <div class="col-33">
+                <button ng-click="createPhoneNumber(6)" class="customkeypad">
+                 <span class="button-clr">6</span></button>
+            </div>
+        </div>
+        <div class="row">
+             <div class="col-33">
+                <button ng-click="createPhoneNumber(7)" class="customkeypad">
+                 <span class="button-clr">7</span></button>
+            </div>
+            <div class="col-33">
+                <button ng-click="createPhoneNumber(8)" class="customkeypad">
+                 <span class="button-clr">8</span></button>
+            </div>
+            <div class="col-33">
+                <button ng-click="createPhoneNumber(9)" class="customkeypad">
+                 <span class="button-clr">9</span></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-33">
+                <button class="customkeypad"  ng-click="clearPhoneNumber()"><span class="button-clr">C</span>                     </button>
+            </div>
+            <div class="col-33">
+                <button class="customkeypad"  ng-click="createPhoneNumber(0)"><span class="button-clr">0</span>                   </button>  
+            </div>
+            <div class="col-33">
+                <button class="customkeypad"  ng-click="deletePhoneNumber()"><span class="button-clr"><i class="ion-backspace"></i></span></button> 
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
 
-    <button ng-click="validateMobile()" ng-disabled="mobile_next" class="button button-full button-positive button-font next-button">Next</button>
+    
     <div>
       {{ermessage}}
     </div>
 </div>
-             
+           
   </ion-content>
+    <button ng-click="validateMobile()" ng-disabled="mobile_next" class="button button-full button-positive button-font next-button bottom_bottom">Next</button>  
+    
 </ion-view>

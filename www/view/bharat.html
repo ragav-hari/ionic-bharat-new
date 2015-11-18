@@ -1,5 +1,5 @@
-<ion-view view-title="Upload Image" ng-controller="userController">
-  <ion-content class="padding"> 
+<ion-view view-title="Upload Image" ng-controller="userController" ng-init="loadBharat()">
+  <ion-content> 
       
       <div class="list">
           <!--
@@ -158,25 +158,24 @@
                     </ul>
                 <img style="widht:120px;height:100px;" src="img/addaudio.png" ng-click="openAttachmentModal()" ng-if="hasaudio == true">
                 </div> 
-          <button class="button button-full button-positive button-font next-button" 
-                  ng-click="openAddressAttachmentModal()" id="next-button">
-                 <!--  <a href="#useraddress" class="btn-custom">Submit</a> -->
-              Next
-              
-            </button>
+         
+          
     <script id="attachment.html" type="text/ng-template">
          <ion-modal-view>
               <ion-header-bar class="bar-stable header-custom">
-          <div class="row">
+       <div class="row">
         
            <!--<div class="col text-center header_outer">
              <img class="header_logo_img" src="img/headerlogo.png">  
              <span class="header-title">Bharat Ration</span>
            </div>   -->
-           <div class="col col-20"></div>
+           <div class="col col-10">
+               <div class="header_icon"><i class="ion-android-arrow-back" ng-show="goback == true" ng-click="closeAttachmentModal()"></i></div>
+           </div>
+           
            <div class="col col-10"><img class="header_outer logo" src="img/headerlogo.png">  </div>
-           <div class="col col-50" style="margin-top:-10px;"><span class="logo_text">Bharat Ration</span></div>
-           <div class="col col-20"></div>
+           <div class="col col-70" style="margin-top:-10px;"><span class="logo_text">Bharat Ration</span></div>
+           <div class="col col-10"></div>
          
         </div>   
      </ion-header-bar>  
@@ -235,70 +234,89 @@
           
     <script id="addressmodal.html" type="text/ng-template">
            <ion-modal-view>
+               <ion-header-bar class="bar-stable header-custom">
+       <div class="row">
+        
+           <!--<div class="col text-center header_outer">
+             <img class="header_logo_img" src="img/headerlogo.png">  
+             <span class="header-title">Bharat Ration</span>
+           </div>   -->
+           <div class="col col-10">
+               <div class="header_icon"><i class="ion-android-arrow-back" ng-show="goback == true" ng-click="closeAddressAttachmentModal()"></i></div>
+           </div>
+           
+           <div class="col col-10"><img class="header_outer logo" src="img/headerlogo.png">  </div>
+           <div class="col col-70" style="margin-top:-10px;"><span class="logo_text">Bharat Ration</span></div>
+           <div class="col col-10"></div>
+         
+        </div>   
+     </ion-header-bar>  
               <ion-content>
                 <div class="modal-content" ng-init="loadData()">
                    <!-- address details content starts -->
+       
                     
+                    
+                   
                     <form>   
-            <label class="item item-input item-stacked-label">
+            <div class="form_outer">
             <span class="input-label">Name</span>
-            <input type="text" placeholder="First Name" ng-model="user.user_first_name">
+            <input type="text" placeholder="First Name" ng-model="user.user_first_name" class="text_border">
             <span class="error_message displaynone"  id="name">{{name_error}}</span>
-            </label>
-            <label class="item item-input item-stacked-label">
+            
+            
             <span class="input-label">Mobile Number</span>
-            <input type="text" placeholder="Mobile" ng-model="user.user_mobileno">
+            <input type="text" disabled placeholder="Mobile" ng-model="user.user_mobileno" class="text_border">
             <span class="error_message displaynone" id="mobile">{{mobile_error}}</span>
-            </label>
-            <label class="item item-input item-stacked-label">
+            
+            
             <span class="input-label">Email</span>
-            <input type="text" placeholder="Email" ng-model="user.user_email">
+            <input type="email" placeholder="Email" ng-model="user.user_email" class="text_border">
             <span class="error_message displaynone" id="email">{{email_error}}</span>
-            </label>
+            
 
-            <label class="item item-input item-stacked-label">
+            
             <span class="input-label">Address</span>
-            <textarea type="text" ng-model="user.user_address1" ></textarea>
+            <textarea type="text" ng-model="user.user_address1" class="text_border"></textarea>
             <span class="error_message displaynone" id="address">{{address_error}}</span>
-            </label>
+            
 
-            <label class="item item-input item-stacked-label">
+            
             <span class="input-label">Pincode</span>
-            <input type="text" placeholder="Pincode" ng-model="user.user_pincode">
+            <input type="number" ng-model="user.user_pincode" class="text_border">
                 <span class="error_message displaynone" id="pincode">{{pincode_error}}</span>
-            </label>
-            <label class="item item-input item-stacked-label">
+            
+            
             <span class="input-label">Landmark</span>
-            <input type="text" placeholder="Landmark" ng-model="user.user_landmark">
+            <input type="text" placeholder="Landmark" ng-model="user.user_landmark" class="text_border">
             <span class="error_message displaynone" id="landmark">{{landmark_error}}</span>
-            </label>
+            
 
-                <label class="item item-input item-stacked-label">
+                
                     <span class="input-label">Account Type</span>
-                    <p><select ng-model="user.user_type" class="select-border" ng-change="getusertype()">
+                    <p><select ng-model="user.user_type" class="text_border" ng-change="getusertype()">
                         <option value="1" selected>Bharat Ration Direct Customer</option>
                         <option value="2">Bharat Ration Dealer/Corporate</option>
                     </select></p>
                      <span class="error_message displaynone">{{usertype_error}}</span>
-                </label>
-                <label class="item item-input item-stacked-label" ng-show="usertypedata == true">
+                
+                <div ng-show="usertypedata == true">
                     <span class="input-label">Dealer Code</span>
-                    <input type="text"   ng-model="user.dealer_code">
+                    <input type="text"   ng-model="user.dealer_code" class="text_border">
                     <span class="error_message displaynone" id="code">{{dealercode_error}}</span>
-                </label>
+                </div>
 
-               <label class="item item-input item-stacked-label">
+               
                     <span class="input-label">Comments</span>
-                    <input type="text"   ng-model="user.user_comments">
-                </label>
-                 <label class="item item-input item-stacked-label">
+                    <input type="text"   ng-model="user.user_comments" class="text_border">
+                
+                 
                     <span class="input-label">Select Amount Range</span>
-                     <p></p>
-                     <select ng-model="user.amount" class="select-border" ng-change="getGift()">
+                     <select ng-model="user.amount" ng-change="getGift()" class="text_border">
                       <option value="0">I Don't Know</option>
                       <option ng-repeat="amount in amountinfo" value={{amount.amount_id}}>{{amount.amount_from}}-{{amount.amount_to}}</option>     
                      </select>
-                </label>
+                
               <label class="item item-input item-stacked-label" ng-show="giftList==true">
                     <span class="input-label">Select Gift</span>
 
@@ -314,13 +332,13 @@
                           </li> 
 
                        </ul>
-                             <div class="final-submit-outer">
-                     <button class="button button-full button-positive button-font next-button final-submit" 
+                            </div>   
+                     <button class="button button-full button-positive button-font" 
                              ng-click="finalValidation()">Submit</button>    
-                </div>
+            
                
            </form>
-                    
+        
                     
                     
                    <!-- address details content ends -->
@@ -331,4 +349,10 @@
           
       </div>     
   </ion-content>
+     <button class="button button-full button-positive button-font  bottom_bottom" 
+                  ng-click="openAddressAttachmentModal()" id="next-button">
+                 <!--  <a href="#useraddress" class="btn-custom">Submit</a> -->
+              Next
+              
+            </button>
 </ion-view>  

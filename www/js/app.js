@@ -1,6 +1,6 @@
 var bharat = angular.module('bharat', ['ionic','ionic.service.core','ngCordova','ionic.service.push','valdr']);
 
-bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup,$cordovaFileTransfer,$cordovaPush,$http,$window,userService,$cordovaProgress,$location,$ionicHistory) {
+bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup,$cordovaFileTransfer,$cordovaPush,$http,$window,userService,$cordovaProgress,$location,$ionicHistory,$ionicNavBarDelegate,$ionicPlatform) {
   $ionicPlatform.ready(function() {
      
      // alert("READY");
@@ -10,7 +10,12 @@ bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cord
   $rootScope.token = data.token;          
   // Do something with the token
 });*/
-     
+    $ionicPlatform.registerBackButtonAction(function (event) {}, 100);
+      
+      $rootScope.myGoBack = function()
+        {
+            $ionicHistory.goBack();
+        }
       
           
      $rootScope.HOSTURL = "http://www.cloudservices.ashinetech.com/Bharat/uploads/"; 

@@ -38,6 +38,9 @@
         $rootScope.image =[];
         $rootScope.audios = [];
         $scope.final_bool=false;
+        $scope.header_custom = true;
+        
+        $rootScope.goback = true;
         
         function checkConnection() {
     var networkState = navigator.connection.type;
@@ -47,6 +50,29 @@
             return networkState;
         }
         
+        
+        $scope.addLogContent = function(type,data)
+        {
+           // alert("DATA"+data);
+            $scope.mobileno = window.localStorage.getItem("mobile");
+            
+            userService.addLogContent({"type":type,"data":data,"mobile":$scope.mobileno,"date":$scope.formatDate(new Date())}).then(function(response){
+                //alert("RESP"+JSON.stringify(response));      
+                //alert("RESP"+JSON.stringify(response));      
+            });
+        }
+      
+        $scope.formatDate = function(date) {
+          var hours = date.getHours();
+          var minutes = date.getMinutes();
+          var ampm = hours >= 12 ? 'pm' : 'am';
+          hours = hours % 12;
+          hours = hours ? hours : 12; // the hour '0' should be '12'
+          minutes = minutes < 10 ? '0'+minutes : minutes;
+          var strTime = hours + ':' + minutes + ' ' + ampm;
+          return date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + "  " + strTime;
+         // return date.getDate() + "/" +date.getMonth()+1 + "/" + date.getFullYear() + "  " + strTime;
+         }
         
         $ionicModal.fromTemplateUrl('my-modal.html', {
             scope: $scope,
@@ -70,7 +96,31 @@
         $scope.hideLoading = function(){
             $ionicLoading.hide();
         };
-
+        
+        $scope.loadMobile = function(){
+            if($rootScope.goback)
+            {
+                $rootScope.goback = false;
+            }
+        }
+        
+        
+        $scope.loadOTP = function()
+        {
+            if(!$rootScope.goback)
+            {
+                $rootScope.goback = true;
+            }    
+        }
+        
+        $scope.loadBharat = function()
+        {
+            if(!$rootScope.goback)
+            {
+                $rootScope.goback = true;
+            }
+        }
+        
         $scope.registerPush = function(mobileno)
         {
               push.on('registration', function(data) {
@@ -86,7 +136,11 @@
         
         $scope.ifMobileExists = function()
         {   
-           
+            if($rootScope.goback)
+            {
+                $rootScope.goback = false;
+            }
+            
             var mobile=window.localStorage.getItem("mobile");
             if(mobile === null)
             {   
@@ -273,6 +327,8 @@ alert("Registering");
                 if ($rootScope.size >= 10000000) 
                 {
                     alert("Size Exceeds the Max Limit");
+                    
+                   
                     $location.path('/front');
                 } 
                 else 
@@ -281,7 +337,7 @@ alert("Registering");
                       $scope.mobileno = window.localStorage.getItem("mobile");
                       var data = {"user_mobileno":$scope.mobileno};
                       userService.getOrderID(data).then(function(response){   
-                     
+                          
                           if(response[0].status === "Success")
                           {
                                 window.localStorage.setItem("order_id",response[0].order_id);  
@@ -300,7 +356,10 @@ alert("Registering");
                     $location.path('/bharat');
                 }
             }, function(err) {
-               
+                var error_type = "Audio";
+                var error_data = JSON.stringify(err);
+                $scope.addLogContent(error_type,error_data);
+                $location.path('/front');
             });  
              
             $location.path('/bharat');
@@ -333,6 +392,10 @@ alert("Registering");
                 }
                 $scope.attachmentmodal.hide();
             }, function(err) {
+                var error_type = "Audio";
+                var error_data = JSON.stringify(err);
+                $scope.addLogContent(error_type,error_data);
+                
                 $scope.attachmentmodal.hide();
             });
             $scope.attachmentmodal.hide();
@@ -373,7 +436,9 @@ alert("Registering");
                  
 
              }, function(err) {
-                
+                var error_type = "Image";
+                var error_data = JSON.stringify(err);
+                $scope.addLogContent(error_type,error_data);
              });
             $cordovaCamera.cleanup().then(success,failure); // only for FILE_URI
                                             
@@ -394,7 +459,9 @@ alert("Registering");
                     console.log("success");
                 
                   }, function(err) {
-                 console.log("Error");
+                 var error_type = "Upload";
+                var error_data = JSON.stringify(err);
+                $scope.addLogContent(error_type,error_data);
                  
                   }, function (progress) {
                  
@@ -422,17 +489,19 @@ alert("Registering");
                  $rootScope.imagedata.push(results[i]);
               }
             }, function(error) {
-           
+            
             });
             $scope.attachmentmodal.hide();
         }
 
         $scope.selectimage = function() {
 
-            if ($rootScope.size >= 10000000) {
-                 
-                    $location.path('/bharat');
-                } else {
+            if ($rootScope.size >= 10000000) 
+            {
+                $location.path('/bharat');
+            } 
+            else 
+            {
                 
             window.imagePicker.getPictures(
                 function(results) {
@@ -461,7 +530,9 @@ alert("Registering");
                                         $scope.attachmentmodal.hide();
                                     }
                             }, function(error) {
-                                
+                               var error_type = "Gallery Image";
+                               var error_data = JSON.stringify(err);
+                               $scope.addLogContent(error_type,error_data);
                             
                             });
                     }
@@ -470,8 +541,10 @@ alert("Registering");
                     }
                 },
                 function(error) {
-                    console.log('Error: ' + error);
-                    $scope.attachmentmodal.hide();
+                                var error_type = "Gallery Image";
+                var error_data = JSON.stringify(err);
+                $scope.addLogContent(error_type,error_data);             
+                                $scope.attachmentmodal.hide();
                 }
 
             );
@@ -638,6 +711,9 @@ alert("Registering");
                        });  
                 }
             }, function(err) {
+                var error_type = "Image";
+                var error_data = JSON.stringify(err);
+                $scope.addLogContent(error_type,error_data);
                 $location.path('/front');
             });
             $location.path('/bharat');
@@ -727,6 +803,9 @@ alert("Registering");
 
                // $scope.attachmentmodal.hide();
             }, function(err) {
+               var error_type = "Image";
+                var error_data = JSON.stringify(err);
+                $scope.addLogContent(error_type,error_data);
                 $scope.attachmentmodal.hide();
             });
             $scope.attachmentmodal.hide();
@@ -1027,7 +1106,9 @@ alert("Registering");
                 angular.element(document.querySelector('#next-button')).css('display','block');
                  
             }, function(err) {
-                
+                var error_type = "Upload";
+                var error_data = JSON.stringify(err);
+                $scope.addLogContent(error_type,error_data);
                  $scope.hideuploading();
                 
             }, function(progress) {
@@ -1081,7 +1162,9 @@ alert("Registering");
                             }
                         else
                             {
-                                
+                                alert("Sorry please try again");
+                                console.log("LOGIN RESPONSE"+responsedata);
+                                $scope.hideLoading();
                             }
                     }
                    
@@ -1140,7 +1223,8 @@ alert("Registering");
          {
              
          }
-          $scope.validateOtp=function()
+         
+         $scope.validateOtp=function()
          {     
                 if($scope.user.user_otp.length === 5)
                 {
@@ -1683,6 +1767,10 @@ alert("Registering");
           
           $scope.getAllOrders = function()
           {
+              if(!$rootScope.goback)
+              {
+                 $rootScope.goback = true;
+              }
               $scope.showLoading();
               $scope.allorder = [];
               var data = {"user_mobileno":window.localStorage.getItem('mobile')};
@@ -1739,7 +1827,12 @@ alert("Registering");
           
           $scope.singleorderpage = function()
           {
-               $scope.showLoading();
+              if(!$rootScope.goback)
+              {
+                 $rootScope.goback = true;
+              }
+              
+              $scope.showLoading();
               $scope.singleorder = [];
               var response = JSON.parse(window.localStorage.getItem("singleorder"));  
                 if(response === "null" || response === null)
