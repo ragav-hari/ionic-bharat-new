@@ -43,7 +43,7 @@
       
    
    
-     <ion-header-bar class="bar-stable header-custom">
+     <ion-header-bar class="bar-stable header-custom" ng-show="headershow == true">
        <div class="row">
         
            <!--<div class="col text-center header_outer">
@@ -51,11 +51,11 @@
              <span class="header-title">Bharat Ration</span>
            </div>   -->
            <div class="col col-10">
-               <div class="header_icon"><i class="ion-android-arrow-back" ng-show="goback == true" ng-click="myGoBack()"></i></div>
+               <div class="header_icon"><i class="ion-android-arrow-back ion-icon-header" ng-show="goback == true" ng-click="myGoBack()"></i></div>
            </div>
            
-           <div class="col col-10"><img class="header_outer logo" src="img/headerlogo.png">  </div>
-           <div class="col col-70" style="margin-top:-10px;"><span class="logo_text">Bharat Ration</span></div>
+           <div class="col col-10 logo_div"><img class="header_outer logo" src="img/headerlogo.png">  </div>
+           <div class="col col-60" style="margin-top:-10px;"><span class="logo_text">Bharat Ration</span></div>
            <div class="col col-10"></div>
          
         </div>   
@@ -63,7 +63,6 @@
       
    
     <ion-nav-view class="background">
-        
       
     </ion-nav-view>
        

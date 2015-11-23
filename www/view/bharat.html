@@ -233,7 +233,7 @@
      </script>
           
     <script id="addressmodal.html" type="text/ng-template">
-           <ion-modal-view>
+           <ion-modal-view class="address_modal_custom">
                <ion-header-bar class="bar-stable header-custom">
        <div class="row">
         
@@ -242,7 +242,7 @@
              <span class="header-title">Bharat Ration</span>
            </div>   -->
            <div class="col col-10">
-               <div class="header_icon"><i class="ion-android-arrow-back" ng-show="goback == true" ng-click="closeAddressAttachmentModal()"></i></div>
+               <div class="header_icon"><i class="ion-android-arrow-back ion-icon-header" ng-show="goback == true" ng-click="closeAddressAttachmentModal()"></i></div>
            </div>
            
            <div class="col col-10"><img class="header_outer logo" src="img/headerlogo.png">  </div>
@@ -252,12 +252,9 @@
         </div>   
      </ion-header-bar>  
               <ion-content>
-                <div class="modal-content" ng-init="loadData()">
+                <div class="modal-content address_modal_content" ng-init="loadData()">
                    <!-- address details content starts -->
-       
-                    
-                    
-                   
+                  
                     <form>   
             <div class="form_outer">
             <span class="input-label">Name</span>
@@ -333,17 +330,17 @@
 
                        </ul>
                             </div>   
-                     <button class="button button-full button-positive button-font" 
-                             ng-click="finalValidation()">Submit</button>    
+                     
             
                
            </form>
-        
-                    
-                    
                    <!-- address details content ends -->
+                    <button class="button button-full button_bottom button-positive button-font button_custom_last" 
+                             ng-click="finalValidation()">Submit</button>    
                 </div>
+                  
               </ion-content>
+               
              </ion-modal-view>
     </script>      
           

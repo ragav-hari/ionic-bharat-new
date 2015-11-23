@@ -1,6 +1,6 @@
 var bharat = angular.module('bharat', ['ionic','ionic.service.core','ngCordova','ionic.service.push','valdr']);
 
-bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup,$cordovaFileTransfer,$cordovaPush,$http,$window,userService,$cordovaProgress,$location,$ionicHistory,$ionicNavBarDelegate,$ionicPlatform) {
+bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cordovaMedia,$rootScope,$ionicPopup,$cordovaFileTransfer,$cordovaPush,$http,$window,userService,$cordovaProgress,$location,$ionicHistory,$ionicNavBarDelegate,$ionicPlatform,$cordovaSplashscreen) {
   $ionicPlatform.ready(function() {
      
      // alert("READY");
@@ -10,6 +10,34 @@ bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cord
   $rootScope.token = data.token;          
   // Do something with the token
 });*/
+    
+
+
+      
+       $rootScope.$on('$stateChangeSuccess', function(e, toState) {
+               if(toState.name === 'mobile') {
+                  $rootScope.goback = false;
+                   $rootScope.headershow = true;
+              }
+            
+              else if(toState.name === 'splash')
+                  {
+                      $rootScope.goback = false;
+                      $rootScope.headershow = false;
+                  }
+              else if(toState.name === 'front')
+              {
+                  $rootScope.headershow = true;
+                   $rootScope.goback = false;
+              }
+            else{
+                $rootScope.headershow = true;
+            }
+
+        });
+
+          
+                  
     $ionicPlatform.registerBackButtonAction(function (event) {}, 100);
       
       $rootScope.myGoBack = function()
@@ -71,7 +99,7 @@ bharat.run(function($ionicPlatform, $ionicSideMenuDelegate,$cordovaCapture,$cord
                     })
                     .then(function(result) {
                         if(!result) {
-                            //ionic.Platform.exitApp();
+                            ionic.Platform.exitApp();
                         }
                     });
          }
@@ -158,6 +186,12 @@ bharat.config(function($stateProvider, $urlRouterProvider) {
   
   $stateProvider
   
+   .state('splash', {
+    url: '/splash',
+    templateUrl: 'view/splash.html',
+      controller: 'userController'
+  })
+  
   .state('landing', {
         url: '/landing',
         templateUrl: 'view/landingpage.html',
@@ -230,7 +264,7 @@ bharat.config(function($stateProvider, $urlRouterProvider) {
         controller: 'userController'
   })
  
-  $urlRouterProvider.otherwise('/front');
+  $urlRouterProvider.otherwise('/splash');
 
 }).
  run(function($rootScope,$location,$state,$ionicHistory) {

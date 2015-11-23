@@ -42,6 +42,7 @@
         
         $rootScope.goback = true;
         
+        
         function checkConnection() {
     var networkState = navigator.connection.type;
             
@@ -49,6 +50,29 @@
     var states = {};
             return networkState;
         }
+        
+        $scope.loadSplash = function()
+        {
+
+            $timeout(function()
+            {
+                var mobile=window.localStorage.getItem("mobile");
+                if(mobile === null)
+                {   
+                    $location.path('/mobile');   
+                }
+                else
+                {   
+                    $location.path('/front'); 
+                } 
+                
+            }, 3000); 
+            
+            
+        }
+        
+       
+          
         
         
         $scope.addLogContent = function(type,data)
@@ -98,6 +122,7 @@
         };
         
         $scope.loadMobile = function(){
+            $rootScope.headershow = true;
             if($rootScope.goback)
             {
                 $rootScope.goback = false;
@@ -141,7 +166,7 @@
                 $rootScope.goback = false;
             }
             
-            var mobile=window.localStorage.getItem("mobile");
+            /*var mobile=window.localStorage.getItem("mobile");
             if(mobile === null)
             {   
               
@@ -150,8 +175,10 @@
             else
             {   
                 $location.path('/front'); 
-            }
+            } */
         }
+        
+        
        
         
        
@@ -245,6 +272,21 @@ alert("Registering");
             }
      
         }
+        
+        
+        $scope.InternetConnectionCallback = function(noconnectionerrormessage,errordatamessage)
+        {
+              var networkState = navigator.connection.type;
+             
+                if(networkState === "none")
+                {
+                    alert(noconnectionerrormessage);
+                }
+                else
+                {
+                    alert(errordatamessage);   
+                }
+        }
 
         $ionicModal.fromTemplateUrl('attachment.html', {
             scope: $scope,
@@ -317,6 +359,10 @@ alert("Registering");
         }
 
         $scope.captureAudio = function() {
+            if(checkConnection() === "none"){
+           alert("Please connect your internet");
+            }
+       else{
             var options = {
                 limit: 1,
                 duration: 10
@@ -349,7 +395,11 @@ alert("Registering");
                           }
                           else
                           {
+                               $scope.hideuploading();
+                             
                                 window.localStorage.setItem("order_id","");   
+                                
+                                
                                 $location.path('/front');
                           }                          
                        });     
@@ -363,11 +413,14 @@ alert("Registering");
             });  
              
             $location.path('/bharat');
-
+            }
         }
 
         $scope.captureAudioModal = function() {
-            
+            if(checkConnection() === "none"){
+           alert("Please connect your internet");
+       }
+       else{
            
             var options = {
                 limit: 1,
@@ -375,7 +428,7 @@ alert("Registering");
             };
 
             $cordovaCapture.captureAudio(options).then(function(audioData) {
-
+                $scope.showLoading();
                 $rootScope.size += audioData[0].size;
                 if ($rootScope.size >= 10000000) {
                     alert("Size Exceeds the Max Limit");
@@ -388,10 +441,14 @@ alert("Registering");
                     $scope.setAllAudio(audioData[0].fullPath);
                     $rootScope.hasaudio = true;
                     window.localStorage.setItem("HAS_AUDIO",$rootScope.hasaudio);
+                    $scope.hideLoading();
                     $location.path('/bharat');
                 }
                 $scope.attachmentmodal.hide();
             }, function(err) {
+                
+               $scope.hideLoading();
+               
                 var error_type = "Audio";
                 var error_data = JSON.stringify(err);
                 $scope.addLogContent(error_type,error_data);
@@ -400,6 +457,7 @@ alert("Registering");
             });
             $scope.attachmentmodal.hide();
             // $location.path('/bharat');
+            }    
         }
 
 
@@ -495,7 +553,10 @@ alert("Registering");
         }
 
         $scope.selectimage = function() {
-
+            if(checkConnection() === "none"){
+           alert("Please connect your internet");
+       }
+       else{
             if ($rootScope.size >= 10000000) 
             {
                 $location.path('/bharat');
@@ -551,6 +612,7 @@ alert("Registering");
             $scope.attachmentmodal.hide();
             //$location.path('/bharat');
                 }
+            }
         };
 
         $scope.showPlayIcon = function(index)
@@ -679,7 +741,10 @@ alert("Registering");
        
         
  $scope.captureImage = function() {
-       
+       if(checkConnection() === "none"){
+           alert("Please connect your internet");
+       }
+       else{
             var options = {limit: 1,quality: 0,height:50,width:50};
             $cordovaCapture.captureImage(options).then(function(imageData) {
                 $rootScope.size += imageData[0].size;
@@ -717,6 +782,7 @@ alert("Registering");
                 $location.path('/front');
             });
             $location.path('/bharat');
+       }
  }
 
         
@@ -782,6 +848,10 @@ alert("Registering");
         }
 
         $scope.captureImageModal = function() {
+            if(checkConnection() === "none"){
+           alert("Please connect your internet");
+       }
+       else{
             var options = {limit: 1,quality: 0,height:100,width:100};
 
             $cordovaCapture.captureImage(options).then(function(imageData) {
@@ -809,6 +879,7 @@ alert("Registering");
                 $scope.attachmentmodal.hide();
             });
             $scope.attachmentmodal.hide();
+            }
         }
 
         //todo
@@ -1114,11 +1185,22 @@ alert("Registering");
             }, function(progress) {
              
                 $scope.progressval = Math.round((progress.loaded/progress.total) * 100);
-                
+                 
+
+                    if(checkConnection() === "none")
+                    {
+                        $scope.hideuploading();                      
+                    }
+                    else
+                    {
+       
+                    }
              });
-        
+
          
         }
+
+        
         $scope.getORDERID1 =function()
         {
                var order_id1 = window.localStorage.getItem("order_id");

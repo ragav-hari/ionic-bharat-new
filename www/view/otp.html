@@ -21,15 +21,37 @@
        
       </div>
       <div class="row"></div>
-       <div class="row otp-numbers"> 
+       <!--<div class="row otp-numbers"> 
 
-             <label type="number" class="col-10 otp_label"  ng-model="user.user_otp[0]">{{user.user_otp[0]}}</label>
-            <label type="number" class="col-10 otp_label"  ng-model="user.user_otp[1]">{{user.user_otp[1]}}</label>
-            <label type="number" class="col-10 otp_label"  ng-model="user.user_otp[2]">{{user.user_otp[2]}}</label>
-            <label type="number" class="col-10 otp_label"  ng-model="user.user_otp[3]">{{user.user_otp[3]}}</label>
-            <label type="number" class="col-10 otp_label"  ng-model="user.user_otp[4]">{{user.user_otp[4]}}</label>
+             <label type="number" class="col-10 otp_label custom_otp_label"  ng-model="user.user_otp[0]">{{user.user_otp[0]}}</label>
+            <label type="number" class="col-10 otp_label custom_otp_label"  ng-model="user.user_otp[1]">{{user.user_otp[1]}}</label>
+            <label type="number" class="col-10 otp_label custom_otp_label"  ng-model="user.user_otp[2]">{{user.user_otp[2]}}</label>
+            <label type="number" class="col-10 otp_label custom_otp_label"  ng-model="user.user_otp[3]">{{user.user_otp[3]}}</label>
+            <label type="number" class="col-10 otp_label custom_otp_label"  ng-model="user.user_otp[4]">{{user.user_otp[4]}}</label>
 
-           </div>
+           </div>-->
+    
+    <div class="row" style="margin-left:4%">
+        <div class="col-10"></div>
+        <div class="col"> 
+            <label type="number" class="col-50 otp_label custom_otp_label"  ng-model="user.user_otp[0]">         <span>{{user.user_otp[0]}}</span>
+            
+            </label>
+        </div>
+        <div class="col">
+            <label type="number" class="col-50 otp_label custom_otp_label"  ng-model="user.user_otp[1]">{{user.user_otp[1]}}</label>
+        </div>
+        <div class="col">
+            <label type="number" class="col-50 otp_label custom_otp_label"  ng-model="user.user_otp[2]">{{user.user_otp[2]}}</label>
+        </div>
+        <div class="col">
+            <label type="number" class="col-50 otp_label custom_otp_label"  ng-model="user.user_otp[3]">{{user.user_otp[3]}}</label>
+        </div>
+        <div class="col">
+            <label type="number" class="col-50 otp_label custom_otp_label"  ng-model="user.user_otp[4]">{{user.user_otp[4]}}</label>
+        </div>
+        <div class="col-10"></div>
+    </div>
     
     <div class="dialpad">
              <div class="row">
